@@ -168,3 +168,52 @@ Append-only. One entry per session. Facts and numbers only — verdicts live in
   `warm-persisted`/HEAT_FILE exists only on the CUDA arm (`qwen36_tier.c` is
   CUDA-gated in the Makefile) — CPU phases measure cold vs warm-process only,
   and Phase 5's R4-R5 (heat across restart) moves after the CUDA build.
+
+## 2026-09-22 — Phase 2 CPU baseline (START NOTE)
+
+Plan for this chain: (1) write `tools/bench_serve.py` — persistent
+`coli serve` + HTTP client, R-004 protocol (explicit temperature=0, fixed
+max_tokens per prompt, state tags cold/warm-process); (2) one cold pass
+(fresh server, p1-p5 once) + 3 warm passes on the same server; (3) per-run
+JSONs + median summary → `results/cpu/`; (4) grep the server log for expert
+hit-rate visibility (open Gate D item). Baseline state: engines built, model
+verified, serve smoke green, `origin/main` = `7bf5a11`. Caveat recorded
+upfront: OS page cache likely holds much of the 23 GB model (64 GB RAM), so
+"cold" means cold *process*, not cold disk — noted in every cold sample.
+
+## 2026-09-22 — Phase 2 CPU baseline: FIRST REAL NUMBERS
+
+Harness `tools/bench_serve.py` (persistent serve + HTTP, R-004 protocol:
+temperature=0, fixed max_tokens, state tags). AC power, 38.3 GB RAM free
+before run. 20 runs (5 cold + 15 warm), 31 min total, all JSONs +
+transcripts in `results/cpu/`.
+
+| prompt | cold tok/s | warm med tok/s | warm TTFT med | wall med | tokens |
+|---|---|---|---|---|---|
+| p1 short | 3.64 | 4.53 | 6.5 s | 13.6 s | 33 |
+| p2 ~400w | 4.19 | 4.53 | 15.3 s | 125.3 s | 500 |
+| p3 code | 4.23 | 4.37 | 25.4 s | 102.2 s | 337 |
+| p4 ukr | 4.87 | 4.97 | 16.5 s | 106.9 s | 450 |
+| p5 long-ctx | 4.18 | 4.25 | 101.6 s | 111.3 s | 43 |
+
+Reading:
+
+- **CPU-only decode ≈ 4.3–5.0 tok/s** — below Gate B's 5 tok/s "usable"
+  floor. The CPU arm alone does not justify the stack; Gate C (CUDA tier,
+  Phase 3) is now the decisive experiment.
+- **Warm-process gains are tiny** (~7%: 4.2 → 4.5) — with 100% RAM
+  residency, process warmth adds little; the self-test's 46% cold hit-rate
+  story mostly evaporates once everything sits in RAM.
+- **Prefill is the CPU killer**: ~5 tok/s prefill too — p5 (535 prompt
+  tokens) waits **~101 s for first token even warm**. Long-context work is
+  impractical on CPU; this is exactly where the GPU tier must prove itself.
+- Quality: p1/p5 answers exactly correct (p5 retrieved both embedded facts);
+  generation is deterministic across cold/warm (temperature=0 works).
+- FN-006: Ukrainian output carries 10 deterministic U+FFFD chars per ~1370
+  (English clean) — tokenizer/streaming artifact, Phase 10 item.
+- Open: expert hit rate NOT visible in serve logs (only in the engine
+  self-test mode) — Gate D metric still lacks a serve-path source; check
+  `coli bench` / PROF=1 before Phase 5.
+
+Verdict recorded for the decision file later: CPU-only = below the useful
+band; everything now rides on the CUDA tier.

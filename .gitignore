@@ -28,6 +28,8 @@ Models/
 .coli_kv
 *.heat
 heat.bin
+# benchmark server logs are evidence — keep them in git
+!results/**/logs/*.log
 
 # Local benchmark scratch
 tmp/

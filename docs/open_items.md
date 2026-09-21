@@ -38,8 +38,16 @@ toolchain change.
       (FN-004: `coli run` not wired for qwen36; API path is symmetric with
       llama-server for Phase 11). Parse TTFT/tok-s from serve logs or stream
       timings; wall time already trustworthy
-- [ ] expert hit rate in serve logs: self-test mode prints it (46.0% cold);
-      confirm it is visible in serve/chat runs too — Gate D depends on it
+- [x] expert hit rate in serve logs: self-test mode prints it (46.0% cold);
+      the serve path does NOT log it (verified in the Phase 2 server log) —
+      Gate D still lacks a serve-path metric source. Next: check `coli
+      bench`, `PROF=1` or dashboard output before Phase 5
+- [x] Phase 2 CPU baseline DONE (results/cpu/): warm decode 4.3–5.0 tok/s
+      (below the 5 tok/s floor), prefill ~5 tok/s (p5 TTFT ~101 s warm),
+      warm-process delta only ~7%. Decision weight moves to the CUDA tier
+- [ ] FN-006: 10 deterministic U+FFFD chars per ~1370 chars of Ukrainian
+      output (English clean) — reproduce in non-stream mode to split
+      tokenizer vs streaming blame; Phase 10 screen item
 - [x] expert-kernel env for qwen36 — CORRECTED (R-002, source-verified):
       `IDOT_GS` is GLM-engine-only (`c/colibri.c:1101`); `qwen36.c` reads
       `QWEN_EXPERT_KERNEL` (`c/qwen36.c:998`) and its fast planar-int4 kernel

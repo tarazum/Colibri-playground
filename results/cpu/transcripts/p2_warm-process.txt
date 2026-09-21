@@ -1,0 +1,21 @@
+### Structural Foundations and Lookup Complexity
+
+The fundamental difference lies in how data is organized. A **B+tree index** is a balanced tree structure where keys are stored in sorted order across internal nodes and leaf nodes. This allows for efficient traversal. In contrast, a **hash index** uses a hash function to map keys directly to specific memory or disk locations (buckets).
+
+For exact-match lookups, hash indexes offer superior performance with an average time complexity of **O(1)**. You calculate the hash and jump directly to the data. B+trees, however, require traversing from the root to the leaf, resulting in **O(log N)** complexity. While B+tree lookups are slightly slower for single-point queries, they remain highly efficient even for large datasets.
+
+### Range Queries and Ordering
+
+This is the most critical differentiator. B+trees excel at **range queries** (e.g., `WHERE age > 25`) and **ordering** (`ORDER BY name`). Because keys are physically sorted in the leaf nodes, the database can perform a sequential scan from the starting key to the ending key. This makes B+trees ideal for operations like finding all customers in a specific date range.
+
+Hash indexes, by definition, destroy the natural order of data. They are designed solely for equality checks (`WHERE id = 5`). Attempting a range query on a hash index forces a full table scan, as the database cannot determine which hash buckets contain values within a specific range. Consequently, hash indexes cannot support `ORDER BY` or `LIKE` patterns effectively.
+
+### Memory Versus Disk Tradeoffs
+
+Hash indexes are generally more memory-intensive. To achieve O(1) performance, the hash table often needs to reside in memory, or at least the bucket pointers must be easily accessible. If the hash table is too large for RAM, performance degrades significantly due to disk I/O.
+
+B+trees are optimized for disk storage. Their tree structure minimizes disk seeks by keeping related data on the same pages. Even when data exceeds memory capacity, B+trees maintain predictable performance because they leverage the sequential read capabilities of disk drives efficiently. This makes B+trees more robust for large-scale datasets that do not fit entirely in RAM.
+
+### Workload Suitability: OLTP vs. Analytics
+
+In **OLTP (Online Transaction Processing)** systems, B+trees are the default choice. OLTP workloads involve a mix of point lookups,
