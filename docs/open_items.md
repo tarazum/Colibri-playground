@@ -42,9 +42,24 @@ toolchain change.
       the serve path does NOT log it (verified in the Phase 2 server log) —
       Gate D still lacks a serve-path metric source. Next: check `coli
       bench`, `PROF=1` or dashboard output before Phase 5
-- [x] Phase 2 CPU baseline DONE (results/cpu/): warm decode 4.3–5.0 tok/s
+- [x] Phase 2 CPU baseline DONE (results/cpu/): warm decode 4.3-5.0 tok/s
       (below the 5 tok/s floor), prefill ~5 tok/s (p5 TTFT ~101 s warm),
-      warm-process delta only ~7%. Decision weight moves to the CUDA tier
+      warm-process delta only ~7%. Decision weight moved to the CUDA tier
+- [x] Phase 3 CUDA tier DONE (results/cuda/): build clean, `[CUDA] device 0`
+      proof chain confirmed (needs `--auto-tier`, without it the server
+      silently runs CPU!). Warm medians: decode 8.3-9.7 tok/s on long
+      generations (1.9-2.15× over CPU), TTFT 1.7-2.3× faster, p5 wall 111→67 s.
+      Thermals 44-54 °C / ≤44 W / ≤6.25 GB VRAM. Driver-13.1-vs-toolkit-13.4
+      risk did not materialize. CPU binary kept as `qwen36_cpu.exe` for A/B.
+- [ ] FN-007: warm-persisted (HEAT_FILE) blocked upstream — launcher
+      hard-kills the engine child on Windows; pick a workaround (direct
+      engine run with SNAP+HEAT_FILE, or upstream patch CTRL_BREAK to child)
+      before Phase 5
+- [ ] warm-pass variance watch: CUDA warm pass 2 dipped to 4.6-6.9 tok/s
+      (passes 1/3 were 5.6-11.7) — if it repeats in later phases, capture
+      per-request GPU/CPU util and tier state to explain it
+- [ ] p5 long-context TTFT remains ~1 min median on CUDA (high variance
+      32-64 s) — the KV-reuse phase (Phase 6) is the lever that matters
 - [ ] FN-006: 10 deterministic U+FFFD chars per ~1370 chars of Ukrainian
       output (English clean) — reproduce in non-stream mode to split
       tokenizer vs streaming blame; Phase 10 screen item

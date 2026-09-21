@@ -217,3 +217,65 @@ Reading:
 
 Verdict recorded for the decision file later: CPU-only = below the useful
 band; everything now rides on the CUDA tier.
+
+## 2026-09-22 — Phase 3 CUDA tier (START NOTE)
+
+Plan: (1) back up the CPU engine binary as `qwen36_cpu.exe` for Gate C A/B;
+(2) build `make cuda-dll CUDA_ARCH=sm_120` then `make qwen36.exe CUDA_DLL=1
+ARCH=native` via the .bat pattern (vcvars64 + mingw64\bin + usr\bin + CUDA
+bin); (3) verify `[CUDA] device 0:` + nonzero resident set in the serve log
+(the Makefile's `.build-config` stamp guards against a fake-CUDA "up to
+date" binary); (4) extend bench_serve.py with a warm-persisted pass
+(HEAT_FILE save on clean stop → restart → rerun, CUDA arm only); (5) full
+benchmark → `results/cuda/` + nvidia-smi logger during the run. Known risks:
+driver 592.82 reports CUDA 13.1 vs toolkit 13.4 (minor-version compat should
+hold; if the GPU run fails on driver version → update driver or pin toolkit
+13.1); Smart App Control already proven non-blocking (CPU binaries ran).
+Baseline: Phase 2 CPU medians 4.3-5.0 tok/s warm, prefill ~5 tok/s.
+
+## 2026-09-22 — Phase 3 CUDA tier: RESULTS
+
+Build: clean, artifact-verified (`coli_cuda.dll` 950 KB nvcc + `qwen36.exe`
+linking qwen36_tier.c with -DCOLI_CUDA; `.build-config` = CUDA_DLL=1|native).
+CPU binary backed up as `qwen36_cpu.exe`. Activation flag discovered: the
+server silently runs the CPU path WITHOUT `--auto-tier`; with it the full
+proof chain prints (`[CUDA] device 0: RTX 5070, 8.5 GB, sm_120` →
+`[qtier] CUDA VRAM expert tier active` → 2413/10240 experts in VRAM 4.25 GB,
+lm_head int8 + 30 DeltaNet projections on GPU). Driver 13.1 vs toolkit 13.4:
+no runtime errors — minor-version compatibility held.
+
+CPU (warm med) vs CUDA (warm med), temperature=0, same prompts:
+
+| prompt | CPU tok/s | CUDA tok/s | speedup | CPU TTFT | CUDA TTFT | wall: CPU→CUDA |
+|---|---|---|---|---|---|---|
+| p1 short | 4.53 | 5.62 | 1.24× | 6.5 s | 5.2 s | 13.6→10.9 s |
+| p2 500 tok | 4.53 | 9.73 | 2.15× | 15.3 s | 7.3 s | 125→58 s |
+| p3 code | 4.37 | 8.25 | 1.89× | 25.4 s | 11.0 s | 102→51 s |
+| p4 ukr | 4.97 | 9.29 | 1.87× | 16.5 s | 9.1 s | 107→57 s |
+| p5 long-ctx | 4.25 | 5.06 | 1.19× | 101.6 s | 59.0 s | 111→67 s |
+
+Reading:
+
+- **Gate C passes meaningfully**: long generations ~1.9-2.15× faster
+  end-to-end, TTFT 1.7-2.3× faster. CUDA warm already beats CPU warm on
+  every prompt; CUDA *cold* mostly beats CPU *warm* too.
+- Decode lands in the 8-10 tok/s band on real workloads (best sample 11.7).
+  Gate B's "clearly useful ≥10" is borderline-touchable; "usable 5-10" solid.
+- **Thermals are a non-issue**: 44-54 °C, peak 44 W of 95 W, VRAM ≤6.25 GB.
+- **Variance warning**: warm pass 2 dipped to 4.6-6.9 tok/s across all
+  prompts (pass 1: 8-10, pass 3: 5.6-11.7) — medians reported; source of
+  the dip unknown (tier reshuffle? background interference?) — flagging as
+  a watch item, not a conclusion.
+- p5 prefill variance is high (TTFT 32-64 s warm); long-context TTFT is the
+  weakest remaining number (~1 min median).
+- **FN-007**: warm-persisted (HEAT_FILE) is dead through `coli serve` on
+  Windows — the launcher hard-kills the engine child (TerminateProcess), so
+  the engine's save-teardown never runs; verified with two shutdown paths in
+  results/cuda-heat-validation. Persisted samples recorded but marked
+  INVALID in summary.json. Workaround candidates: direct engine run, or an
+  upstream fix.
+- Hit rate still not exposed in serve logs (Gate D metric gap remains).
+
+Verdict direction: with CUDA the stack crosses into "usable"; the remaining
+Phase 5+ questions are KV-reuse, placement/tune, and the llama.cpp
+comparison.

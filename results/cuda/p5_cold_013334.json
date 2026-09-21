@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-09-21T22:33:34+00:00",
+  "colibriVersion": "v1.12.0",
+  "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+  "model": "C:/Models/qwen36_i4_gs64",
+  "modelRevision": null,
+  "mode": "cuda",
+  "state": "cold",
+  "promptId": "p5",
+  "promptTokens": 535,
+  "generatedTokens": 43,
+  "ttftSeconds": 42.756,
+  "decodeTokensPerSecond": 8.495,
+  "wallSeconds": 47.7,
+  "ramPeakGb": null,
+  "vramPeakGb": null,
+  "expertHitRate": null,
+  "notes": "cold = cold PROCESS, OS page cache may be warm"
+}

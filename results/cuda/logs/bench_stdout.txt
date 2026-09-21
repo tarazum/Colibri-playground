@@ -1,0 +1,264 @@
+[server] HEAT_FILE=C:/Models/qwen36_i4_gs64/qwen36_heat.bin
+[server] started pid=28652, log=C:\projects\Colibri-playground\results\cuda\logs\server.log
+[server] ready, model id = qwen3.6-colibri
+=== COLD pass (fresh process, 5 prompts) ===
+  [p1] wall=7.8s ttft=3.75s tok=33 tok/s=7.83
+  [p2] wall=72.0s ttft=8.1s tok=500 tok/s=7.8
+  [p3] wall=61.1s ttft=14.51s tok=337 tok/s=7.22
+  [p4] wall=60.4s ttft=10.0s tok=450 tok/s=8.91
+  [p5] wall=47.7s ttft=42.76s tok=43 tok/s=8.5
+=== WARM pass 1/3 (same process) ===
+  [p1] wall=6.7s ttft=3.04s tok=33 tok/s=8.77
+  [p2] wall=55.8s ttft=6.26s tok=500 tok/s=10.08
+  [p3] wall=51.2s ttft=10.46s tok=337 tok/s=8.25
+  [p4] wall=57.4s ttft=9.06s tok=450 tok/s=9.29
+  [p5] wall=67.3s ttft=59.0s tok=43 tok/s=5.06
+=== WARM pass 2/3 (same process) ===
+  [p1] wall=12.4s ttft=5.48s tok=33 tok/s=4.6
+  [p2] wall=89.9s ttft=10.65s tok=500 tok/s=6.3
+  [p3] wall=70.6s ttft=17.13s tok=337 tok/s=6.28
+  [p4] wall=75.0s ttft=9.84s tok=450 tok/s=6.89
+  [p5] wall=72.1s ttft=63.54s tok=43 tok/s=4.92
+=== WARM pass 3/3 (same process) ===
+  [p1] wall=10.9s ttft=5.19s tok=33 tok/s=5.62
+  [p2] wall=58.5s ttft=7.27s tok=500 tok/s=9.73
+  [p3] wall=47.3s ttft=11.01s tok=337 tok/s=9.26
+  [p4] wall=44.3s ttft=5.83s tok=450 tok/s=11.67
+  [p5] wall=35.9s ttft=31.78s tok=43 tok/s=10.26
+=== WARM-PERSISTED: clean stop (HEAT_FILE save), restart, rerun ===
+[server] stopped cleanly
+[server] heat saved: False
+[warn] HEAT_FILE save not confirmed in log; persisted samples may be meaningless
+[server] HEAT_FILE=C:/Models/qwen36_i4_gs64/qwen36_heat.bin
+[server] started pid=18088, log=C:\projects\Colibri-playground\results\cuda\logs\server_2.log
+[server] ready, model id = qwen3.6-colibri
+  [p1] wall=19.6s ttft=10.46s tok=33 tok/s=3.5
+  [p2] wall=137.2s ttft=17.2s tok=500 tok/s=4.16
+  [p3] wall=109.2s ttft=28.93s tok=337 tok/s=4.19
+  [p4] wall=118.0s ttft=18.31s tok=450 tok/s=4.5
+  [p5] wall=130.6s ttft=119.67s tok=43 tok/s=3.86
+[server] stopped cleanly
+[server] heat saved: False
+{
+  "p1": {
+    "cold": {
+      "timestamp": "2026-09-21T22:29:33+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "cold",
+      "promptId": "p1",
+      "promptTokens": 36,
+      "generatedTokens": 33,
+      "ttftSeconds": 3.747,
+      "decodeTokensPerSecond": 7.834,
+      "wallSeconds": 7.832,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 10.887,
+    "decodeTokensPerSecondMedian": 5.62,
+    "ttftSecondsMedian": 5.194,
+    "warmPersisted": {
+      "timestamp": "2026-09-21T22:46:36+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "warm-persisted",
+      "promptId": "p1",
+      "promptTokens": 36,
+      "generatedTokens": 33,
+      "ttftSeconds": 10.463,
+      "decodeTokensPerSecond": 3.498,
+      "wallSeconds": 19.61,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "HEAT_FILE save NOT confirmed"
+    }
+  },
+  "p2": {
+    "cold": {
+      "timestamp": "2026-09-21T22:30:45+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "cold",
+      "promptId": "p2",
+      "promptTokens": 82,
+      "generatedTokens": 500,
+      "ttftSeconds": 8.101,
+      "decodeTokensPerSecond": 7.804,
+      "wallSeconds": 72.045,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 58.548,
+    "decodeTokensPerSecondMedian": 9.731,
+    "ttftSecondsMedian": 7.268,
+    "warmPersisted": {
+      "timestamp": "2026-09-21T22:48:54+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "warm-persisted",
+      "promptId": "p2",
+      "promptTokens": 82,
+      "generatedTokens": 500,
+      "ttftSeconds": 17.197,
+      "decodeTokensPerSecond": 4.16,
+      "wallSeconds": 137.155,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "HEAT_FILE save NOT confirmed"
+    }
+  },
+  "p3": {
+    "cold": {
+      "timestamp": "2026-09-21T22:31:46+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "cold",
+      "promptId": "p3",
+      "promptTokens": 136,
+      "generatedTokens": 337,
+      "ttftSeconds": 14.509,
+      "decodeTokensPerSecond": 7.219,
+      "wallSeconds": 61.054,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 51.188,
+    "decodeTokensPerSecondMedian": 8.251,
+    "ttftSecondsMedian": 11.01,
+    "warmPersisted": {
+      "timestamp": "2026-09-21T22:50:43+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "warm-persisted",
+      "promptId": "p3",
+      "promptTokens": 136,
+      "generatedTokens": 337,
+      "ttftSeconds": 28.934,
+      "decodeTokensPerSecond": 4.185,
+      "wallSeconds": 109.214,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "HEAT_FILE save NOT confirmed"
+    }
+  },
+  "p4": {
+    "cold": {
+      "timestamp": "2026-09-21T22:32:46+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "cold",
+      "promptId": "p4",
+      "promptTokens": 100,
+      "generatedTokens": 450,
+      "ttftSeconds": 9.996,
+      "decodeTokensPerSecond": 8.909,
+      "wallSeconds": 60.392,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 57.39,
+    "decodeTokensPerSecondMedian": 9.291,
+    "ttftSecondsMedian": 9.064,
+    "warmPersisted": {
+      "timestamp": "2026-09-21T22:52:41+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "warm-persisted",
+      "promptId": "p4",
+      "promptTokens": 100,
+      "generatedTokens": 450,
+      "ttftSeconds": 18.311,
+      "decodeTokensPerSecond": 4.504,
+      "wallSeconds": 118.001,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "HEAT_FILE save NOT confirmed"
+    }
+  },
+  "p5": {
+    "cold": {
+      "timestamp": "2026-09-21T22:33:34+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "cold",
+      "promptId": "p5",
+      "promptTokens": 535,
+      "generatedTokens": 43,
+      "ttftSeconds": 42.756,
+      "decodeTokensPerSecond": 8.495,
+      "wallSeconds": 47.7,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 67.304,
+    "decodeTokensPerSecondMedian": 5.056,
+    "ttftSecondsMedian": 58.998,
+    "warmPersisted": {
+      "timestamp": "2026-09-21T22:54:51+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "cuda",
+      "state": "warm-persisted",
+      "promptId": "p5",
+      "promptTokens": 535,
+      "generatedTokens": 43,
+      "ttftSeconds": 119.668,
+      "decodeTokensPerSecond": 3.857,
+      "wallSeconds": 130.556,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "HEAT_FILE save NOT confirmed"
+    }
+  }
+}
+total 1546s; results in C:\projects\Colibri-playground\results\cuda

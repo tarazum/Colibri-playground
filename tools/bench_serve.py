@@ -31,6 +31,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import signal
 import statistics
 import subprocess
 import sys
@@ -67,24 +69,43 @@ def load_prompts() -> list[dict]:
 class Server:
     """Owns the coli serve subprocess (or reuses an existing one)."""
 
-    def __init__(self, model: str, base_url: str | None, log_path: Path):
+    def __init__(self, model: str, base_url: str | None, log_path: Path,
+                 heat_file: str | None = None, auto_tier: bool = False):
         self.model = model
         self.external = base_url is not None
         self.base = (base_url or "http://127.0.0.1:8000/v1").rstrip("/")
         self.proc: subprocess.Popen | None = None
         self.log_path = log_path
+        self.heat_file = heat_file
+        self.auto_tier = auto_tier
+        self.starts = 0
+        self.saved_heat = None  # None = not attempted/unknown
 
     def start(self) -> None:
         if self.external:
             print(f"[server] reusing {self.base}", flush=True)
             return
-        self.log_path.parent.mkdir(parents=True, exist_ok=True)
-        log = open(self.log_path, "w", encoding="utf-8", errors="replace")
+        self.starts += 1
+        log_path = self.log_path if self.starts == 1 else \
+            self.log_path.with_name(f"{self.log_path.stem}_{self.starts}.log")
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        log = open(log_path, "a", encoding="utf-8", errors="replace")
+        env = None
+        if self.heat_file:
+            env = {**__import__("os").environ, "HEAT_FILE": self.heat_file}
+            print(f"[server] HEAT_FILE={self.heat_file}", flush=True)
+        cmd = ["coli", "serve", "--model", self.model]
+        if self.auto_tier:
+            cmd.append("--auto-tier")
+        # own process group so CTRL_BREAK reaches the launcher (and its engine
+        # child) for a graceful shutdown — the only path that saves HEAT_FILE;
+        # Popen.terminate() on Windows is TerminateProcess (hard kill, no save)
+        flags = subprocess.CREATE_NEW_PROCESS_GROUP if sys.platform == "win32" else 0
         self.proc = subprocess.Popen(
-            ["coli", "serve", "--model", self.model],
-            stdout=log, stderr=subprocess.STDOUT,
+            cmd, stdout=log, stderr=subprocess.STDOUT, env=env,
+            creationflags=flags,
         )
-        print(f"[server] started pid={self.proc.pid}, log={self.log_path}", flush=True)
+        print(f"[server] started pid={self.proc.pid}, log={log_path}", flush=True)
 
     def wait_ready(self, timeout_s: int = 180) -> str:
         deadline = time.time() + timeout_s
@@ -104,13 +125,40 @@ class Server:
     def stop(self) -> None:
         if self.proc is None:
             return
-        self.proc.terminate()
-        try:
-            self.proc.wait(timeout=20)
-            print("[server] stopped cleanly", flush=True)
-        except subprocess.TimeoutExpired:
-            self.proc.kill()
-            print("[server] killed", flush=True)
+        # graceful first: CTRL_BREAK -> launcher shuts down -> engine teardown
+        # saves HEAT_FILE; only then hard-kill as a fallback
+        if sys.platform == "win32":
+            try:
+                self.proc.send_signal(signal.CTRL_BREAK_EVENT)
+                self.proc.wait(timeout=30)
+                print("[server] stopped via CTRL_BREAK", flush=True)
+            except (subprocess.TimeoutExpired, OSError):
+                self.proc.terminate()
+                try:
+                    self.proc.wait(timeout=20)
+                    print("[server] stopped via terminate fallback", flush=True)
+                except subprocess.TimeoutExpired:
+                    self.proc.kill()
+                    print("[server] killed", flush=True)
+        else:
+            self.proc.terminate()
+            try:
+                self.proc.wait(timeout=20)
+                print("[server] stopped cleanly", flush=True)
+            except subprocess.TimeoutExpired:
+                self.proc.kill()
+                print("[server] killed", flush=True)
+        self.proc = None
+        if self.heat_file:
+            name = self.log_path.name if self.starts == 1 else \
+                f"{self.log_path.stem}_{self.starts}.log"
+            try:
+                text = (self.log_path.parent / name).read_text(
+                    encoding="utf-8", errors="replace")
+                self.saved_heat = "HEAT_FILE saved" in text[-8000:]
+            except OSError:
+                self.saved_heat = False
+            print(f"[server] heat saved: {self.saved_heat}", flush=True)
 
 
 def one_request(base: str, model_id: str, prompt: dict, timeout_s: int) -> dict:
@@ -241,6 +289,19 @@ def main() -> None:
     ap.add_argument("--base-url", default=None, help="reuse a running server instead of managing one")
     ap.add_argument("--mode", default="cpu")
     ap.add_argument("--warm-passes", type=int, default=3)
+    ap.add_argument("--heat-file", default=None,
+                    help="enable the warm-persisted pass: server runs with "
+                         "HEAT_FILE=<path>, clean stop saves heat, restart "
+                         "reloads it (CUDA arm only)")
+    ap.add_argument("--auto-tier", action="store_true",
+                    help="pass --auto-tier to coli serve (engages the CUDA "
+                         "VRAM expert tier; without it the server silently "
+                         "runs the CPU path)")
+    ap.add_argument("--states", default="cold,warm,persisted",
+                    help="comma subset of cold,warm,persisted "
+                         "(persisted requires --heat-file)")
+    ap.add_argument("--prompts", default=None,
+                    help="comma list of prompt ids to run, e.g. p1,p5")
     ap.add_argument("--out", default=None, help="output dir (default results/<mode>)")
     ap.add_argument("--request-timeout", type=int, default=900)
     args = ap.parse_args()
@@ -249,30 +310,62 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     prompts = load_prompts()
 
-    server = Server(args.model, args.base_url, out_dir / "logs" / "server.log")
+    server = Server(args.model, args.base_url, out_dir / "logs" / "server.log",
+                    heat_file=args.heat_file, auto_tier=args.auto_tier)
     t0 = time.time()
     server.start()
     model_id = server.wait_ready()
 
+    states = {s.strip().lower() for s in args.states.split(",") if s.strip()}
+    if "persisted" in states and not args.heat_file:
+        sys.exit("--states persisted requires --heat-file")
+    if args.prompts:
+        keep = {s.strip().lower() for s in args.prompts.split(",")}
+        prompts = [p for p in prompts if p["id"] in keep]
+    warm_count = args.warm_passes if "warm" in states else \
+        (1 if "persisted" in states else 0)
+
+    def show(pid: str, r: dict) -> None:
+        print(f"  [{pid}] wall={r['wall']:.1f}s ttft="
+              f"{r['ttft'] if r['ttft'] is None else round(r['ttft'],2)}s "
+              f"tok={r['generated']} tok/s={r['decode'] and round(r['decode'],2)}",
+              flush=True)
+
     runs: list[dict] = []
     try:
-        print(f"=== COLD pass (fresh process, {len(prompts)} prompts) ===", flush=True)
-        for p in prompts:
-            r = one_request(server.base, model_id, p, args.request_timeout)
-            runs.append(record(out_dir, "cold", p, r, args.mode, args.model))
-            print(f"  [{p['id']}] wall={r['wall']:.1f}s ttft="
-                  f"{r['ttft'] if r['ttft'] is None else round(r['ttft'],2)}s "
-                  f"tok={r['generated']} tok/s={r['decode'] and round(r['decode'],2)}",
+        if "cold" in states:
+            print(f"=== COLD pass (fresh process, {len(prompts)} prompts) ===",
                   flush=True)
-        for i in range(1, args.warm_passes + 1):
-            print(f"=== WARM pass {i}/{args.warm_passes} (same process) ===", flush=True)
             for p in prompts:
                 r = one_request(server.base, model_id, p, args.request_timeout)
-                runs.append(record(out_dir, "warm-process", p, r, args.mode, args.model))
-                print(f"  [{p['id']}] wall={r['wall']:.1f}s ttft="
-                      f"{r['ttft'] if r['ttft'] is None else round(r['ttft'],2)}s "
-                      f"tok={r['generated']} tok/s={r['decode'] and round(r['decode'],2)}",
-                      flush=True)
+                runs.append(record(out_dir, "cold", p, r, args.mode, args.model))
+                show(p["id"], r)
+        for i in range(1, warm_count + 1):
+            recording = "warm" in states
+            label = f"WARM pass {i}/{warm_count}" + \
+                ("" if recording else " (unrecorded warmup for persisted)")
+            print(f"=== {label} ===", flush=True)
+            for p in prompts:
+                r = one_request(server.base, model_id, p, args.request_timeout)
+                if recording:
+                    runs.append(record(out_dir, "warm-process", p, r, args.mode, args.model))
+                show(p["id"], r)
+        if "persisted" in states:
+            print("=== WARM-PERSISTED: clean stop (HEAT_FILE save), restart, rerun ===",
+                  flush=True)
+            server.stop()
+            if not server.saved_heat:
+                print("[warn] HEAT_FILE save not confirmed in log; "
+                      "persisted samples may be meaningless", flush=True)
+            server.start()
+            model_id = server.wait_ready()
+            for p in prompts:
+                r = one_request(server.base, model_id, p, args.request_timeout)
+                rec = record(out_dir, "warm-persisted", p, r, args.mode, args.model)
+                if server.saved_heat is False:
+                    rec["notes"] = (rec["notes"] + "; HEAT_FILE save NOT confirmed").strip("; ")
+                runs.append(rec)
+                show(p["id"], r)
     finally:
         server.stop()
 
@@ -280,6 +373,7 @@ def main() -> None:
     for p in prompts:
         cold = [x for x in runs if x["promptId"] == p["id"] and x["state"] == "cold"]
         warm = [x for x in runs if x["promptId"] == p["id"] and x["state"] == "warm-process"]
+        pers = [x for x in runs if x["promptId"] == p["id"] and x["state"] == "warm-persisted"]
         walls = [x["wallSeconds"] for x in warm]
         decs = [x["decodeTokensPerSecond"] for x in warm if x["decodeTokensPerSecond"]]
         ttfts = [x["ttftSeconds"] for x in warm if x["ttftSeconds"] is not None]
@@ -289,6 +383,7 @@ def main() -> None:
             "wallSecondsMedian": round(statistics.median(walls), 3) if walls else None,
             "decodeTokensPerSecondMedian": round(statistics.median(decs), 3) if decs else None,
             "ttftSecondsMedian": round(statistics.median(ttfts), 3) if ttfts else None,
+            "warmPersisted": pers[0] if pers else None,
         }
     (out_dir / "summary.json").write_text(
         json.dumps(summary, indent=2, ensure_ascii=False), encoding="utf-8")
