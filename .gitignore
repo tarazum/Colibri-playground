@@ -1,0 +1,34 @@
+# Local Python
+.venv/
+__pycache__/
+*.pyc
+
+# Local Colibri/upstream build artifacts
+build/
+dist/
+*.exe
+*.dll
+*.lib
+*.exp
+*.o
+*.obj
+
+# Models and large weight files
+models/
+Models/
+*.safetensors
+*.gguf
+*.bin
+*.pt
+*.pth
+
+# Runtime state and logs
+*.log
+.coli_usage
+.coli_kv
+*.heat
+heat.bin
+
+# Local benchmark scratch
+tmp/
+temp/
