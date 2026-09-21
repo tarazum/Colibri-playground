@@ -1,0 +1,1 @@
+Explain how a B+tree index differs from a hash index in a relational database, and when you would choose each. Cover: lookup complexity, range queries, ordering, memory versus disk tradeoffs, and their typical roles in OLTP versus analytics workloads. Structure the answer with short headings. Aim for roughly 400 words.

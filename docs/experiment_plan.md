@@ -24,15 +24,17 @@ Initial upstream baseline:
 - Colibrì release: **v1.12.0**
 - baseline date: **2026-09-21**
 - OS: Windows native
-- GPU: NVIDIA RTX 5070-class Blackwell, 8 GB VRAM
-- CUDA architecture: expected `sm_120`
-- storage: local NVMe
+- GPU: NVIDIA RTX 5070 Laptop (Blackwell), 8 GB VRAM — ≈7.4 GB usable under WDDM with the display attached
+- CUDA architecture: `sm_120`
+- storage: single KIOXIA KBG60ZNV1T02 1 TB NVMe, shared with the OS (no second disk)
 - first model: **Qwen3.6-35B-A3B**
 - container: **int4-gs64**
 - model repo: `Kreuzzelg/qwen36-35b-a3b-colibri-i4-gs64`
 - expected model size: roughly 20-22 GB
 
 Before the first benchmark, capture the actual machine state instead of relying on remembered specs.
+
+A first snapshot was captured on 2026-09-21 in `results/environment.json` (HP OMEN MAX 16, Ryzen AI 7 350, 64 GB RAM, RTX 5070 8 GB, on AC power). Re-capture free RAM/VRAM and power state before each benchmark phase — free space and driver state drift.
 
 Record:
 
@@ -42,6 +44,7 @@ Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogic
 Get-CimInstance Win32_ComputerSystem | Select-Object TotalPhysicalMemory
 Get-PhysicalDisk | Select-Object FriendlyName,MediaType,BusType,Size
 python --version
+nvcc --version
 ```
 
 Also record:
@@ -140,6 +143,15 @@ git rev-parse HEAD
 
 Save the SHA in the results.
 
+### 4.1.1 gs64 container check — RESOLVED at source level (2026-09-21)
+
+The HF model card claimed the gs64 container needs the `gs64-ab` branch.
+Checked directly in the cloned v1.12.0 source: `c/qwen36.c` natively reads
+`expert_gs` from `qwen36_meta.json`, has the grouped-scale expert GEMV path
+(`matmul_q_gs`) and prints `[qwen36] group-scaled experts: gs=N` at load. The
+card note is stale. Keep the runtime confirmation as a cheap final check after
+download (expect that banner line, plus a clean `doctor --deep`).
+
 ### 4.2 Verify Python
 
 The Windows launcher uses Python even though the inference engines themselves are C.
@@ -160,16 +172,37 @@ Expected target:
 - 8 GB VRAM
 - current driver loaded
 
+Observed 2026-09-21: RTX 5070 Laptop, driver 592.82 (CUDA 13.1 capable),
+~0.7 GB VRAM already used by the OS under WDDM — plan placement for ~7.4 GB,
+not the full 8 GB.
+
+The CUDA Toolkit is **not installed** yet (no `nvcc` on PATH). `sm_120`
+requires CUDA Toolkit 12.8 or newer; an older NVCC fails the Phase 3 build.
+Toolkit, VS 2022 Build Tools and MSYS2 are all free — see the install
+checklist in `docs/open_items.md`.
+
 ### 4.4 Disk check
 
-The Qwen3.6 test needs only about 20-22 GB for the model, but keep significantly more free space for:
+The Qwen3.6 test needs about 22 GB for the model. Keep ~60 GB free on C: for:
 
-- model files
-- upstream clone/build
-- logs
-- future checkpoints
+- model files (~22 GB)
+- CUDA Toolkit + VS Build Tools (~10-15 GB)
+- comparison GGUF for Phase 11 (~20 GB)
+- logs and checkpoints
+
+Observed 2026-09-21: C: has ~501 GB free; there is no D: drive, so model
+paths are `C:\Models\...`. The single NVMe is a DRAM-less OEM drive shared
+with the OS: close background I/O during benchmarks, and expect disk
+bandwidth — not CPU — to be the main CPU-mode bottleneck.
 
 Do **not** start with GLM-5.x; its model footprint is roughly 370+ GB and would mix the engine evaluation with a huge storage experiment.
+
+### 4.5 Early hit-rate smoke check
+
+Gate D depends on the expert hit rate being observable. During the first CPU
+chat run, confirm the engine logs the hit rate (or exposes it via `plan` or
+the dashboard). If it does not, find the supported way to read it before
+investing in later phases — otherwise Gate D loses its main metric.
 
 ---
 
@@ -184,16 +217,16 @@ python -m pip install -U "huggingface_hub[cli]"
 Download the recommended Colibrì container:
 
 ```powershell
-hf download Kreuzzelg/qwen36-35b-a3b-colibri-i4-gs64 --local-dir D:\Models\qwen36_i4_gs64
+hf download Kreuzzelg/qwen36-35b-a3b-colibri-i4-gs64 --local-dir C:\Models\qwen36_i4_gs64
 ```
 
-If `D:\Models` is not the best NVMe on the laptop, choose the fastest local NVMe path.
+There is only one NVMe on this machine, so `C:\Models` is the path. If a second, faster disk is added later, move the model there and re-baseline.
 
 Record:
 
 - total model size
 - download source
-- model revision if available
+- model revision (the commit hash `hf download` reports; pin with `--revision` if it matters)
 
 ---
 
@@ -210,27 +243,31 @@ Use the upstream Windows launcher/build path appropriate to the checked-out rele
 Run the readiness checks first:
 
 ```powershell
-coli.cmd doctor --model D:\Models\qwen36_i4_gs64
-coli.cmd doctor --deep --model D:\Models\qwen36_i4_gs64
+coli.cmd doctor --model C:\Models\qwen36_i4_gs64
+coli.cmd doctor --deep --model C:\Models\qwen36_i4_gs64
 ```
 
 Then chat:
 
 ```powershell
-coli.cmd chat --model D:\Models\qwen36_i4_gs64
+coli.cmd chat --model C:\Models\qwen36_i4_gs64
 ```
 
 If running from a source checkout rather than a release archive, use the source launcher form documented by upstream.
 
 ### CPU benchmark prompts
 
-Use fixed prompts committed to this repo later. Initial set:
+Use the fixed prompts committed under `prompts/` (see `prompts/README.md`):
 
-1. short factual answer
-2. 300-500 token explanation
-3. code-generation task
-4. Ukrainian-language task
-5. long prompt with a short answer
+1. `p1_short_factual.txt` — short factual answer
+2. `p2_explanation.txt` — ~400 word structured explanation
+3. `p3_code.txt` — code-generation task with checkable output
+4. `p4_ukrainian.txt` — Ukrainian-language task
+5. `p5_long_prompt_short_answer.txt` — long prompt, short answer
+
+`tools/run_bench.py` wraps the runs and writes per-run JSON into `results/cpu/`.
+Its metric parser is a stub until the first real `coli` output is captured —
+finish it against real logs before trusting any parsed number.
 
 For each run capture:
 
@@ -262,17 +299,33 @@ Expected source-build outline for the v1.12.0 baseline:
 
 ```text
 make cuda-dll CUDA_ARCH=sm_120
-make qwen36.exe CUDA_DLL=1 ARCH=native
+make colibri.exe CUDA_DLL=1 ARCH=native
 ```
+
+Verified against the actual v1.12.0 Makefile (2026-09-21): the engine is one
+unified `colibri.exe` (older docs' per-model binaries are gone), on Windows the
+CUDA path must be `CUDA_DLL=1` (runtime DLL, never `CUDA=1`), and the Makefile
+stamps `.build-config` so a CPU-only binary can't masquerade as CUDA-enabled.
 
 Run the build from the Windows toolchain environment required by upstream:
 
-- MSYS2 / GNU make
-- Visual Studio 2022 C++ build tools
+- MSYS2 / GNU make (`pacman -S --needed mingw-w64-x86_64-gcc make`, and put `C:\msys64\usr\bin` on PATH in the build shell so make's POSIX recipes find `sh.exe`)
+- Visual Studio 2022 C++ build tools (x64 — via vcvars64 or the x64 Native Tools Prompt; the 32-bit prompt fails nvcc)
 - CUDA Toolkit
-- x64 MSVC environment for NVCC
+- build from a git clone, not the release zip (the zip lacks the Makefile and backend_cuda.cu)
+- Smart App Control must be off, or it blocks self-compiled binaries
 
 Before executing this phase, verify the exact current upstream Windows instructions because build details can change quickly.
+
+Two calibrations from upstream release history:
+
+- gs64 containers need the opt-in `IDOT_GS=1` **environment variable** for the
+  grouped planar IDOT integer kernels — confirmed in v1.12.0 source
+  (`c/colibri.c`: default off, env-enabled). Set it for benchmark runs; build
+  both ways only if it changes numbers.
+- the upstream "1.44 → 10.05 tok/s (7.0×)" figure was measured on **two**
+  8 GB cards. Calibrate single-card expectations noticeably lower — 10 tok/s
+  is not a single-card promise.
 
 ### CUDA checks
 
@@ -325,8 +378,8 @@ We want to compare:
 Run:
 
 ```powershell
-coli.cmd plan --model D:\Models\qwen36_i4_gs64
-coli.cmd tune --model D:\Models\qwen36_i4_gs64
+coli.cmd plan --model C:\Models\qwen36_i4_gs64
+coli.cmd tune --model C:\Models\qwen36_i4_gs64
 ```
 
 If the source launcher syntax differs, use the equivalent upstream command.
@@ -396,6 +449,10 @@ Test a realistic conversation:
 3. ask follow-up B
 4. ask follow-up C that depends on the same context
 
+Control run: repeat the same conversation with a fresh context per turn (or
+KV reuse disabled, if upstream exposes a flag). The delta between the two
+runs isolates KV-reuse value from other warm effects.
+
 Compare:
 
 - first-turn prefill
@@ -412,7 +469,7 @@ The interesting number is not only decode speed. For local coding/analysis work,
 Start the local server:
 
 ```powershell
-coli.cmd serve --model D:\Models\qwen36_i4_gs64
+coli.cmd serve --model C:\Models\qwen36_i4_gs64
 ```
 
 Verify:
@@ -534,7 +591,12 @@ This is not meant to replace a full academic benchmark. It is a practical regres
 
 Colibrì must justify its complexity.
 
-Use the same or as-close-as-possible Qwen model/quantization in a simpler runner, for example Ollama or llama.cpp where feasible.
+Comparison stack, pinned 2026-09-21:
+
+- runner: llama.cpp (Ollama is acceptable if its Qwen3.6 support is more convenient — pick one and stay with it)
+- model: `unsloth/Qwen3.6-35B-A3B-GGUF`, Q4_K_M quant (`ggml-org/Qwen3.6-35B-A3B-GGUF` is the official mirror if unsloth's layout misbehaves)
+
+Download the comparison GGUF together with Phase 1 so this phase cannot be silently skipped at the end.
 
 Compare:
 

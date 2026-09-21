@@ -1,0 +1,25 @@
+You are given an incident report. Read it carefully and answer the question at the end in at most two sentences.
+
+--- INCIDENT REPORT IR-2026-0417 ---
+
+Service: payments-gateway (region eu-central)
+
+Timeline (UTC):
+- 09:02 — deploy 4.19.3 rolls out to 4 of 12 pods; change: connection pool for the ledger client raised from 20 to 64 per pod.
+- 09:11 — p99 latency on POST /charge rises from 210 ms to 840 ms; error rate unchanged.
+- 09:14 — on-call engineer suspects the ledger database; DB dashboards show CPU at 34%, no lock contention, connection count at the ledger rising from 180 to 610.
+- 09:18 — ledger replicas hit max_connections (700 configured); new connections from unrelated services begin to be rejected.
+- 09:23 — rollback of deploy 4.19.3 starts.
+- 09:26 — connection count on the ledger begins to fall; p99 on POST /charge recovers to 230 ms by 09:31.
+- 09:33 — rollback complete on all pods.
+
+Root cause (post-mortem summary): the ledger client library does not cap idle connections per pod; raising the per-pod pool from 20 to 64 multiplied total idle connections across 12 pods beyond the ledger's max_connections, starving unrelated services of connections. The deploy itself was not CPU-bound; the database was healthy until connection exhaustion.
+
+Follow-up actions:
+1. Cap ledger client idle connections at 8 per pod (owner: payments team, due May 30).
+2. Alert on ledger connection utilization above 70% (owner: infra, due May 22).
+3. Add a staged rollout gate that projects total downstream connections before raising pool sizes (owner: platform, due June 15).
+
+Environment notes: 12 pods, each previously limited to 20 ledger connections; ledger configured with max_connections=700; no other deploys in the window; the ledger database CPU never exceeded 40%.
+
+Question: which single configuration change caused the incident, and what p99 latency did POST /charge reach at its worst point?

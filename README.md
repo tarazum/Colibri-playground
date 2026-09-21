@@ -41,11 +41,20 @@ Why first:
 - real upstream measurements exist on 8 GB GPUs
 - much more useful for a laptop evaluation than starting with a ~370 GB GLM-5.x experiment
 
-Large-model experiments such as GLM-5.x are explicitly **Phase 2**, not the starting point.
+Large-model experiments such as GLM-5.x are explicitly **Phase 12**, not the starting point.
 
 ## Experiment Plan
 
 See [docs/experiment_plan.md](docs/experiment_plan.md).
+
+## Repo Layout
+
+- `docs/experiment_plan.md` — the plan
+- `prompts/` — fixed benchmark prompts shared by all phases
+- `tools/` — benchmark runner helpers
+- `results/` — raw results, one JSON per run (`environment.json` is the machine snapshot)
+- `LOG.md` — append-only experiment journal
+- `docs/open_items.md` — open questions, blockers, install checklist
 
 ## Upstream Baseline
 

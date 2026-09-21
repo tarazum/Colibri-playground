@@ -1,0 +1,58 @@
+{
+  "capturedAt": "2026-09-21T23:06:00+03:00",
+  "note": "Preliminary snapshot taken during review groundwork, BEFORE Colibri was installed. Re-capture free RAM/VRAM and power state before each benchmark phase.",
+  "machine": {
+    "manufacturer": "HP",
+    "model": "OMEN MAX Gaming Laptop 16-ak0xxx"
+  },
+  "os": {
+    "version": "Windows 11, build 26200",
+    "onAcPower": true,
+    "powerMode": "not recorded yet - record before each benchmark run"
+  },
+  "cpu": {
+    "name": "AMD Ryzen AI 7 350 w/ Radeon 860M",
+    "physicalCores": 8,
+    "logicalProcessors": 16,
+    "maxClockMHz": 2000
+  },
+  "ram": {
+    "totalGb": 64
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 5070 Laptop GPU",
+    "vramTotalMiB": 8151,
+    "vramUsedAtIdleMiB": 745,
+    "driverVersion": "592.82",
+    "cudaDriverCapability": "13.1",
+    "cudaToolkit": "13.4.1 (nvcc V13.4.59, installed 2026-09-21, sm_120 compile verified)",
+    "cudaArch": "sm_120"
+  },
+  "storage": {
+    "disks": [
+      {
+        "model": "KIOXIA KBG60ZNV1T02",
+        "type": "NVMe SSD (single disk, shared with OS, DRAM-less OEM class)",
+        "sizeGb": 954
+      }
+    ],
+    "volumes": [
+      { "drive": "C:", "freeGb": 501, "usedGb": 452 },
+      { "drive": "G:", "freeGb": 4, "usedGb": 11 }
+    ],
+    "notes": "No D: drive exists. All models go to C:\\Models."
+  },
+  "python": "3.12.10",
+  "toolchain": {
+    "note": "installed + smoke-verified 2026-09-21; proof recipe: tools/toolchain_smoke.bat",
+    "cudaToolkit": "13.4.1 (nvcc V13.4.59)",
+    "msvc": "14.44.35207 (VS Build Tools 17.14.37502.11)",
+    "windowsSdk": "10.0.26100.0",
+    "msys2": "20260611: make 4.4.1, mingw-w64 gcc 16.1.0"
+  },
+  "colibri": {
+    "installed": "source clone at C:\\projects\\colibri (binary not built yet)",
+    "version": "v1.12.0",
+    "commit": "dcd73832f293750086643e1f0ccd2cd6d067259c"
+  }
+}
