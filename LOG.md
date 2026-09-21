@@ -74,3 +74,97 @@ Append-only. One entry per session. Facts and numbers only — verdicts live in
 - GGUF download command pinned in open_items (Q4_K_M only via `--include` —
   the unsloth repo holds 200+ GB of all quants); runner choice: llama.cpp
   prebuilt CUDA binaries.
+
+## 2026-09-21 (late night) — model verified, GGUF running, CPU build running
+
+- Model download finished (~8 min). Artifact-verified: 22 GB, 46 files,
+  `qwen36_meta.json` → `expert_gs = 64`. Final runtime checks (doctor --deep +
+  gs=64 banner) deferred until the engine binary exists.
+- Per owner queue: Q4_K_M GGUF download started (only Q4_K_M files via
+  `--include`).
+- CPU `colibri.exe` build started from the pinned source
+  (`C:\projects\colibri\build_cpu.bat`: vcvars64 + MSYS2 make).
+- Commits `ff99798` (groundwork + Phase 0) and `71095fa` (AGENTS.md +
+  FINDINGS.md) pushed to origin/main.
+- Build lesson (first CPU build attempt): `make` failed with `gcc: No such
+  file or directory` — MSYS2's make lives in `usr\bin` but gcc in
+  `mingw64\bin`; BOTH belong on PATH. And the wrapping bash pipeline reported
+  success because `tail` was the last command — exit codes of pipes lie the
+  same way installer codes do. Fixed in `build_cpu.bat` (`|| exit /b` +
+  build log); retry running.
+
+## 2026-09-21 (small hours) — FIRST ENGINE NUMBERS (smoke, not a benchmark)
+
+- Engines built from source: `qwen36.exe` 1.1 MB (CPU) + `colibri.exe` 1.4 MB
+  (GLM-5.2 reference); `coli` launcher installed via `pip install -e`.
+  FN-003: per-family binaries — windows.md's `colibri.exe` is the GLM-5.2
+  engine; plan's build command restored to `make qwen36.exe CUDA_DLL=1`.
+- FN-004: engine-by-hand mode = self-test vs ref.json (needs repo-root CWD);
+  `coli run` not wired for qwen36 → benchmarks go through `coli serve`
+  (OpenAI API), symmetric with llama-server for Phase 11.
+- Load path (every run): resident weights 5.4-5.7 s, RSS 9.23 GB after load,
+  dense-i8 pass frees 7.2 GB, peak RSS 11.02 GB. Banner
+  `[qwen36] group-scaled experts: gs=64` confirmed at runtime — gs64 story
+  fully closed (source + metadata + banner + correct output).
+- Cold self-test (NOT a benchmark, fixed self-test prompt): TTFT 1.86 s,
+  2.63 tok/s decode, expert hit 46.0% cold. Matching tokens 0/12 vs
+  full-precision reference — expected for a quantized container, not a defect
+  flag; quality screen is Phase 10.
+- Doctor (shallow + deep): all green except expected `[warn] accelerator.gpu
+  CPU-only engine with GPU present` (CUDA tier is Phase 3). Model = 41
+  shards, 23.0 GB. Placement: 30.3 GB RAM budget, 4.9 GB dense, 18.1 GB warm
+  experts, **100% projected expert residency** — with 64 GB RAM the whole
+  expert set fits in memory; NVMe streaming matters mainly on cold start.
+- Serve smoke green: `coli serve` on http://127.0.0.1:8000/v1,
+  `/v1/models` → `qwen3.6-colibri`; real chat completion correct and coherent
+  (Canberra answer, 37 prompt + 30 completion tokens, finish=stop). Server
+  stopped after the test.
+- Next-session brief (Phase 2 proper): retarget run_bench.py to the serve
+  API, run p1-p5 (1 cold + 3 warm, medians, IDOT_GS=1), record JSONs.
+- GGUF downloaded after the model (owner's sequential order): single
+  `Qwen3.6-35B-A3B-UD-Q4_K_M.gguf`, 21 GB — Unsloth Dynamic Q4_K_M variant,
+  caveat recorded for Phase 11. Disk after everything: 443 GB free.
+- Downloads complete: both model artifacts in place; nothing is running in
+  the background anymore.
+
+## 2026-09-22 — external review verified (docs/review-2026-09-21.md, commit 1540ae0)
+
+- Owner forwarded an external model's review (5 findings) and asked for a
+  careful check; a second independent review by Claude Opus was also
+  dispatched. Verification done against the pinned v1.12.0 source:
+  - **R-001** (build target `qwen36.exe`, not `colibri.exe`): CONFIRMED —
+    same conclusion we reached independently overnight (FN-003); the plan in
+    the working tree already carried the fix before the review landed.
+  - **R-002** (`IDOT_GS` belongs to `colibri.c`/GLM only): CONFIRMED — our
+    earlier "set IDOT_GS=1 for qwen36" advice was WRONG. `qwen36.c` never
+    reads it; its knob is `QWEN_EXPERT_KERNEL` (c/qwen36.c:998), fast
+    planar-int4 kernel ON by default. Corrected in plan + open_items; root
+    cause and lesson recorded as FN-005.
+  - **R-003** (persistent `coli serve` + HTTP instead of per-sample CLI):
+    CONFIRMED — matches FN-004 from the night run; the reviewer's extra
+    argument (a fresh process per sample destroys warm-cache semantics) is
+    correct and applies to our current run_bench.py design. Docstring marked
+    superseded; the Phase 2 rewrite is queued.
+  - **R-004** (determinism + explicit cold/warm-process/warm-persisted
+    states): CONFIRMED — `COLI_TEMP` and `HEAT_FILE` verified in source
+    (qwen36_tier.c saves/loads the heat table, `[qtier] HEAT_FILE ...`
+    banners). Protocol block added to the plan (Phase 2).
+  - **R-005** (p3 touching-interval ambiguity): CONFIRMED — explicit
+    "touching intervals remain separate" sentence added to p3 (no recorded
+    benchmark had used it yet, so an in-place edit was safe).
+- The review's next-steps 5-7 (download model, doctor --deep, CPU build)
+  were already done overnight — the reviewer only saw the pushed 71095fa.
+- Verdict: all five findings valid in direction; none wrong. The one place
+  the review was behind reality (build target) was already fixed on our side.
+- Claude Opus independent pass (read-only) then sharpened the picture:
+  R-001/R-002 CONFIRMED; R-003/R-004 PARTIAL (its `--prompt-file` exists only
+  in `coli run`'s deepseek branch and gates only `coli run`; `COLI_TEMP` is
+  launcher/server-side with a **0.7 default**, engine CLI loop is
+  argmax-deterministic, no clock/PID seed exists); R-005 REFUTED against the
+  working tree (we had fixed p3 before the review landed). Opus also found
+  errors in the review itself — see review-2026-09-21-response.md.
+- Two protocol facts adopted into the plan: benchmark requests MUST set
+  `temperature=0` explicitly (server defaults 0.7, `openai_server.py:2746`);
+  `warm-persisted`/HEAT_FILE exists only on the CUDA arm (`qwen36_tier.c` is
+  CUDA-gated in the Makefile) — CPU phases measure cold vs warm-process only,
+  and Phase 5's R4-R5 (heat across restart) moves after the CUDA build.

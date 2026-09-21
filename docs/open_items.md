@@ -24,23 +24,31 @@ toolchain change.
 
 ## Blocked on a real engine run
 
-- [x] gs64 vs v1.12.0 — RESOLVED at source level 2026-09-21: `c/qwen36.c` in
-      the cloned v1.12.0 natively supports `expert_gs` containers (banner
-      `[qwen36] group-scaled experts: gs=N` at load). The HF card's
-      `gs64-ab` note is stale. Runtime `doctor --deep` after download stays as
-      a cheap final confirmation; fallback container unchanged
-      (`Kreuzzelg/qwen36-35b-a3b-colibri-i4`)
-- [ ] `tools/run_bench.py` `parse_output()`: regexes are guesses; finish them
-      against a real `coli` log before citing any parsed number (wall time is
-      measured by the script itself and is trustworthy now)
-- [ ] expert hit rate: confirm where the engine logs/exposes it (plan 4.5);
-      Gate D depends on it
-- [x] `IDOT_GS` in v1.12.0 — confirmed OPT-IN via environment variable
-      (`c/colibri.c`: default off, `IDOT_GS=1` enables grouped planar IDOT for
-      gs64 tensors). Set it for benchmark runs
-- [x] engine binary name — resolved: unified `colibri.exe` in v1.12.0
-      (`all: colibri$(EXE)`; plan updated). Windows CUDA path must use
-      `CUDA_DLL=1`, never `CUDA=1`
+- [x] gs64 vs v1.12.0 — FULLY CLOSED 2026-09-21 (runtime): banner
+      `[qwen36] group-scaled experts: gs=64` printed on every load; doctor
+      green (41 shards, 23.0 GB, RAM plan viable); real generation via the
+      API returns correct coherent answers
+- [x] CPU engine built: `qwen36.exe` (plus `colibri.exe` GLM-5.2 engine) and
+      the `coli` launcher installed (`pip install -e C:\projects\colibri`).
+      Build recipe: `C:\projects\colibri\build_cpu.bat [target]` (vcvars64 +
+      mingw64\bin + usr\bin both on PATH)
+- [x] OpenAI API smoke green: `coli serve` on :8000/v1, `/v1/models` →
+      `qwen3.6-colibri`, chat completion correct (37+30 tokens, finish=stop)
+- [ ] `tools/run_bench.py`: retarget from CLI-wrapper to the serve API
+      (FN-004: `coli run` not wired for qwen36; API path is symmetric with
+      llama-server for Phase 11). Parse TTFT/tok-s from serve logs or stream
+      timings; wall time already trustworthy
+- [ ] expert hit rate in serve logs: self-test mode prints it (46.0% cold);
+      confirm it is visible in serve/chat runs too — Gate D depends on it
+- [x] expert-kernel env for qwen36 — CORRECTED (R-002, source-verified):
+      `IDOT_GS` is GLM-engine-only (`c/colibri.c:1101`); `qwen36.c` reads
+      `QWEN_EXPERT_KERNEL` (`c/qwen36.c:998`) and its fast planar-int4 kernel
+      is ON by default. Nothing to set for benchmarks; `=0` is the A/B knob
+- [x] engine binary name — resolved (with a twist, FN-003): per-family engine
+      binaries; ours is **`qwen36.exe`** (`colibri.exe` = the GLM-5.2 engine
+      that windows.md describes). Plan Phase 3 build command stands as
+      `make qwen36.exe CUDA_DLL=1 ARCH=native`; Windows CUDA only via
+      `CUDA_DLL=1`
 
 ## Phase 3 build watch-items (from upstream docs/windows.md, 2026-09-21)
 
@@ -66,16 +74,18 @@ toolchain change.
 
 - [x] colibri v1.12.0 clone + commit SHA recorded — `C:\projects\colibri`,
       `dcd73832f293750086643e1f0ccd2cd6d067259c`
-- [ ] 22 GB gs64 container to `C:\Models\qwen36_i4_gs64` — download RUNNING
-      since 2026-09-21 (background); verify size + `doctor --deep` + the
-      `[qwen36] group-scaled experts: gs=64` banner when it finishes
-- [ ] ~20 GB comparison GGUF (`unsloth/Qwen3.6-35B-A3B-GGUF`, Q4_K_M only) —
-      QUEUED after the model finishes (owner decision 2026-09-21: sequential
-      downloads). Download ONLY the Q4_K_M file(s): the repo holds all quants,
-      200+ GB total — use `hf download unsloth/Qwen3.6-35B-A3B-GGUF
-      --include "*Q4_K_M*" --local-dir C:/Models/qwen36_Q4_K_M`. Runner of
-      choice: llama.cpp prebuilt CUDA binaries (metrics map cleanly:
-      prompt-eval → TTFT, eval-rate → tok/s)
+- [x] 22 GB gs64 container → `C:\Models\qwen36_i4_gs64` — DONE 2026-09-21,
+      artifact-verified: 22 GB, 46 files, `qwen36_meta.json` reports
+      `expert_gs = 64`. Remaining runtime checks after the engine is built:
+      `doctor --deep` + the `[qwen36] group-scaled experts: gs=64` banner
+- [x] ~20 GB comparison GGUF — DONE 2026-09-21: single file
+      `C:\Models\qwen36_Q4_K_M\Qwen3.6-35B-A3B-UD-Q4_K_M.gguf`, 21 GB.
+      NOTE: it is Unsloth's **UD**-Q4_K_M (dynamic quant), not vanilla Q4_K_M —
+      record in Phase 11 comparisons. Runner of choice: llama.cpp prebuilt
+      CUDA binaries (metrics map cleanly: prompt-eval → TTFT, eval-rate →
+      tok/s; same OpenAI-API harness as coli serve)
+- [x] CPU build of `colibri.exe` — DONE (plus `qwen36.exe` and the `coli`
+      launcher; see the engine-run section above)
 
 ## Deliberately not done
 

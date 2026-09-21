@@ -285,6 +285,28 @@ Run at least:
 - 1 cold run
 - 3 warm repeats
 
+### Benchmark protocol (R-004)
+
+Determinism and state labels for every performance run:
+
+- deterministic generation: ALWAYS set `temperature=0` explicitly in each
+  API request — the server defaults to **0.7** when neither the request nor
+  `COLI_TEMP` provides one (`c/openai_server.py:2746`); the bare CLI engine
+  loop is argmax by default. Plus fixed `max_tokens` per prompt, same prompt
+  bytes, same model revision, same power mode — so output length and expert
+  routing do not drift between runs
+- tag each result JSON with an explicit state, never a generic `mode: warm`:
+  - `cold` — fresh server process, no `HEAT_FILE`, no reused KV/session
+  - `warm-process` — same running server, workload already ran once
+  - `warm-persisted` — server stopped cleanly (`[qtier] HEAT_FILE saved`),
+    restarted loading the same `HEAT_FILE` (`[qtier] HEAT_FILE loaded`),
+    same workload rerun. **CUDA arm only**: `qwen36_tier.c` — the code that
+    loads/saves `HEAT_FILE` — compiles only with CUDA/CUDA_DLL=1 (Makefile
+    gate); the CPU build has no persisted-heat state, so on CPU measure
+    cold vs warm-process only
+- the Phase 5 R1-R5 sequence maps to: R1 = cold, R2-R3 = warm-process,
+  R4-R5 = warm-persisted (moved to Phase 3+, after the CUDA build)
+
 Do not quote the fastest run as the result. Keep all samples and report the median.
 
 ---
@@ -299,12 +321,14 @@ Expected source-build outline for the v1.12.0 baseline:
 
 ```text
 make cuda-dll CUDA_ARCH=sm_120
-make colibri.exe CUDA_DLL=1 ARCH=native
+make qwen36.exe CUDA_DLL=1 ARCH=native
 ```
 
-Verified against the actual v1.12.0 Makefile (2026-09-21): the engine is one
-unified `colibri.exe` (older docs' per-model binaries are gone), on Windows the
-CUDA path must be `CUDA_DLL=1` (runtime DLL, never `CUDA=1`), and the Makefile
+Binary-name note (source-verified 2026-09-21, FN-003): each model family is
+its own engine binary — `qwen36.exe` for our model; `colibri.exe` is the
+GLM-5.2 reference engine that `docs/windows.md` happens to describe. The
+Python launcher (`coli.cmd`) picks the engine per model. On Windows the CUDA
+path must be `CUDA_DLL=1` (runtime DLL, never `CUDA=1`), and the Makefile
 stamps `.build-config` so a CPU-only binary can't masquerade as CUDA-enabled.
 
 Run the build from the Windows toolchain environment required by upstream:
@@ -319,10 +343,11 @@ Before executing this phase, verify the exact current upstream Windows instructi
 
 Two calibrations from upstream release history:
 
-- gs64 containers need the opt-in `IDOT_GS=1` **environment variable** for the
-  grouped planar IDOT integer kernels — confirmed in v1.12.0 source
-  (`c/colibri.c`: default off, env-enabled). Set it for benchmark runs; build
-  both ways only if it changes numbers.
+- expert-kernel env, CORRECTED per R-002 (verified in source): `IDOT_GS`
+  exists only in `c/colibri.c` (the GLM-family engine) — `qwen36.c` never
+  reads it. The Qwen3.6 knob is `QWEN_EXPERT_KERNEL` (`c/qwen36.c:998`), and
+  the fast planar-int4 expert kernel is already ON by default (`=0` restores
+  the historical int8 unpack). Do NOT set `IDOT_GS` for qwen36 runs.
 - the upstream "1.44 → 10.05 tok/s (7.0×)" figure was measured on **two**
   8 GB cards. Calibrate single-card expectations noticeably lower — 10 tok/s
   is not a single-card promise.

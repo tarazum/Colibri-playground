@@ -13,6 +13,14 @@ docs/open_items.md.
 
 Usage (once the engine is installed):
 
+    NOTE (R-003): this per-sample CLI-wrapper design is superseded — `coli
+    chat` has no --prompt-file, and a fresh process per sample destroys
+    warm-cache semantics. Phase 2 rewrites this as a persistent `coli serve`
+    + HTTP client (same transport as llama-server in Phase 11, deterministic
+    cold / warm-process / warm-persisted states per the plan's R-004
+    protocol). The flags below belong to the OLD design and change in the
+    rewrite:
+
     python tools/run_bench.py \
         --mode cpu \
         --repeats 3 \
