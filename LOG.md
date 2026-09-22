@@ -338,3 +338,43 @@ says about its own profile persistence.
 - Phase 4 conclusion: auto-placement + one tune run moved CUDA decode
   from 8.3-9.7 (Phase 3 medians) to ~11 tok/s measured; no hand-tuning
   was needed or performed.
+
+## 2026-09-22 — Phase 6 KV-reuse (START NOTE)
+
+Owner gave the go. Plan: (1) find the KV-reuse mechanism in the v1.12.0
+source (how activated, what proof line it logs — PB-069 discipline);
+(2) write tools/kv_reuse_test.py: one warm server (auto-tier, tuned
+profile), conversation = long doc (~1-1.5k tokens) + question A + follow-up
+B + follow-up C, measuring per-turn TTFT/wall/tok-s with temperature=0 and
+fixed caps; control = same turns with a mutated prefix (prefix match
+impossible → full re-prefill) in the SAME process, plus optionally a
+no-reuse flag if the source exposes one; (3) results → results/kv-reuse/.
+Expected: turn-1 pays the full prefill; turns 2-3 with reuse should drop
+TTFT sharply (the p5 TTFT ~48 s warm is the pain this phase measures).
+Baseline: p5 warm TTFT 48-102 s (CUDA tuned/untuned).
+
+## 2026-09-22 — Phase 6 KV-reuse: RESULTS (negative, well-evidenced)
+
+Setup: `tools/kv_reuse_test.py`, conversation = ~890-token dossier
+(prompts/kv_doc.txt) + 3 turns, temperature=0, max_tokens=60, auto-tier +
+tuned profile. Plus an engine-level diagnostic with raw /v1/completions and
+byte-identical prefixes. All artifacts in `results/kv-reuse/`.
+
+- Arm A (reuse on, CUDA active per banner): turn TTFTs 61.4 / 72.4 / 66.2 s
+  — proportional to full history size (890/969/1024 tok at ~14.5 tok/s) →
+  every turn re-prefilled everything.
+- Arm B (COLI_KV_PREFIX=0): INVALID as a control — the env var halves the
+  cache (16→8/layer), tripping the tier gate
+  (`cap=8 != n_experts=256 -> tier disabled`) → the arm silently ran CPU
+  (FN-008). TTFTs 195-225 s are CPU numbers, not reuse-off CUDA numbers.
+- Engine-level probe (byte-identical prefix, raw completions): REQ2 (same
+  prefix + tail) TTFT 100.5 s vs REQ1 full prefill 101.7 s vs mutated
+  control 96.9 s — no collapse. KV-reuse does not engage at all (FN-009).
+- Consequence for the verdict: multi-turn long-context work pays a FULL
+  re-prefill per follow-up (~1-1.5 min per turn at CUDA prefill rates);
+  the headline v1.12.0 feature that would fix this is not observable in
+  the serve path on this machine. Strong candidate for an upstream issue
+  with our artifacts attached.
+- Minor observations logged: completions-mode server starts with
+  cache=256/layer vs chat-mode 16/layer; completions SSE streams `text`,
+  not `delta.content` (harness note).

@@ -56,6 +56,12 @@ toolchain change.
   tune winner OMP_NUM_THREADS=4 (+6%); tuned warm pass p2-p4 ≈ 11.1-11.3
   tok/s (Gate B "clearly useful" band, single-pass caveat); profile in
   AppData + repo copy; [TUNE] banner confirms pickup
+- [x] Phase 6 KV-reuse DONE — verdict NEGATIVE (results/kv-reuse/): reuse
+      does not engage in any tested path (chat A/B + engine-level
+      byte-identical prefix probe); every follow-up pays full re-prefill.
+      FN-008 (COLI_KV_PREFIX=0 confounds the A/B by killing the CUDA tier),
+      FN-009 (reuse absent in serve). Upstream-issue candidates with
+      artifacts; re-test when upstream responds or a flag is documented
 - [ ] FN-007: warm-persisted (HEAT_FILE) blocked upstream — launcher
       hard-kills the engine child on Windows; pick a workaround (direct
       engine run with SNAP+HEAT_FILE, or upstream patch CTRL_BREAK to child)

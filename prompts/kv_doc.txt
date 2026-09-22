@@ -1,0 +1,21 @@
+You are given an engineering dossier. Read it carefully; you will be asked questions about it across several turns. Answer each question in at most two sentences.
+
+--- DOSSIER: PAYMENTS-GW POST-MORTEM CYCLE Q3-2026 ---
+
+SERVICE OVERVIEW
+payments-gateway (payments-gw) is the regional payment orchestration service for eu-central. It exposes POST /charge, POST /refund and GET /settlement to 14 downstream merchant integrations. The service runs 12 pods on Kubernetes, behind a regional load balancer, and talks to three backing stores: the ledger database (PostgreSQL 16, max_connections=700), the fraud-scoring service (gRPC, 40 ms p99 budget) and the notification fan-out (Kafka, at-least-once).
+
+INCIDENT IR-2026-0417 (April)
+Deploy 4.19.3 raised the ledger connection pool from 20 to 64 per pod. At 09:02 the deploy rolled to 4 of 12 pods. By 09:11 p99 on POST /charge rose from 210 ms to 840 ms with unchanged error rate. Database CPU stayed at 34%, but connection count climbed from 180 to 610 and hit max_connections at 09:18; unrelated services began receiving connection rejections. Rollback started 09:23, connections drained from 09:26, p99 recovered to 230 ms by 09:31. Root cause: the ledger client library does not cap idle connections per pod, so the pool raise multiplied idle connections beyond max_connections. Follow-ups: idle-connection cap of 8 per pod (payments team, due May 30), utilization alert at 70% (infra, due May 22), staged-rollout gate projecting downstream connections (platform, due June 15).
+
+INCIDENT IR-2026-0602 (June)
+A fraud-scoring timeout change (2 s to 9 s) was deployed to shorten false-positive retries. Instead, the charge path began holding worker threads for the full 9 s during a fraud-service brown-out, dropping pod throughput from 210 rps to 34 rps. The load balancer saw healthy pods (health checks hit a cheap endpoint) and kept routing. Recovery: timeout reverted to 2 s, plus a new bulkhead limiting concurrent fraud calls to 32 per pod (merged June 9). Open item: health checks still do not exercise the fraud dependency.
+
+SETTLEMENT BATCH REWORK (July)
+The nightly settlement batch was rewritten from a single-threaded walker to a parallel fan-out of 8 workers. First run finished in 41 minutes instead of 5.5 hours, but double-credited 12 merchant accounts for 4 300.00 EUR total: the workers shared one cursor object whose position was read before the credit call and advanced after, so retry logic after a transient Kafka error re-read the same window. Remediation: per-worker cursors with idempotency keys on the credit ledger; reconciliation job comparing batch intents to ledger entries (due August 31).
+
+CAPACITY NOTES
+Peak observed traffic: 1 850 rps on 11 September (concert on-sale), sustained 40 minutes. Saturation signals appear first in fraud-call queue depth, then pod CPU, then ledger connections. The team's current headroom target is 2.5x peak. The ledger read replica lags 300-900 ms under batch load; charge-path reads must use the primary.
+
+GLOSSARY
+grace period: interval during which credits drawn for settlement accrue no interest. bulkhead: concurrency cap isolating a remote dependency. at-least-once: delivery semantics requiring idempotent consumers. p99: 99th percentile of request latency.

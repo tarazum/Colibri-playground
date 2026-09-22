@@ -1,0 +1,35 @@
+{
+  "A": {
+    "timestamp": "2026-09-22T19:51:39+00:00",
+    "arm": "reuse_off",
+    "turn": "A",
+    "historyTokensApprox": 890,
+    "ttftSeconds": 195.329,
+    "wallSeconds": 206.48,
+    "generatedTokens": 42,
+    "answer": "The April incident was caused by raising the ledger connection pool from 20 to 64 per pod. At its worst, the p99 latency on POST /charge reached 840 ms.",
+    "serverLog": "C:\\projects\\Colibri-playground\\results\\kv-reuse\\logs\\server_reuse_off.log"
+  },
+  "B": {
+    "timestamp": "2026-09-22T19:55:25+00:00",
+    "arm": "reuse_off",
+    "turn": "B",
+    "historyTokensApprox": 969,
+    "ttftSeconds": 212.185,
+    "wallSeconds": 226.273,
+    "generatedTokens": 59,
+    "answer": "The rework broke idempotency by having workers share a single cursor object, causing retries to re-read the same transaction window. This resulted in 12 merchant accounts being double-credited for a total of 4,300.00 EUR.<|im_end|>",
+    "serverLog": "C:\\projects\\Colibri-playground\\results\\kv-reuse\\logs\\server_reuse_off.log"
+  },
+  "C": {
+    "timestamp": "2026-09-22T19:59:18+00:00",
+    "arm": "reuse_off",
+    "turn": "C",
+    "historyTokensApprox": 1024,
+    "ttftSeconds": 224.937,
+    "wallSeconds": 232.894,
+    "generatedTokens": 31,
+    "answer": "The first saturation signal is the fraud-call queue depth. The team's headroom target is 2.5x peak traffic.<|im_end|>",
+    "serverLog": "C:\\projects\\Colibri-playground\\results\\kv-reuse\\logs\\server_reuse_off.log"
+  }
+}
