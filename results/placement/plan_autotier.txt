@@ -1,0 +1,19 @@
+
+    (\      colibri v1.12.0
+     )·>     tiny engine, immense model
+    / \      Qwen3.6-35B-A3B · 35B MoE · 23 GB on disk
+             plan · Disk / RAM / VRAM
+             
+  ──────────────────────────────────────────────────────────
+  policy quality · quality-preserving yes
+  model  41 shards · 23.0 GB
+  disk   0.0 GB cold experts · 465.7 GB free
+  RAM    38.3 GB budget · 4.9 GB dense · 4.2 GB runtime · 12.7 GB warm experts · cap 256/layer
+  VRAM   5.4 GB hot tier · ~3068 experts · 0:NVIDIA GeForce RTX 5070 Laptop GPU
+  limit  CPU expert tail and GPU compute
+  hit    100% projected expert residency
+
+  next actions:
+    [recommended] profile-overlap: CPU expert tail and GPU work must be timed separately before retuning placement
+      PROF=1 coli run --auto-tier --model <model> <prompt>
+

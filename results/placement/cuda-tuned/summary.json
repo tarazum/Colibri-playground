@@ -1,0 +1,42 @@
+{
+  "p1": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 6.543,
+    "decodeTokensPerSecondMedian": 9.695,
+    "ttftSecondsMedian": 3.242,
+    "warmPersisted": null
+  },
+  "p2": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 51.455,
+    "decodeTokensPerSecondMedian": 11.097,
+    "ttftSecondsMedian": 6.487,
+    "warmPersisted": null
+  },
+  "p3": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 39.906,
+    "decodeTokensPerSecondMedian": 11.113,
+    "ttftSecondsMedian": 9.672,
+    "warmPersisted": null
+  },
+  "p4": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 46.693,
+    "decodeTokensPerSecondMedian": 11.317,
+    "ttftSecondsMedian": 7.017,
+    "warmPersisted": null
+  },
+  "p5": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 54.572,
+    "decodeTokensPerSecondMedian": 6.719,
+    "ttftSecondsMedian": 48.321,
+    "warmPersisted": null
+  }
+}

@@ -1,0 +1,52 @@
+[server] started pid=29992, log=results\placement\cuda-tuned\logs\server.log
+[server] ready, model id = qwen3.6-colibri
+=== WARM pass 1/1 ===
+  [p1] wall=6.5s ttft=3.24s tok=33 tok/s=9.7
+  [p2] wall=51.5s ttft=6.49s tok=500 tok/s=11.1
+  [p3] wall=39.9s ttft=9.67s tok=337 tok/s=11.11
+  [p4] wall=46.7s ttft=7.02s tok=450 tok/s=11.32
+  [p5] wall=54.6s ttft=48.32s tok=43 tok/s=6.72
+[server] stopped via CTRL_BREAK
+{
+  "p1": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 6.543,
+    "decodeTokensPerSecondMedian": 9.695,
+    "ttftSecondsMedian": 3.242,
+    "warmPersisted": null
+  },
+  "p2": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 51.455,
+    "decodeTokensPerSecondMedian": 11.097,
+    "ttftSecondsMedian": 6.487,
+    "warmPersisted": null
+  },
+  "p3": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 39.906,
+    "decodeTokensPerSecondMedian": 11.113,
+    "ttftSecondsMedian": 9.672,
+    "warmPersisted": null
+  },
+  "p4": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 46.693,
+    "decodeTokensPerSecondMedian": 11.317,
+    "ttftSecondsMedian": 7.017,
+    "warmPersisted": null
+  },
+  "p5": {
+    "cold": null,
+    "warmSamples": 1,
+    "wallSecondsMedian": 54.572,
+    "decodeTokensPerSecondMedian": 6.719,
+    "ttftSecondsMedian": 48.321,
+    "warmPersisted": null
+  }
+}
+total 218s; results in results\placement\cuda-tuned

@@ -1,0 +1,320 @@
+{
+  "accepted": true,
+  "baseline": {
+    "cap": 256,
+    "env": {},
+    "hit_pct": 0.0,
+    "name": "baseline",
+    "p99_ms": null,
+    "samples": [
+      {
+        "hit_pct": 0.0,
+        "p50_ms": null,
+        "p99_ms": null,
+        "tok_s": 6.414,
+        "ttft_s": 2.6636909999651834
+      },
+      {
+        "hit_pct": 0.0,
+        "p50_ms": null,
+        "p99_ms": null,
+        "tok_s": 6.805,
+        "ttft_s": 5.533774400013499
+      }
+    ],
+    "tok_s": 6.6095,
+    "ttft_s": 4.098732699989341
+  },
+  "candidates": [
+    {
+      "cap": 256,
+      "env": {},
+      "hit_pct": 0.0,
+      "name": "baseline",
+      "p99_ms": null,
+      "samples": [
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 6.414,
+          "ttft_s": 2.6636909999651834
+        },
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 6.805,
+          "ttft_s": 5.533774400013499
+        }
+      ],
+      "tok_s": 6.6095,
+      "ttft_s": 4.098732699989341
+    },
+    {
+      "cap": 256,
+      "env": {
+        "OMP_NUM_THREADS": "4"
+      },
+      "hit_pct": 0.0,
+      "name": "omp-4",
+      "p99_ms": null,
+      "samples": [
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 7.47,
+          "ttft_s": 3.5914305000333115
+        },
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 7.115,
+          "ttft_s": 4.854468300007284
+        }
+      ],
+      "tok_s": 7.2925,
+      "ttft_s": 4.222949400020298
+    }
+  ],
+  "created_at": "2026-09-22T19:25:37Z",
+  "fingerprint": "cd20bc92ad8d4a3930ee",
+  "gain": 0.059637240270921765,
+  "minimum_gain": 0.03,
+  "model": "C:\\Models\\qwen36_i4_gs64",
+  "plan": {
+    "bottleneck_class": "mixed",
+    "cpu": {
+      "physical_cores": 8,
+      "sockets": 1,
+      "thread_policy": "physical-cores"
+    },
+    "decisions": [
+      {
+        "reason": "profile-ranked hot experts",
+        "target": "VRAM"
+      },
+      {
+        "reason": "warm experts execute on CPU without quality loss",
+        "target": "RAM"
+      },
+      {
+        "reason": "immutable recovery source for cold experts",
+        "target": "Disk"
+      }
+    ],
+    "expected_bottleneck": "CPU expert tail and GPU compute",
+    "memory": {
+      "available_bytes": 43421814784,
+      "unified": false
+    },
+    "model": {
+      "configured_experts": 256,
+      "dense_bytes": 4896711936,
+      "dense_disk_bytes": 4896711936,
+      "expert_bytes": 18119393280,
+      "expert_bytes_by_layer": {
+        "0": 1769472,
+        "1": 1769472,
+        "2": 1769472,
+        "3": 1769472,
+        "4": 1769472,
+        "5": 1769472,
+        "6": 1769472,
+        "7": 1769472,
+        "8": 1769472,
+        "9": 1769472,
+        "10": 1769472,
+        "11": 1769472,
+        "12": 1769472,
+        "13": 1769472,
+        "14": 1769472,
+        "15": 1769472,
+        "16": 1769472,
+        "17": 1769472,
+        "18": 1769472,
+        "19": 1769472,
+        "20": 1769472,
+        "21": 1769472,
+        "22": 1769472,
+        "23": 1769472,
+        "24": 1769472,
+        "25": 1769472,
+        "26": 1769472,
+        "27": 1769472,
+        "28": 1769472,
+        "29": 1769472,
+        "30": 1769472,
+        "31": 1769472,
+        "32": 1769472,
+        "33": 1769472,
+        "34": 1769472,
+        "35": 1769472,
+        "36": 1769472,
+        "37": 1769472,
+        "38": 1769472,
+        "39": 1769472
+      },
+      "expert_count": 10240,
+      "expert_fixed_bytes": 0,
+      "expert_layers": 40,
+      "family_id": "qwen36",
+      "max_expert_bytes": 1769472,
+      "model_bytes": 23018430392,
+      "model_type": "qwen3_5_moe_text",
+      "path": "C:\\Models\\qwen36_i4_gs64",
+      "per_cap_bytes": 70778880,
+      "shards": 41,
+      "trunk_int8_bytes": 0,
+      "typical_expert_bytes": 1769472
+    },
+    "next_actions": [
+      {
+        "command": "PROF=1 coli run --auto-tier --model <model> <prompt>",
+        "id": "profile-overlap",
+        "priority": "recommended",
+        "reason": "CPU expert tail and GPU work must be timed separately before retuning placement"
+      }
+    ],
+    "policy": {
+      "name": "quality",
+      "preserve_quantization": true,
+      "preserve_router": true,
+      "quality_preserving": true
+    },
+    "projected_hit_rate": 1.0,
+    "ssd_probe_gbs": null,
+    "ssd_probe_state": "absent",
+    "tiers": {
+      "disk": {
+        "available_bytes": 465688125440,
+        "cold_expert_bytes": 0,
+        "model_bytes": 23018430392,
+        "role": "cold-backing"
+      },
+      "ram": {
+        "available_bytes": 43421814784,
+        "budget_bytes": 38211197009,
+        "cache_slots_per_layer": 256,
+        "dense_bytes": 4896711936,
+        "expert_cache_bytes": 29099830865,
+        "expert_fixed_bytes": 0,
+        "fixed_state_bytes": 65863680,
+        "role": "resident+warm-experts",
+        "runtime_bytes": 4214654208,
+        "sequence_state_bytes": 335544320,
+        "warm_expert_bytes": 12690653184,
+        "workspace_bytes": 0
+      },
+      "vram": {
+        "budget_bytes": 5430209536,
+        "devices": [
+          {
+            "free_bytes": 7430209536,
+            "index": 0,
+            "name": "NVIDIA GeForce RTX 5070 Laptop GPU",
+            "reserve_bytes": 2000000000,
+            "total_bytes": 8546942976,
+            "unified_memory": false,
+            "usable_bytes": 5430209536
+          }
+        ],
+        "expert_capacity": 3068,
+        "hot_expert_bytes": 5428740096,
+        "requires_host_backing": false,
+        "role": "hot-experts",
+        "trunk_bytes": 0
+      }
+    },
+    "tune": {},
+    "version": 2,
+    "warnings": []
+  },
+  "schema_version": 1,
+  "validation": {
+    "baseline": {
+      "cap": 256,
+      "env": {},
+      "hit_pct": 0.0,
+      "name": "confirm-baseline",
+      "p99_ms": null,
+      "samples": [
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 6.964,
+          "ttft_s": 2.7192445000400767
+        },
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 10.458,
+          "ttft_s": 3.0972219000104815
+        }
+      ],
+      "tok_s": 8.711,
+      "ttft_s": 2.908233200025279
+    },
+    "hit_gate": true,
+    "tail_gate": true,
+    "ttft_gate": true,
+    "winner": {
+      "cap": 256,
+      "env": {
+        "OMP_NUM_THREADS": "4"
+      },
+      "hit_pct": 0.0,
+      "name": "omp-4",
+      "p99_ms": null,
+      "samples": [
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 8.097,
+          "ttft_s": 3.0911735999397933
+        },
+        {
+          "hit_pct": 0.0,
+          "p50_ms": null,
+          "p99_ms": null,
+          "tok_s": 10.364,
+          "ttft_s": 3.6386368999956176
+        }
+      ],
+      "tok_s": 9.2305,
+      "ttft_s": 3.3649052499677055
+    }
+  },
+  "winner": {
+    "cap": 256,
+    "env": {
+      "OMP_NUM_THREADS": "4"
+    },
+    "hit_pct": 0.0,
+    "name": "omp-4",
+    "p99_ms": null,
+    "samples": [
+      {
+        "hit_pct": 0.0,
+        "p50_ms": null,
+        "p99_ms": null,
+        "tok_s": 8.097,
+        "ttft_s": 3.0911735999397933
+      },
+      {
+        "hit_pct": 0.0,
+        "p50_ms": null,
+        "p99_ms": null,
+        "tok_s": 10.364,
+        "ttft_s": 3.6386368999956176
+      }
+    ],
+    "tok_s": 9.2305,
+    "ttft_s": 3.3649052499677055
+  }
+}

@@ -300,3 +300,41 @@ comparison.
 - Mnemosyne global memory stored (id f8f142036b0e1ab6): the lessons
   discipline applies to ALL projects on this machine.
 - Both repos left uncommitted pending owner's word (between phases).
+
+## 2026-09-22 — Phase 4 automatic placement (START NOTE)
+
+Committed the lessons milestone (playbook f0ad3b1 local — no remote;
+playground 3d93ce0 pushed; push rule widened to phases OR milestones).
+Plan for Phase 4: (1) `coli plan` output → results/placement/ (what lands
+in VRAM, how much stays free); (2) `coli tune` (measures and saves the
+machine profile) → results/placement/, background, artifact-verified;
+(3) compare against the observed Phase 3 auto-tier placement (2413/10240
+experts in VRAM, 4.25 GB budget); (4) no hand-tuning before the automatic
+baseline is measured. KNOWN LIMIT: FN-007 — learned-heat influence on
+placement cannot be tested through coli serve on Windows; record what tune
+says about its own profile persistence.
+
+## 2026-09-22 — Phase 4 placement/tune: RESULTS
+
+- `coli plan` (auto-tier and plain): identical projection — VRAM hot tier
+  5.4 GB / ~3068 experts, limit "CPU expert tail and GPU compute". NOTE:
+  plan promises the tier even without --auto-tier, while serve silently
+  skips it without the flag (reinforces PB-069 banner assertion).
+- `coli tune --auto-tier` (artifact-verified, TUNE_EXIT=0): auto-placement
+  puts the TRUNK first — 1207 MB (lm_head int8 + 30 DeltaNet projections)
+  — then 4.25 GB for ~2412 experts. Winner: **OMP_NUM_THREADS=4 at
+  9.23 tok/s vs 8.71 at the default 8 threads (+6.0%)** — consistent with
+  the hybrid Zen5/Zen5c layout (4 fast cores beat 8 heterogeneous ones).
+  Profile saved to AppData and copied to `results/placement/tune_profile.json`.
+- Validation warm pass with the tuned profile (server banner:
+  `[TUNE] applied measured profile · +6.0%`): p1 9.7, p2 11.1, p3 11.1,
+  p4 11.3, p5 6.7 tok/s (single pass, no median — variance watch applies).
+  First touch of Gate B's "clearly useful ≥10" band on real workloads.
+  p5 TTFT still 48 s — long-context prefill remains the open lever
+  (Phase 6 KV-reuse).
+- Bonus: the tune profile JSON carries per-sample `hit_pct`/`ttft`/`tok_s`
+  — the first machine-readable source of the Gate D hit-rate metric
+  (serve logs still do not expose it).
+- Phase 4 conclusion: auto-placement + one tune run moved CUDA decode
+  from 8.3-9.7 (Phase 3 medians) to ~11 tok/s measured; no hand-tuning
+  was needed or performed.

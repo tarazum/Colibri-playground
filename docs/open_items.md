@@ -51,10 +51,18 @@ toolchain change.
       generations (1.9-2.15× over CPU), TTFT 1.7-2.3× faster, p5 wall 111→67 s.
       Thermals 44-54 °C / ≤44 W / ≤6.25 GB VRAM. Driver-13.1-vs-toolkit-13.4
       risk did not materialize. CPU binary kept as `qwen36_cpu.exe` for A/B.
+- [x] Phase 4 placement/tune DONE (results/placement/): auto-placement =
+  trunk-first (1207 MB lm_head+dnproj on GPU) + 4.25 GB / 2412 experts;
+  tune winner OMP_NUM_THREADS=4 (+6%); tuned warm pass p2-p4 ≈ 11.1-11.3
+  tok/s (Gate B "clearly useful" band, single-pass caveat); profile in
+  AppData + repo copy; [TUNE] banner confirms pickup
 - [ ] FN-007: warm-persisted (HEAT_FILE) blocked upstream — launcher
       hard-kills the engine child on Windows; pick a workaround (direct
       engine run with SNAP+HEAT_FILE, or upstream patch CTRL_BREAK to child)
       before Phase 5
+- [x] Gate D metric source found: tune profile JSON carries hit_pct per
+      sample (results/placement/tune_profile.json) — use tune-mode samples
+      for hit-rate evidence until serve exposes it
 - [ ] warm-pass variance watch: CUDA warm pass 2 dipped to 4.6-6.9 tok/s
       (passes 1/3 were 5.6-11.7) — if it repeats in later phases, capture
       per-request GPU/CPU util and tier state to explain it
