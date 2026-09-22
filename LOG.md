@@ -279,3 +279,24 @@ Reading:
 Verdict direction: with CUDA the stack crosses into "usable"; the remaining
 Phase 5+ questions are KV-reuse, placement/tune, and the llama.cpp
 comparison.
+
+## 2026-09-22 — lessons system adopted (project journal + playbook + memory)
+
+- Owner asked whether we keep a learned-lessons journal: we did not (lessons
+  were scattered across LOG.md entries). Created `LESSONS_LEARNED.md` and
+  backfilled 11 lessons (LL-001…LL-011) from the whole session.
+- Discovered the cross-project playbook (`C:\projects\playbook`, 43 lessons
+  from AliasRelay/IDENN/OrderBookPredictor) with a promotion contract in its
+  README. Promoted 7 of our universal lessons: PB-067 (exit codes lie →
+  artifact proof), PB-068 (Git Bash → temp .bat), PB-069 (silent mode
+  fallback → assert the banner), PB-070 (warm-state benchmarks need a
+  persistent process), PB-071 (explicit sampling params in every benchmark
+  request), PB-072 (Windows graceful shutdown proven per process-tree
+  level), PB-073 (external AI reviews verified three ways). INDEX.md and
+  README.md updated (50 lessons, 4 projects).
+- AGENTS.md "Уроки" section now routes lessons (project journal / playbook /
+  Mnemosyne-global) and requires re-reading the journal + playbook INDEX
+  before each brief.
+- Mnemosyne global memory stored (id f8f142036b0e1ab6): the lessons
+  discipline applies to ALL projects on this machine.
+- Both repos left uncommitted pending owner's word (between phases).
