@@ -56,6 +56,13 @@ toolchain change.
   tune winner OMP_NUM_THREADS=4 (+6%); tuned warm pass p2-p4 ≈ 11.1-11.3
   tok/s (Gate B "clearly useful" band, single-pass caveat); profile in
   AppData + repo copy; [TUNE] banner confirms pickup
+- [x] Phase 8 Brio DONE (results/brio/): API mapped; 30-case dataset; with
+      normalize=sum: ALLOW 10/10 (p 0.96), DENY 9/10, REVIEW never chosen
+      but its class carries the highest entropy (0.64) — honest confidence
+      signal; answer-stable 30/30; 6.0 s/case vs 10.0 s for one generated
+      token. FN-010: default normalize=mean is token-count-biased (all 30
+      cases answered DENY under mean) — upstream-issue candidate; always
+      use sum
 - [x] Phase 6 KV-reuse SOLVED (2026-09-23): works through the public API
       with a client-side round-trip contract — assistant turn resent as
       `<think>\n\n</think>\n\n` + text + trailing `\n` (the streamed text

@@ -449,3 +449,55 @@ any standard client would work without our workaround.
 
 Practical meaning for the verdict: multi-turn long-context IS usable today
 on this stack (with our documented client contract), at ~3 s follow-up TTFT.
+
+## 2026-09-23 — Phase 8 Brio (START NOTE)
+
+Plan: (1) discover the Brio API surface in the v1.12.0 source (the /score
+endpoint per the earlier Opus consultation: raw strings prefix /
+prefix+" "+option, max_tokens=0, logprob rows; find exact path, request
+fields, whether the server computes probabilities/entropy or we do);
+(2) dataset: 30 cases — 10 obvious ALLOW, 10 obvious DENY, 10 ambiguous
+REVIEW (synthetic code-review / CI / security verdict texts);
+(3) tools/brio_test.py: run all cases x 3 repeats (stability), record
+probabilities, entropy (ours if not served), latency per call;
+(4) compare latency vs a minimal generation call; (5) analysis: probability
+separation per class, entropy on obvious vs ambiguous, cross-repeat
+stability. Outputs → results/brio/. Baseline expectations: obvious cases →
+low entropy + high top probability; ambiguous → high entropy; deterministic
+scoring (temperature n/a at max_tokens=0) → identical repeats.
+
+## 2026-09-23 — Phase 8 Brio: RESULTS
+
+API: POST /v1/brio {model, state, question, options, normalize} → answer,
+entropy, choices[{option, p, tokens}]. Dataset: prompts/brio_cases.json
+(30 cases: 10 ALLOW / 10 DENY / 10 REVIEW, synthetic code-review/CI/security
+texts). Harness: tools/brio_test.py (3 repeats + 1-token generation latency
+ref). Gotcha found on the way: the request MUST carry `model` (else
+check_model 404s with a confusing "model `None` does not exist").
+
+Run 1, normalize=mean (DEFAULT): catastrophic — ALL 30 cases answered DENY
+(README typo fix → p(DENY)=0.73), p(REVIEW)≈0.004. Vocabulary probes
+isolated the cause: DENY=2 tokens vs ALLOW=1 — mean-logprob-per-token
+systematically favors multi-token options (DISCUSS=3 and MAYBE=2 also won
+their probes). With normalize=sum the same trivial case: ALLOW 0.974.
+→ FN-010 (upstream-issue candidate: dangerous default).
+
+Run 2, normalize=sum (results/brio/*_sum.json):
+- ALLOW 10/10, p(top) mean 0.961, entropy mean 0.168
+- DENY 9/10 (D07 "CI red" text → ALLOW), entropy mean 0.357
+- REVIEW 0/10 as a CHOICE (the model never picks the middle option), but
+  entropy mean 0.642 — the HIGHEST class: entropy correctly flags the
+  ambiguous middle even when the forced answer is wrong
+- answer stability 30/30 across repeats (probs wobble slightly — parallel
+  fp noise; the answer never flips)
+- latency: median 6.0 s per case (pin + 3 options) vs 10.0 s for a
+  1-token generation on the same state — cheaper than generating a single
+  token, let alone an answer
+- overall forced-answer accuracy 19/30 = 63%; with entropy as the
+  confidence gate (e.g. route H>0.5 to a human), the obvious classes are
+  clean.
+
+Phase verdict: Brio mechanics work, fast and deterministic; entropy is the
+honest confidence signal; the default normalization is broken (FN-010 —
+use sum); the middle option needs prompt/option engineering to ever win;
+with an entropy threshold this is a usable classifier for obvious cases.

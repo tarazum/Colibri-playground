@@ -1,0 +1,1117 @@
+{
+  "timestamp": "2026-09-22T21:55:02+00:00",
+  "genLatencyRef1Token": 10.03,
+  "repeats": 3,
+  "records": [
+    {
+      "id": "A01",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.158859,
+          "probs": {
+            "ALLOW": 0.963027642925644,
+            "DENY": 0.03101500489950557,
+            "REVIEW": 0.005957352174850396
+          },
+          "latencySeconds": 10.246
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.158859,
+          "probs": {
+            "ALLOW": 0.9630276015831226,
+            "DENY": 0.031015034583058713,
+            "REVIEW": 0.005957363833818596
+          },
+          "latencySeconds": 9.772
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.158859,
+          "probs": {
+            "ALLOW": 0.9630276739766536,
+            "DENY": 0.03101494386957614,
+            "REVIEW": 0.005957382153770275
+          },
+          "latencySeconds": 9.659
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A02",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.125849,
+          "probs": {
+            "ALLOW": 0.974018744187981,
+            "REVIEW": 0.014722067343985408,
+            "DENY": 0.011259188468033712
+          },
+          "latencySeconds": 5.904
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.125849,
+          "probs": {
+            "ALLOW": 0.9740187222546383,
+            "REVIEW": 0.014722067012468034,
+            "DENY": 0.011259210732893756
+          },
+          "latencySeconds": 5.755
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.125849,
+          "probs": {
+            "ALLOW": 0.9740187256275123,
+            "REVIEW": 0.014722052341388538,
+            "DENY": 0.01125922203109904
+          },
+          "latencySeconds": 5.746
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A03",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.084678,
+          "probs": {
+            "ALLOW": 0.9840053280042355,
+            "REVIEW": 0.008744818133923044,
+            "DENY": 0.007249853861841466
+          },
+          "latencySeconds": 8.645
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.084679,
+          "probs": {
+            "ALLOW": 0.9840052665197944,
+            "REVIEW": 0.008744843822005246,
+            "DENY": 0.0072498896582003595
+          },
+          "latencySeconds": 8.807
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.084678,
+          "probs": {
+            "ALLOW": 0.9840053208703372,
+            "REVIEW": 0.008744818070524352,
+            "DENY": 0.007249861059138495
+          },
+          "latencySeconds": 8.441
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A04",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.118948,
+          "probs": {
+            "ALLOW": 0.974962456738828,
+            "REVIEW": 0.019169126007673818,
+            "DENY": 0.005868417253498291
+          },
+          "latencySeconds": 7.688
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.118948,
+          "probs": {
+            "ALLOW": 0.974962588709988,
+            "REVIEW": 0.019169051926050434,
+            "DENY": 0.005868359363961639
+          },
+          "latencySeconds": 7.608
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.118948,
+          "probs": {
+            "ALLOW": 0.9749625299707178,
+            "REVIEW": 0.019169069940219143,
+            "DENY": 0.005868400089063238
+          },
+          "latencySeconds": 7.566
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A05",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.232633,
+          "probs": {
+            "ALLOW": 0.9417937290013162,
+            "DENY": 0.04286511304080104,
+            "REVIEW": 0.015341157957882838
+          },
+          "latencySeconds": 7.635
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.232634,
+          "probs": {
+            "ALLOW": 0.9417934578836579,
+            "DENY": 0.042865357892437506,
+            "REVIEW": 0.015341184223904496
+          },
+          "latencySeconds": 7.42
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.232635,
+          "probs": {
+            "ALLOW": 0.9417933452720224,
+            "DENY": 0.042865395632337516,
+            "REVIEW": 0.01534125909564015
+          },
+          "latencySeconds": 7.48
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A06",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.10934,
+          "probs": {
+            "ALLOW": 0.9781583850257743,
+            "DENY": 0.01215210741817985,
+            "REVIEW": 0.009689507556045807
+          },
+          "latencySeconds": 7.251
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.10934,
+          "probs": {
+            "ALLOW": 0.9781584017300133,
+            "DENY": 0.012152071169436018,
+            "REVIEW": 0.009689527100550613
+          },
+          "latencySeconds": 7.354
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.10934,
+          "probs": {
+            "ALLOW": 0.9781584539369277,
+            "DENY": 0.012152047513905027,
+            "REVIEW": 0.009689498549167189
+          },
+          "latencySeconds": 7.246
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A07",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.212684,
+          "probs": {
+            "ALLOW": 0.9470587207112799,
+            "DENY": 0.04229581302745392,
+            "REVIEW": 0.010645466261265979
+          },
+          "latencySeconds": 6.324
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.212684,
+          "probs": {
+            "ALLOW": 0.9470587610387279,
+            "DENY": 0.042295814828485004,
+            "REVIEW": 0.0106454241327872
+          },
+          "latencySeconds": 6.188
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.212684,
+          "probs": {
+            "ALLOW": 0.9470587812023925,
+            "DENY": 0.04229581572899794,
+            "REVIEW": 0.010645403068609666
+          },
+          "latencySeconds": 6.446
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A08",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.280713,
+          "probs": {
+            "ALLOW": 0.9271948011163217,
+            "DENY": 0.04661776468627722,
+            "REVIEW": 0.026187434197401015
+          },
+          "latencySeconds": 8.052
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.280712,
+          "probs": {
+            "ALLOW": 0.9271950225726822,
+            "DENY": 0.04661758934999292,
+            "REVIEW": 0.026187388077324878
+          },
+          "latencySeconds": 7.877
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.280712,
+          "probs": {
+            "ALLOW": 0.9271951575813921,
+            "DENY": 0.046617502902873184,
+            "REVIEW": 0.02618733951573458
+          },
+          "latencySeconds": 7.966
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A09",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.166101,
+          "probs": {
+            "ALLOW": 0.9630713917422051,
+            "REVIEW": 0.023093277174833168,
+            "DENY": 0.013835331082961637
+          },
+          "latencySeconds": 7.286
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.166101,
+          "probs": {
+            "ALLOW": 0.9630715872988315,
+            "REVIEW": 0.02309318949109983,
+            "DENY": 0.013835223210068758
+          },
+          "latencySeconds": 6.251
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.166101,
+          "probs": {
+            "ALLOW": 0.9630715919056174,
+            "REVIEW": 0.02309307413590516,
+            "DENY": 0.013835333958477514
+          },
+          "latencySeconds": 5.876
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "A10",
+      "expected": "ALLOW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.191092,
+          "probs": {
+            "ALLOW": 0.9540938520194838,
+            "DENY": 0.03621897105994773,
+            "REVIEW": 0.009687176920568405
+          },
+          "latencySeconds": 6.729
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.191091,
+          "probs": {
+            "ALLOW": 0.9540940316292119,
+            "DENY": 0.03621876056501291,
+            "REVIEW": 0.009687207805775123
+          },
+          "latencySeconds": 6.717
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.191091,
+          "probs": {
+            "ALLOW": 0.9540940155580875,
+            "DENY": 0.03621879617370837,
+            "REVIEW": 0.009687188268204198
+          },
+          "latencySeconds": 6.664
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D01",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.351807,
+          "probs": {
+            "DENY": 0.8847634101793985,
+            "ALLOW": 0.10719099852602199,
+            "REVIEW": 0.008045591294579428
+          },
+          "latencySeconds": 5.745
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.351807,
+          "probs": {
+            "DENY": 0.8847634907811279,
+            "ALLOW": 0.10719090110014103,
+            "REVIEW": 0.008045608118730974
+          },
+          "latencySeconds": 5.669
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.351808,
+          "probs": {
+            "DENY": 0.8847632939853265,
+            "ALLOW": 0.10719109163989722,
+            "REVIEW": 0.008045614374776184
+          },
+          "latencySeconds": 5.635
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D02",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.290312,
+          "probs": {
+            "DENY": 0.9085060274477246,
+            "ALLOW": 0.08856568873854868,
+            "REVIEW": 0.0029282838137266645
+          },
+          "latencySeconds": 5.959
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.290311,
+          "probs": {
+            "DENY": 0.9085062847969547,
+            "ALLOW": 0.08856544812948929,
+            "REVIEW": 0.002928267073555921
+          },
+          "latencySeconds": 5.887
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.290311,
+          "probs": {
+            "DENY": 0.9085064350799338,
+            "ALLOW": 0.08856528564902956,
+            "REVIEW": 0.0029282792710366525
+          },
+          "latencySeconds": 5.911
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D03",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.192041,
+          "probs": {
+            "DENY": 0.9484600197423154,
+            "ALLOW": 0.049695413117776685,
+            "REVIEW": 0.0018445671399079427
+          },
+          "latencySeconds": 6.28
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.192041,
+          "probs": {
+            "DENY": 0.9484599184760002,
+            "ALLOW": 0.049695507202752336,
+            "REVIEW": 0.0018445743212475157
+          },
+          "latencySeconds": 6.222
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.192042,
+          "probs": {
+            "DENY": 0.9484598242075217,
+            "ALLOW": 0.049695601654564936,
+            "REVIEW": 0.0018445741379132373
+          },
+          "latencySeconds": 6.194
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D04",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.087563,
+          "probs": {
+            "DENY": 0.9816512790501535,
+            "ALLOW": 0.017063166463314867,
+            "REVIEW": 0.0012855544865317137
+          },
+          "latencySeconds": 5.378
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.087563,
+          "probs": {
+            "DENY": 0.9816512405020882,
+            "ALLOW": 0.017063199919634002,
+            "REVIEW": 0.001285559578277824
+          },
+          "latencySeconds": 5.4
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.087563,
+          "probs": {
+            "DENY": 0.9816513640623128,
+            "ALLOW": 0.017063082625378794,
+            "REVIEW": 0.0012855533123082943
+          },
+          "latencySeconds": 5.404
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D05",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.535379,
+          "probs": {
+            "DENY": 0.7657738891593661,
+            "ALLOW": 0.22340448048051295,
+            "REVIEW": 0.010821630360120965
+          },
+          "latencySeconds": 5.818
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.535378,
+          "probs": {
+            "DENY": 0.7657751364198138,
+            "ALLOW": 0.22340328052393996,
+            "REVIEW": 0.010821583056246278
+          },
+          "latencySeconds": 5.827
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.535379,
+          "probs": {
+            "DENY": 0.765774068523558,
+            "ALLOW": 0.2234043094032407,
+            "REVIEW": 0.010821622073201215
+          },
+          "latencySeconds": 6.067
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D06",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.229416,
+          "probs": {
+            "DENY": 0.938311264912197,
+            "ALLOW": 0.05533843713893469,
+            "REVIEW": 0.006350297948868209
+          },
+          "latencySeconds": 6.327
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.229415,
+          "probs": {
+            "DENY": 0.9383114623957886,
+            "ALLOW": 0.05533828277075436,
+            "REVIEW": 0.006350254833457196
+          },
+          "latencySeconds": 5.949
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.229416,
+          "probs": {
+            "DENY": 0.9383112070289364,
+            "ALLOW": 0.055338489063636497,
+            "REVIEW": 0.0063503039074269225
+          },
+          "latencySeconds": 5.769
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D07",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.683344,
+          "probs": {
+            "ALLOW": 0.6229024607046715,
+            "DENY": 0.35355036224852965,
+            "REVIEW": 0.023547177046798887
+          },
+          "latencySeconds": 5.852
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.683343,
+          "probs": {
+            "ALLOW": 0.622902695599628,
+            "DENY": 0.35355014202116586,
+            "REVIEW": 0.02354716237920615
+          },
+          "latencySeconds": 5.746
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.683343,
+          "probs": {
+            "ALLOW": 0.6229031213865531,
+            "DENY": 0.35354967659132,
+            "REVIEW": 0.023547202022126863
+          },
+          "latencySeconds": 5.685
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D08",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.278589,
+          "probs": {
+            "DENY": 0.9173757104935005,
+            "ALLOW": 0.0768512015872458,
+            "REVIEW": 0.005773087919253753
+          },
+          "latencySeconds": 5.124
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.278589,
+          "probs": {
+            "DENY": 0.9173757968831471,
+            "ALLOW": 0.07685113197318455,
+            "REVIEW": 0.005773071143668395
+          },
+          "latencySeconds": 5.151
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.27859,
+          "probs": {
+            "DENY": 0.9173755095811208,
+            "ALLOW": 0.07685141531013807,
+            "REVIEW": 0.0057730751087410525
+          },
+          "latencySeconds": 5.23
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D09",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.587999,
+          "probs": {
+            "DENY": 0.7328089915322566,
+            "ALLOW": 0.24934215841403987,
+            "REVIEW": 0.017848850053703517
+          },
+          "latencySeconds": 5.518
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.588,
+          "probs": {
+            "DENY": 0.7328078690500113,
+            "ALLOW": 0.2493432725386306,
+            "REVIEW": 0.01784885841135811
+          },
+          "latencySeconds": 5.363
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.587999,
+          "probs": {
+            "DENY": 0.732809017691827,
+            "ALLOW": 0.24934216731497288,
+            "REVIEW": 0.017848814993200124
+          },
+          "latencySeconds": 5.381
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "D10",
+      "expected": "DENY",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.333427,
+          "probs": {
+            "DENY": 0.89663223165416,
+            "ALLOW": 0.0929015917632475,
+            "REVIEW": 0.01046617658259261
+          },
+          "latencySeconds": 5.258
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.333426,
+          "probs": {
+            "DENY": 0.8966326575304353,
+            "ALLOW": 0.09290117138199515,
+            "REVIEW": 0.010466171087569604
+          },
+          "latencySeconds": 5.306
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.333425,
+          "probs": {
+            "DENY": 0.8966330188757015,
+            "ALLOW": 0.09290083721731393,
+            "REVIEW": 0.010466143906984646
+          },
+          "latencySeconds": 5.209
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R01",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.803499,
+          "probs": {
+            "ALLOW": 0.5477046954755517,
+            "DENY": 0.3827324820461069,
+            "REVIEW": 0.06956282247834142
+          },
+          "latencySeconds": 6.65
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.803499,
+          "probs": {
+            "ALLOW": 0.547704352426285,
+            "DENY": 0.38273300779075886,
+            "REVIEW": 0.06956263978295621
+          },
+          "latencySeconds": 6.491
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.803499,
+          "probs": {
+            "ALLOW": 0.5477062581684976,
+            "DENY": 0.38273051218943765,
+            "REVIEW": 0.06956322964206466
+          },
+          "latencySeconds": 6.352
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R02",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.703197,
+          "probs": {
+            "ALLOW": 0.6969932286972992,
+            "DENY": 0.23674383599147053,
+            "REVIEW": 0.06626293531123024
+          },
+          "latencySeconds": 5.775
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.703198,
+          "probs": {
+            "ALLOW": 0.6969928327639276,
+            "DENY": 0.2367439382507914,
+            "REVIEW": 0.066263228985281
+          },
+          "latencySeconds": 5.722
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.703197,
+          "probs": {
+            "ALLOW": 0.6969935322604435,
+            "DENY": 0.23674370235726444,
+            "REVIEW": 0.06626276538229214
+          },
+          "latencySeconds": 5.709
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R03",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.657912,
+          "probs": {
+            "ALLOW": 0.6911454905660501,
+            "DENY": 0.2760244233917161,
+            "REVIEW": 0.03283008604223371
+          },
+          "latencySeconds": 6.098
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.657911,
+          "probs": {
+            "ALLOW": 0.6911464444301595,
+            "DENY": 0.27602342421812975,
+            "REVIEW": 0.03283013135171082
+          },
+          "latencySeconds": 5.915
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.657911,
+          "probs": {
+            "ALLOW": 0.6911464444301595,
+            "DENY": 0.27602342421812975,
+            "REVIEW": 0.03283013135171082
+          },
+          "latencySeconds": 6.023
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R04",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.60473,
+          "probs": {
+            "DENY": 0.6921554010971922,
+            "ALLOW": 0.29698109942129647,
+            "REVIEW": 0.01086349948151128
+          },
+          "latencySeconds": 5.551
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.604731,
+          "probs": {
+            "DENY": 0.6921543357146593,
+            "ALLOW": 0.29698212720764405,
+            "REVIEW": 0.010863537077696613
+          },
+          "latencySeconds": 5.417
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.604731,
+          "probs": {
+            "DENY": 0.6921543657915776,
+            "ALLOW": 0.2969821401127242,
+            "REVIEW": 0.010863494095698135
+          },
+          "latencySeconds": 5.479
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R05",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "DENY",
+          "entropy": 0.708673,
+          "probs": {
+            "DENY": 0.5812899744520001,
+            "ALLOW": 0.3922469938759297,
+            "REVIEW": 0.026463031672070193
+          },
+          "latencySeconds": 6.784
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.708672,
+          "probs": {
+            "DENY": 0.5812912221765417,
+            "ALLOW": 0.39224587459011656,
+            "REVIEW": 0.026462903233341665
+          },
+          "latencySeconds": 6.744
+        },
+        {
+          "answer": "DENY",
+          "entropy": 0.708672,
+          "probs": {
+            "DENY": 0.5812905996794212,
+            "ALLOW": 0.3922466312772999,
+            "REVIEW": 0.026462769043278905
+          },
+          "latencySeconds": 6.757
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R06",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.558009,
+          "probs": {
+            "ALLOW": 0.7882574806980419,
+            "DENY": 0.1755893075919901,
+            "REVIEW": 0.036153211709967895
+          },
+          "latencySeconds": 5.499
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.558009,
+          "probs": {
+            "ALLOW": 0.7882573667056721,
+            "DENY": 0.17558928219947337,
+            "REVIEW": 0.0361533510948545
+          },
+          "latencySeconds": 5.33
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.558012,
+          "probs": {
+            "ALLOW": 0.7882557017047351,
+            "DENY": 0.17559084279869858,
+            "REVIEW": 0.0361534554965663
+          },
+          "latencySeconds": 5.925
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R07",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.774094,
+          "probs": {
+            "ALLOW": 0.5126886052163309,
+            "DENY": 0.4389496234334789,
+            "REVIEW": 0.048361771350190305
+          },
+          "latencySeconds": 5.949
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.774093,
+          "probs": {
+            "ALLOW": 0.5126893547333001,
+            "DENY": 0.43894894830009407,
+            "REVIEW": 0.048361696966605805
+          },
+          "latencySeconds": 5.907
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.774094,
+          "probs": {
+            "ALLOW": 0.5126889809213975,
+            "DENY": 0.4389490672026214,
+            "REVIEW": 0.048361951875981114
+          },
+          "latencySeconds": 5.967
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R08",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.708357,
+          "probs": {
+            "ALLOW": 0.5932095655899551,
+            "DENY": 0.3785608157023767,
+            "REVIEW": 0.028229618707668276
+          },
+          "latencySeconds": 6.25
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.708358,
+          "probs": {
+            "ALLOW": 0.5932084260137638,
+            "DENY": 0.378561981279068,
+            "REVIEW": 0.028229592707168297
+          },
+          "latencySeconds": 6.123
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.708357,
+          "probs": {
+            "ALLOW": 0.5932093912621609,
+            "DENY": 0.37856108301477487,
+            "REVIEW": 0.028229525723064215
+          },
+          "latencySeconds": 6.34
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R09",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.69843,
+          "probs": {
+            "ALLOW": 0.5808440331009043,
+            "DENY": 0.39679718264816627,
+            "REVIEW": 0.022358784250929433
+          },
+          "latencySeconds": 5.574
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.69843,
+          "probs": {
+            "ALLOW": 0.5808442635781562,
+            "DENY": 0.3967969432990127,
+            "REVIEW": 0.02235879312283113
+          },
+          "latencySeconds": 5.689
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.69843,
+          "probs": {
+            "ALLOW": 0.5808440201139314,
+            "DENY": 0.39679717377625967,
+            "REVIEW": 0.022358806109808886
+          },
+          "latencySeconds": 5.13
+        }
+      ],
+      "stableAcrossRepeats": false
+    },
+    {
+      "id": "R10",
+      "expected": "REVIEW",
+      "repeats": [
+        {
+          "answer": "ALLOW",
+          "entropy": 0.207994,
+          "probs": {
+            "ALLOW": 0.9512010027714777,
+            "REVIEW": 0.02702724414290952,
+            "DENY": 0.02177175308561281
+          },
+          "latencySeconds": 5.581
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.207994,
+          "probs": {
+            "ALLOW": 0.9512009613528114,
+            "REVIEW": 0.027027242966047426,
+            "DENY": 0.021771795681141265
+          },
+          "latencySeconds": 5.693
+        },
+        {
+          "answer": "ALLOW",
+          "entropy": 0.207994,
+          "probs": {
+            "ALLOW": 0.9512011113169068,
+            "REVIEW": 0.027027220199864907,
+            "DENY": 0.021771668483228323
+          },
+          "latencySeconds": 5.504
+        }
+      ],
+      "stableAcrossRepeats": false
+    }
+  ]
+}

@@ -1,0 +1,570 @@
+== qwen36 Phase-2 engine | cache=256/layer bits=4 ctx=8192 pilot=0 wide=1 hot=0 smooth=0.30 conf=0.92 ==
+[tok] loaded 248044 pieces (max id 248043) from C:/Models/qwen36_i4_gs64/tokenizer.json
+[meta] loaded: q_heads=16 kv_heads=2 head_dim=256 q_head_dim=512 k_head_dim=256 v_head_dim=256 o_in=4096 rotary_dim=64 n_experts=256 topk=8 inter=512 shared_inter=512 n_group=1 topk_group=1 attn_output_gate=1 n_active=10
+[meta] DeltaNet: vheads=32 kheads=16 kdim=128 vdim=128 convk=4 conv_dim=8192
+[qwen36] group-scaled experts: gs=64
+resident weights loaded in 5.4s | RSS after load: 9.23 GB
+[dense-i8] 291 matrices quantized in 0.9 s, 7.2 GB f32 freed
+[qwen36] expert format on disk: int4 packed (tier fmt=4)
+[CUDA] device 0: NVIDIA GeForce RTX 5070 Laptop GPU, 8.5 GB VRAM, sm_120
+[qtier] dev 0: 6.8 GB free, allowance 5.3 GB
+[place] auto: dev 0 holds 1207.4 MB of trunk (lmhead yes, 30 dnproj layers), 4.14 GB left for experts
+[qtier] dev 0: budget 4.14 GB for experts (~2348 experts) after trunk
+[qtier] CUDA VRAM expert tier active: 1 device(s), 1.80 MB/expert
+[CUDA] mode: routed experts (qwen36 VRAM tier)
+[gpu] MoE experts -> CUDA VRAM tier
+[lmh] lm_head [248320 x 2048] int8 resident on CUDA dev 0 (0.47 GB)
+[dnp] 30 DeltaNet-Projektionen auf GPU (0.70 GB VRAM)
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qtier] warmstart (parallel): all 10240 experts in RAM (int8 copy dropped for residents, kept for non-residents), 2348 in VRAM -- 11.6 s
+OpenAI-compatible API listening on http://127.0.0.1:8000/v1
+[api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
+[api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
+[api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
+[PREFIX] no reuse: held=0 cap=95 prompt=94 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -
+[PREFIX] no reuse: held=94 cap=95 prompt=80 (first divergence at 0: held_id=248045 prompt_id=1905)
+[PIN] scatto a 80 token
+[PREFIX] reusing 80 of 81 prompt tokens (99%)
+[PREFIX] no reuse: held=81 cap=95 prompt=81 (first divergence at 80: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=81 cap=95 prompt=82 (diverged) (first divergence at 80: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=82 cap=95 prompt=80 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 80 token
+[PREFIX] reusing 80 of 81 prompt tokens (99%)
+[PREFIX] no reuse: held=81 cap=95 prompt=81 (first divergence at 80: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=81 cap=95 prompt=82 (diverged) (first divergence at 80: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=82 cap=95 prompt=80 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 80 token
+[PREFIX] reusing 80 of 81 prompt tokens (99%)
+[PREFIX] no reuse: held=81 cap=95 prompt=81 (first divergence at 80: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=81 cap=95 prompt=82 (diverged) (first divergence at 80: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=82 cap=95 prompt=43 (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 43 token
+[PREFIX] reusing 43 of 44 prompt tokens (98%)
+[PREFIX] no reuse: held=44 cap=95 prompt=44 (first divergence at 43: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=44 cap=95 prompt=45 (diverged) (first divergence at 43: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=45 cap=95 prompt=43 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 43 token
+[PREFIX] reusing 43 of 44 prompt tokens (98%)
+[PREFIX] no reuse: held=44 cap=95 prompt=44 (first divergence at 43: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=44 cap=95 prompt=45 (diverged) (first divergence at 43: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=45 cap=95 prompt=43 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 43 token
+[PREFIX] reusing 43 of 44 prompt tokens (98%)
+[PREFIX] no reuse: held=44 cap=95 prompt=44 (first divergence at 43: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=44 cap=95 prompt=45 (diverged) (first divergence at 43: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=45 cap=95 prompt=70 (diverged) (first divergence at 5: held_id=59860 prompt_id=62532)
+[PIN] scatto a 70 token
+[PREFIX] reusing 70 of 71 prompt tokens (99%)
+[PREFIX] no reuse: held=71 cap=95 prompt=71 (first divergence at 70: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=71 cap=95 prompt=72 (diverged) (first divergence at 70: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=72 cap=95 prompt=70 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 70 token
+[PREFIX] reusing 70 of 71 prompt tokens (99%)
+[PREFIX] no reuse: held=71 cap=95 prompt=71 (first divergence at 70: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=71 cap=95 prompt=72 (diverged) (first divergence at 70: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=72 cap=95 prompt=70 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 70 token
+[PREFIX] reusing 70 of 71 prompt tokens (99%)
+[PREFIX] no reuse: held=71 cap=95 prompt=71 (first divergence at 70: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=71 cap=95 prompt=72 (diverged) (first divergence at 70: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=72 cap=95 prompt=62 (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 62 token
+[PREFIX] reusing 62 of 63 prompt tokens (98%)
+[PREFIX] no reuse: held=63 cap=95 prompt=63 (first divergence at 62: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=63 cap=95 prompt=64 (diverged) (first divergence at 62: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=64 cap=95 prompt=62 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 62 token
+[PREFIX] reusing 62 of 63 prompt tokens (98%)
+[PREFIX] no reuse: held=63 cap=95 prompt=63 (first divergence at 62: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=63 cap=95 prompt=64 (diverged) (first divergence at 62: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=64 cap=95 prompt=62 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 62 token
+[PREFIX] reusing 62 of 63 prompt tokens (98%)
+[PREFIX] no reuse: held=63 cap=95 prompt=63 (first divergence at 62: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=63 cap=95 prompt=64 (diverged) (first divergence at 62: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=64 cap=95 prompt=61 (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=59 (first divergence at 5: held_id=11039 prompt_id=25689)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=59 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=59 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=50 (first divergence at 5: held_id=25689 prompt_id=9417)
+[PIN] scatto a 50 token
+[PREFIX] reusing 50 of 51 prompt tokens (98%)
+[PREFIX] no reuse: held=51 cap=95 prompt=51 (first divergence at 50: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=51 cap=95 prompt=52 (diverged) (first divergence at 50: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=52 cap=95 prompt=50 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 50 token
+[PREFIX] reusing 50 of 51 prompt tokens (98%)
+[PREFIX] no reuse: held=51 cap=95 prompt=51 (first divergence at 50: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=51 cap=95 prompt=52 (diverged) (first divergence at 50: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=52 cap=95 prompt=50 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 50 token
+[PREFIX] reusing 50 of 51 prompt tokens (98%)
+[PREFIX] no reuse: held=51 cap=95 prompt=51 (first divergence at 50: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=51 cap=95 prompt=52 (diverged) (first divergence at 50: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=52 cap=95 prompt=67 (diverged) (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=58 (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 58 token
+[PREFIX] reusing 58 of 59 prompt tokens (98%)
+[PREFIX] no reuse: held=59 cap=95 prompt=59 (first divergence at 58: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=59 cap=95 prompt=60 (diverged) (first divergence at 58: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=60 cap=95 prompt=58 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 58 token
+[PREFIX] reusing 58 of 59 prompt tokens (98%)
+[PREFIX] no reuse: held=59 cap=95 prompt=59 (first divergence at 58: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=59 cap=95 prompt=60 (diverged) (first divergence at 58: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=60 cap=95 prompt=58 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 58 token
+[PREFIX] reusing 58 of 59 prompt tokens (98%)
+[PREFIX] no reuse: held=59 cap=95 prompt=59 (first divergence at 58: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=59 cap=95 prompt=60 (diverged) (first divergence at 58: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=60 cap=95 prompt=67 (diverged) (first divergence at 5: held_id=27245 prompt_id=9990)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=57 (first divergence at 5: held_id=9990 prompt_id=70514)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=57 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=57 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=59 (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=59 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=59 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=63 (diverged) (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 63 token
+[PREFIX] reusing 63 of 64 prompt tokens (98%)
+[PREFIX] no reuse: held=64 cap=95 prompt=64 (first divergence at 63: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=64 cap=95 prompt=65 (diverged) (first divergence at 63: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=65 cap=95 prompt=63 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 63 token
+[PREFIX] reusing 63 of 64 prompt tokens (98%)
+[PREFIX] no reuse: held=64 cap=95 prompt=64 (first divergence at 63: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=64 cap=95 prompt=65 (diverged) (first divergence at 63: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=65 cap=95 prompt=63 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 63 token
+[PREFIX] reusing 63 of 64 prompt tokens (98%)
+[PREFIX] no reuse: held=64 cap=95 prompt=64 (first divergence at 63: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=64 cap=95 prompt=65 (diverged) (first divergence at 63: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=65 cap=95 prompt=54 (first divergence at 5: held_id=11039 prompt_id=40161)
+[PIN] scatto a 54 token
+[PREFIX] reusing 54 of 55 prompt tokens (98%)
+[PREFIX] no reuse: held=55 cap=95 prompt=55 (first divergence at 54: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=55 cap=95 prompt=56 (diverged) (first divergence at 54: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=56 cap=95 prompt=54 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 54 token
+[PREFIX] reusing 54 of 55 prompt tokens (98%)
+[PREFIX] no reuse: held=55 cap=95 prompt=55 (first divergence at 54: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=55 cap=95 prompt=56 (diverged) (first divergence at 54: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=56 cap=95 prompt=54 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 54 token
+[PREFIX] reusing 54 of 55 prompt tokens (98%)
+[PREFIX] no reuse: held=55 cap=95 prompt=55 (first divergence at 54: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=55 cap=95 prompt=56 (diverged) (first divergence at 54: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=56 cap=95 prompt=60 (diverged) (first divergence at 5: held_id=40161 prompt_id=39356)
+[PIN] scatto a 60 token
+[PREFIX] reusing 60 of 61 prompt tokens (98%)
+[PREFIX] no reuse: held=61 cap=95 prompt=61 (first divergence at 60: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=61 cap=95 prompt=62 (diverged) (first divergence at 60: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=62 cap=95 prompt=60 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 60 token
+[PREFIX] reusing 60 of 61 prompt tokens (98%)
+[PREFIX] no reuse: held=61 cap=95 prompt=61 (first divergence at 60: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=61 cap=95 prompt=62 (diverged) (first divergence at 60: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=62 cap=95 prompt=60 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 60 token
+[PREFIX] reusing 60 of 61 prompt tokens (98%)
+[PREFIX] no reuse: held=61 cap=95 prompt=61 (first divergence at 60: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=61 cap=95 prompt=62 (diverged) (first divergence at 60: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=62 cap=95 prompt=61 (first divergence at 5: held_id=39356 prompt_id=37631)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=55 (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 55 token
+[PREFIX] reusing 55 of 56 prompt tokens (98%)
+[PREFIX] no reuse: held=56 cap=95 prompt=56 (first divergence at 55: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=56 cap=95 prompt=57 (diverged) (first divergence at 55: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=57 cap=95 prompt=55 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 55 token
+[PREFIX] reusing 55 of 56 prompt tokens (98%)
+[PREFIX] no reuse: held=56 cap=95 prompt=56 (first divergence at 55: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=56 cap=95 prompt=57 (diverged) (first divergence at 55: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=57 cap=95 prompt=55 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 55 token
+[PREFIX] reusing 55 of 56 prompt tokens (98%)
+[PREFIX] no reuse: held=56 cap=95 prompt=56 (first divergence at 55: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=56 cap=95 prompt=57 (diverged) (first divergence at 55: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=57 cap=95 prompt=57 (first divergence at 5: held_id=11039 prompt_id=6979)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=57 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=57 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=55 (first divergence at 5: held_id=6979 prompt_id=47733)
+[PIN] scatto a 55 token
+[PREFIX] reusing 55 of 56 prompt tokens (98%)
+[PREFIX] no reuse: held=56 cap=95 prompt=56 (first divergence at 55: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=56 cap=95 prompt=57 (diverged) (first divergence at 55: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=57 cap=95 prompt=55 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 55 token
+[PREFIX] reusing 55 of 56 prompt tokens (98%)
+[PREFIX] no reuse: held=56 cap=95 prompt=56 (first divergence at 55: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=56 cap=95 prompt=57 (diverged) (first divergence at 55: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=57 cap=95 prompt=55 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 55 token
+[PREFIX] reusing 55 of 56 prompt tokens (98%)
+[PREFIX] no reuse: held=56 cap=95 prompt=56 (first divergence at 55: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=56 cap=95 prompt=57 (diverged) (first divergence at 55: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=57 cap=95 prompt=72 (diverged) (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 72 token
+[PREFIX] reusing 72 of 73 prompt tokens (99%)
+[PREFIX] no reuse: held=73 cap=95 prompt=73 (first divergence at 72: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=73 cap=95 prompt=74 (diverged) (first divergence at 72: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=74 cap=95 prompt=72 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 72 token
+[PREFIX] reusing 72 of 73 prompt tokens (99%)
+[PREFIX] no reuse: held=73 cap=95 prompt=73 (first divergence at 72: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=73 cap=95 prompt=74 (diverged) (first divergence at 72: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=74 cap=95 prompt=72 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 72 token
+[PREFIX] reusing 72 of 73 prompt tokens (99%)
+[PREFIX] no reuse: held=73 cap=95 prompt=73 (first divergence at 72: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=73 cap=95 prompt=74 (diverged) (first divergence at 72: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=74 cap=95 prompt=62 (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 62 token
+[PREFIX] reusing 62 of 63 prompt tokens (98%)
+[PREFIX] no reuse: held=63 cap=95 prompt=63 (first divergence at 62: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=63 cap=95 prompt=64 (diverged) (first divergence at 62: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=64 cap=95 prompt=62 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 62 token
+[PREFIX] reusing 62 of 63 prompt tokens (98%)
+[PREFIX] no reuse: held=63 cap=95 prompt=63 (first divergence at 62: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=63 cap=95 prompt=64 (diverged) (first divergence at 62: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=64 cap=95 prompt=62 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 62 token
+[PREFIX] reusing 62 of 63 prompt tokens (98%)
+[PREFIX] no reuse: held=63 cap=95 prompt=63 (first divergence at 62: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=63 cap=95 prompt=64 (diverged) (first divergence at 62: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=64 cap=95 prompt=67 (diverged) (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=59 (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=59 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=59 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 59 token
+[PREFIX] reusing 59 of 60 prompt tokens (98%)
+[PREFIX] no reuse: held=60 cap=95 prompt=60 (first divergence at 59: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=60 cap=95 prompt=61 (diverged) (first divergence at 59: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=61 cap=95 prompt=77 (diverged) (first divergence at 5: held_id=5598 prompt_id=9480)
+[PIN] scatto a 77 token
+[PREFIX] reusing 77 of 78 prompt tokens (99%)
+[PREFIX] no reuse: held=78 cap=95 prompt=78 (first divergence at 77: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=78 cap=95 prompt=79 (diverged) (first divergence at 77: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=79 cap=95 prompt=77 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 77 token
+[PREFIX] reusing 77 of 78 prompt tokens (99%)
+[PREFIX] no reuse: held=78 cap=95 prompt=78 (first divergence at 77: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=78 cap=95 prompt=79 (diverged) (first divergence at 77: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=79 cap=95 prompt=77 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 77 token
+[PREFIX] reusing 77 of 78 prompt tokens (99%)
+[PREFIX] no reuse: held=78 cap=95 prompt=78 (first divergence at 77: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=78 cap=95 prompt=79 (diverged) (first divergence at 77: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=79 cap=95 prompt=61 (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=67 (diverged) (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=67 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 67 token
+[PREFIX] reusing 67 of 68 prompt tokens (99%)
+[PREFIX] no reuse: held=68 cap=95 prompt=68 (first divergence at 67: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=68 cap=95 prompt=69 (diverged) (first divergence at 67: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=69 cap=95 prompt=71 (diverged) (first divergence at 5: held_id=25689 prompt_id=311)
+[PIN] scatto a 71 token
+[PREFIX] reusing 71 of 72 prompt tokens (99%)
+[PREFIX] no reuse: held=72 cap=95 prompt=72 (first divergence at 71: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=72 cap=95 prompt=73 (diverged) (first divergence at 71: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=73 cap=95 prompt=71 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 71 token
+[PREFIX] reusing 71 of 72 prompt tokens (99%)
+[PREFIX] no reuse: held=72 cap=95 prompt=72 (first divergence at 71: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=72 cap=95 prompt=73 (diverged) (first divergence at 71: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=73 cap=95 prompt=71 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 71 token
+[PREFIX] reusing 71 of 72 prompt tokens (99%)
+[PREFIX] no reuse: held=72 cap=95 prompt=72 (first divergence at 71: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=72 cap=95 prompt=73 (diverged) (first divergence at 71: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=73 cap=95 prompt=57 (first divergence at 3: held_id=3936 prompt_id=10911)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=57 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=57 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 57 token
+[PREFIX] reusing 57 of 58 prompt tokens (98%)
+[PREFIX] no reuse: held=58 cap=95 prompt=58 (first divergence at 57: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=58 cap=95 prompt=59 (diverged) (first divergence at 57: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=59 cap=95 prompt=61 (diverged) (first divergence at 3: held_id=10911 prompt_id=3936)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -
+[PREFIX] no reuse: held=63 cap=95 prompt=61 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
+[PIN] scatto a 61 token
+[PREFIX] reusing 61 of 62 prompt tokens (98%)
+[PREFIX] no reuse: held=62 cap=95 prompt=62 (first divergence at 61: held_id=69805 prompt_id=77293)
+[PREFIX] no reuse: held=62 cap=95 prompt=63 (diverged) (first divergence at 61: held_id=77293 prompt_id=63951)
+[api] 127.0.0.1 - "POST /v1/brio HTTP/1.1" 200 -

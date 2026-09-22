@@ -1,0 +1,37 @@
+{
+  "ALLOW": {
+    "n": 10,
+    "correct": 10,
+    "accuracy": 1.0,
+    "entropyMean": 0.168,
+    "entropyMin": 0.085,
+    "entropyMax": 0.281,
+    "topProbMean": 0.961,
+    "latencyMedian": 7.46
+  },
+  "REVIEW": {
+    "n": 10,
+    "correct": 0,
+    "accuracy": 0.0,
+    "entropyMean": 0.642,
+    "entropyMin": 0.208,
+    "entropyMax": 0.803,
+    "topProbMean": 0.664,
+    "latencyMedian": 5.862
+  },
+  "DENY": {
+    "n": 10,
+    "correct": 9,
+    "accuracy": 0.9,
+    "entropyMean": 0.357,
+    "entropyMin": 0.088,
+    "entropyMax": 0.683,
+    "topProbMean": 0.86,
+    "latencyMedian": 5.781
+  },
+  "_overall": {
+    "accuracy": 0.633,
+    "allStableAcrossRepeats": false,
+    "genLatencyRef1Token": 10.03
+  }
+}
