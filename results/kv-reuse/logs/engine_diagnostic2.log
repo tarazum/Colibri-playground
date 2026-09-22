@@ -1,0 +1,9 @@
+ready
+REQ1 full prefill: ttft=101.7s gen='
+
+
+Here's a thinking process:
+
+1.  **Analyze User Input:**
+ ...'
+REQ2 prefix=p1+ACTUAL-generation: ttft=84.5s  <- collapse means reuse works

@@ -46,7 +46,7 @@ QUESTIONS = {
 
 
 def start_server(log_path: Path, no_reuse: bool) -> subprocess.Popen:
-    env = {**os.environ}
+    env = {**os.environ, "COLI_PREFIX_LOG": "1"}  # proof line: [PREFIX] reusing N of M
     if no_reuse:
         env["COLI_KV_PREFIX"] = "0"
     log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -152,7 +152,14 @@ def main() -> None:
             )
             history.append({"role": "user", "content": content})
             r = chat(base, model_id, history)
-            history.append({"role": "assistant", "content": r["text"]})
+            # Round-trip fix (upstream re-render asymmetry, glm53 #1576 shape):
+            # turn N was FED as "<|im_start|>assistant\n<think>\n\n</think>\n\n"
+            # + answer, but the server re-renders a resent assistant message
+            # WITHOUT the think marker — the prefix would diverge at the first
+            # assistant turn and reuse would stay 0 forever. Prepending the
+            # marker reconstructs the byte-identical fed prefix.
+            history.append({"role": "assistant",
+                            "content": "<think>\n\n</think>\n\n" + r["text"]})
             rec = {
                 "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "arm": arm,

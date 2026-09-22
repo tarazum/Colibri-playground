@@ -378,3 +378,35 @@ byte-identical prefixes. All artifacts in `results/kv-reuse/`.
 - Minor observations logged: completions-mode server starts with
   cache=256/layer vs chat-mode 16/layer; completions SSE streams `text`,
   not `delta.content` (harness note).
+
+## 2026-09-22 — Phase 6 addendum: independent Opus review FLIPPED the diagnosis
+
+Owner asked to run the Phase 6 conclusions past Claude Opus as an
+independent reviewer (same three-way discipline as the R-00x review).
+Verdicts: claim "reuse never engages" = PARTIAL (observation right,
+attribution wrong); confound = PARTIAL (real, but not caused by the env
+var); "every follow-up pays full re-prefill" = CONFIRMED for the current
+client+template combination. What the review found that we missed:
+
+1. `COLI_PREFIX_LOG=1` (qwen36.c:3117, documented in docs/ENVIRONMENT.md)
+   — the proof line that distinguishes "not faster" from "not wired up".
+   Should have been step one of the phase.
+2. The engine record arithmetic is PERFECT: held=944 = 902 prompt + 42
+   generated; held=908 = 869 + 39. The KV machinery works.
+3. The divergence is client-side text round-trip: chat re-render drops the
+   `<think>\n\n</think>\n\n` marker the turn was fed with (glm53 #1576
+   class, openai_server.py:1256-1258); our think-marker prefix fix got
+   further but still diverges (answer re-tokenization); the completions
+   probe diverges on BPE boundary + stripped stop tokens. A conforming
+   OpenAI client cannot reconstruct a token-exact prefix.
+4. FN-008 corrected: arm B's cache=8/layer came from launch-time VRAM
+   re-measurement (arm A's VRAM not yet freed), not from COLI_KV_PREFIX.
+5. Our first engine probe was methodologically invalid (compared the whole
+   record incl. generation; we appended our own answer text instead of the
+   model's). Corrected probe (engine_diagnostic2): still "(diverged)".
+
+Refined verdict recorded: KV-reuse = working engine machinery, unreachable
+through the public API in v1.12.0; every follow-up pays a full re-prefill;
+the fix belongs upstream (server-side session continuation or a token-exact
+echo). Opus review raw output preserved in the session log; artifacts in
+results/kv-reuse/logs/.

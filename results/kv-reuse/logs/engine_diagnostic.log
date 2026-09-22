@@ -1,0 +1,4 @@
+ready
+REQ1 full-prefill ~831tok: ttft=101.7s wall=103.0s
+REQ2 SAME-prefix +tail: ttft=100.5s wall=101.6s  <- collapse means engine reuse works
+REQ3 mutated-prefix control: ttft=96.9s wall=98.0s
