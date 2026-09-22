@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-09-22T20:33:34+00:00",
+  "timestamp": "2026-09-22T21:15:39+00:00",
   "arm": "reuse_on",
   "turn": "C",
-  "historyTokensApprox": 1039,
-  "ttftSeconds": 138.903,
-  "wallSeconds": 144.417,
-  "generatedTokens": 31,
-  "answer": "The first saturation signal is the fraud-call queue depth. The team's headroom target is 2.5x peak traffic.<|im_end|>",
+  "historyTokensApprox": 1046,
+  "ttftSeconds": 3.038,
+  "wallSeconds": 5.641,
+  "generatedTokens": 26,
+  "answer": "The first saturation signal is the fraud-call queue depth. The team's headroom target is 2.5x peak traffic.",
   "serverLog": "C:\\projects\\Colibri-playground\\results\\kv-reuse\\logs\\server_reuse_on.log"
 }

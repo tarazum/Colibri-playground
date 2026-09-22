@@ -56,14 +56,15 @@ toolchain change.
   tune winner OMP_NUM_THREADS=4 (+6%); tuned warm pass p2-p4 ≈ 11.1-11.3
   tok/s (Gate B "clearly useful" band, single-pass caveat); profile in
   AppData + repo copy; [TUNE] banner confirms pickup
-- [x] Phase 6 KV-reuse DONE — refined verdict after independent Opus review:
-      engine machinery WORKS (record arithmetic perfect per COLI_PREFIX_LOG),
-      but the public API cannot deliver a token-exact prefix (chat template
-      drops the fed think-marker; completions round-trip breaks on BPE
-      boundaries / stripped stop tokens) → every follow-up pays full
-      re-prefill TODAY. FN-008 (corrected attribution), FN-009 (refined).
-      Upstream-issue candidate: server-side session continuation or a
-      token-exact echo API. Re-test when upstream responds
+- [x] Phase 6 KV-reuse SOLVED (2026-09-23): works through the public API
+      with a client-side round-trip contract — assistant turn resent as
+      `<think>\n\n</think>\n\n` + text + trailing `\n` (the streamed text
+      drops the final newline token; the chat re-render drops the think
+      marker). Follow-up TTFT 68 s → 2.75-3.04 s, `[PREFIX] reusing 96%`.
+      Divergence-index diagnostic patch kept in the lab clone and exported
+      to docs/patches/. Upstream issue candidates narrowed to two tiny,
+      precisely evidenced defects (think-marker re-render; trailing token
+      not streamed)
 - [ ] FN-007: warm-persisted (HEAT_FILE) blocked upstream — launcher
       hard-kills the engine child on Windows; pick a workaround (direct
       engine run with SNAP+HEAT_FILE, or upstream patch CTRL_BREAK to child)

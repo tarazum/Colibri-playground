@@ -410,3 +410,42 @@ through the public API in v1.12.0; every follow-up pays a full re-prefill;
 the fix belongs upstream (server-side session continuation or a token-exact
 echo). Opus review raw output preserved in the session log; artifacts in
 results/kv-reuse/logs/.
+
+## 2026-09-23 — KV-reuse SOLVED through the public API (client-side)
+
+Chain: owner's idea → Opus consultation → 3-line diagnostic patch → a
+one-character fix.
+
+1. Opus consultation (raw output in the session log): A (pure API escape
+   like /score pin) is dead — every path is token-prefix-gated; recommended
+   "Step 0": instrument the engine to print the FIRST divergence index,
+   because "every later decision hangs on that number".
+2. Local diagnostic patch (kept in the clone, diff exported to
+   docs/patches/qwen36_prefix_divergence_diag.patch): prints first
+   diverging position + both token ids in the no-reuse branch.
+3. Result: divergence at 943 of 944 (turn C: 1040 of 1041) — the LAST
+   held token only. held_id=13 = the trailing NEWLINE the model generated;
+   the streamed text the client echoes back drops it.
+4. Final client-side round-trip fix (tools/kv_reuse_test.py): assistant
+   turn resent as `"<think>\n\n</think>\n\n" + text + "\n"`.
+
+Measured with the fix (arm A, CUDA, tuned profile):
+
+| turn | TTFT before fix | TTFT after | PREFIX line |
+|---|---|---|---|
+| A (full prefill) | ~65-68 s | 68.0 s | held=0 (fresh, expected) |
+| B | 68.5 s | **2.75 s** | reusing 944 of 981 (96%) |
+| C | 73.3 s | **3.04 s** | reusing 1040 of 1080 (96%) |
+
+Follow-up TTFT: ~68 s → ~3 s (**~22×**). The Phase 6 verdict flips from
+"unreachable" to: **KV-reuse works end-to-end through the public chat API
+once the client reconstructs the fed token stream exactly** (think marker +
+trailing newline). The upstream defects are now precisely characterized:
+(a) chat re-render drops the fed think marker; (b) the streamed text drops
+the final generated newline token, so a conforming client cannot echo a
+token-exact prefix. Both are tiny, well-evidenced issue candidates — with
+the one-line server-side marker fix and/or streaming the trailing token,
+any standard client would work without our workaround.
+
+Practical meaning for the verdict: multi-turn long-context IS usable today
+on this stack (with our documented client contract), at ~3 s follow-up TTFT.

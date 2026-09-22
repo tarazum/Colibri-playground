@@ -158,8 +158,12 @@ def main() -> None:
             # WITHOUT the think marker — the prefix would diverge at the first
             # assistant turn and reuse would stay 0 forever. Prepending the
             # marker reconstructs the byte-identical fed prefix.
+            # Round-trip fix, layer 2 (divergence-diagnosed 2026-09-23): the
+            # model's LAST generated token is a trailing newline (token id 13),
+            # which the streamed text drops — the resent prefix then misses
+            # exactly the final held token. Append it back.
             history.append({"role": "assistant",
-                            "content": "<think>\n\n</think>\n\n" + r["text"]})
+                            "content": "<think>\n\n</think>\n\n" + r["text"] + "\n"})
             rec = {
                 "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "arm": arm,

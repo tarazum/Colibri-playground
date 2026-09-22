@@ -1,16 +1,15 @@
-  [TUNE] applied measured profile · +6.0% calibration throughput
 == qwen36 Phase-2 engine | cache=256/layer bits=4 ctx=8192 pilot=0 wide=1 hot=0 smooth=0.30 conf=0.92 ==
 [tok] loaded 248044 pieces (max id 248043) from C:/Models/qwen36_i4_gs64/tokenizer.json
 [meta] loaded: q_heads=16 kv_heads=2 head_dim=256 q_head_dim=512 k_head_dim=256 v_head_dim=256 o_in=4096 rotary_dim=64 n_experts=256 topk=8 inter=512 shared_inter=512 n_group=1 topk_group=1 attn_output_gate=1 n_active=10
 [meta] DeltaNet: vheads=32 kheads=16 kdim=128 vdim=128 convk=4 conv_dim=8192
 [qwen36] group-scaled experts: gs=64
-resident weights loaded in 5.5s | RSS after load: 9.23 GB
-[dense-i8] 291 matrices quantized in 1.5 s, 7.2 GB f32 freed
+resident weights loaded in 4.8s | RSS after load: 9.23 GB
+[dense-i8] 291 matrices quantized in 0.7 s, 7.2 GB f32 freed
 [qwen36] expert format on disk: int4 packed (tier fmt=4)
 [CUDA] device 0: NVIDIA GeForce RTX 5070 Laptop GPU, 8.5 GB VRAM, sm_120
 [qtier] dev 0: 6.8 GB free, allowance 5.4 GB
-[place] auto: dev 0 holds 1207.4 MB of trunk (lmhead yes, 30 dnproj layers), 4.22 GB left for experts
-[qtier] dev 0: budget 4.22 GB for experts (~2394 experts) after trunk
+[place] auto: dev 0 holds 1207.4 MB of trunk (lmhead yes, 30 dnproj layers), 4.17 GB left for experts
+[qtier] dev 0: budget 4.17 GB for experts (~2367 experts) after trunk
 [qtier] CUDA VRAM expert tier active: 1 device(s), 1.80 MB/expert
 [CUDA] mode: routed experts (qwen36 VRAM tier)
 [gpu] MoE experts -> CUDA VRAM tier
@@ -20,15 +19,18 @@ resident weights loaded in 5.5s | RSS after load: 9.23 GB
 [qwen36] int4 packed weights detected — unpacking to int8 in slot
 [qwen36] int4 packed weights detected — unpacking to int8 in slot
 [qwen36] int4 packed weights detected — unpacking to int8 in slot
-[qtier] warmstart (parallel): all 10240 experts in RAM (int8 copy dropped for residents, kept for non-residents), 2394 in VRAM -- 16.6 s
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qtier] warmstart (parallel): all 10240 experts in RAM (int8 copy dropped for residents, kept for non-residents), 2367 in VRAM -- 11.4 s
 OpenAI-compatible API listening on http://127.0.0.1:8000/v1
 [api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
 [api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
 [api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
-[api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
-[PREFIX] no reuse: held=0 cap=962 prompt=902
+[PREFI[api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -
+X] no reuse: held=0 cap=962 prompt=902 (first divergence at -1: held_id=-1 prompt_id=-1) (prompt is a prefix of held)
 [api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -
+[PREFIX] reusing 944 of 981 prompt tokens (96%)
 [api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -
-[PREFIX] no reuse: held=944 cap=1044 prompt=984 (diverged)
-[api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -
-[PREFIX] no reuse: held=1041 cap=1143 prompt=1083 (diverged)
+[PREFIX] reusing 1040 of 1080 prompt tokens (96%)
