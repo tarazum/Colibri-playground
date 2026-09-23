@@ -56,6 +56,13 @@ toolchain change.
   tune winner OMP_NUM_THREADS=4 (+6%); tuned warm pass p2-p4 ≈ 11.1-11.3
   tok/s (Gate B "clearly useful" band, single-pass caveat); profile in
   AppData + repo copy; [TUNE] banner confirms pickup
+- [x] Phase 9 thermal DONE (results/thermal/): 16 min continuous — no
+      throttling (max 57 °C, 55 W of 95, SM 2647 MHz at peak temp); decode
+      CLIMBED 9.6 → 15.5 tok/s over the run (+61%) — the learned hot-expert
+      tier filling under sustained same-domain load: first direct Gate D
+      evidence (process-level; persistence still blocked by FN-007).
+      Measured 8-11 tok/s from Phases 3/4 are conservative floors for
+      sustained sessions
 - [x] Phase 8 Brio DONE (results/brio/): API mapped; 30-case dataset; with
       normalize=sum: ALLOW 10/10 (p 0.96), DENY 9/10, REVIEW never chosen
       but its class carries the highest entropy (0.64) — honest confidence

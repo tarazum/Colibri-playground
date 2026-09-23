@@ -1,0 +1,198 @@
+{
+  "startedUtc": "2026-09-23T19:26:01+00:00",
+  "minutes": 16.0,
+  "requests": [
+    {
+      "request": 1,
+      "elapsedMin": -29825285.1,
+      "wall": 62.129,
+      "ttft": 10.329,
+      "generated": 500,
+      "decode": 9.633
+    },
+    {
+      "request": 2,
+      "elapsedMin": -29825284.3,
+      "wall": 48.096,
+      "ttft": 6.143,
+      "generated": 500,
+      "decode": 11.894
+    },
+    {
+      "request": 3,
+      "elapsedMin": -29825283.53,
+      "wall": 46.075,
+      "ttft": 5.303,
+      "generated": 500,
+      "decode": 12.239
+    },
+    {
+      "request": 4,
+      "elapsedMin": -29825282.79,
+      "wall": 44.727,
+      "ttft": 5.176,
+      "generated": 500,
+      "decode": 12.617
+    },
+    {
+      "request": 5,
+      "elapsedMin": -29825282.05,
+      "wall": 44.185,
+      "ttft": 5.173,
+      "generated": 500,
+      "decode": 12.791
+    },
+    {
+      "request": 6,
+      "elapsedMin": -29825281.33,
+      "wall": 43.147,
+      "ttft": 5.038,
+      "generated": 500,
+      "decode": 13.094
+    },
+    {
+      "request": 7,
+      "elapsedMin": -29825280.62,
+      "wall": 42.779,
+      "ttft": 5.114,
+      "generated": 500,
+      "decode": 13.249
+    },
+    {
+      "request": 8,
+      "elapsedMin": -29825279.92,
+      "wall": 42.002,
+      "ttft": 5.079,
+      "generated": 500,
+      "decode": 13.515
+    },
+    {
+      "request": 9,
+      "elapsedMin": -29825279.23,
+      "wall": 41.307,
+      "ttft": 4.877,
+      "generated": 500,
+      "decode": 13.697
+    },
+    {
+      "request": 10,
+      "elapsedMin": -29825278.54,
+      "wall": 41.2,
+      "ttft": 4.926,
+      "generated": 500,
+      "decode": 13.756
+    },
+    {
+      "request": 11,
+      "elapsedMin": -29825277.85,
+      "wall": 41.625,
+      "ttft": 4.851,
+      "generated": 500,
+      "decode": 13.569
+    },
+    {
+      "request": 12,
+      "elapsedMin": -29825277.18,
+      "wall": 40.256,
+      "ttft": 4.844,
+      "generated": 500,
+      "decode": 14.091
+    },
+    {
+      "request": 13,
+      "elapsedMin": -29825276.51,
+      "wall": 40.033,
+      "ttft": 4.807,
+      "generated": 500,
+      "decode": 14.166
+    },
+    {
+      "request": 14,
+      "elapsedMin": -29825275.85,
+      "wall": 39.712,
+      "ttft": 4.799,
+      "generated": 500,
+      "decode": 14.292
+    },
+    {
+      "request": 15,
+      "elapsedMin": -29825275.19,
+      "wall": 39.437,
+      "ttft": 4.747,
+      "generated": 500,
+      "decode": 14.385
+    },
+    {
+      "request": 16,
+      "elapsedMin": -29825274.55,
+      "wall": 38.819,
+      "ttft": 4.632,
+      "generated": 500,
+      "decode": 14.596
+    },
+    {
+      "request": 17,
+      "elapsedMin": -29825273.9,
+      "wall": 38.681,
+      "ttft": 4.738,
+      "generated": 500,
+      "decode": 14.701
+    },
+    {
+      "request": 18,
+      "elapsedMin": -29825273.27,
+      "wall": 38.186,
+      "ttft": 4.56,
+      "generated": 500,
+      "decode": 14.84
+    },
+    {
+      "request": 19,
+      "elapsedMin": -29825272.64,
+      "wall": 37.806,
+      "ttft": 4.587,
+      "generated": 500,
+      "decode": 15.021
+    },
+    {
+      "request": 20,
+      "elapsedMin": -29825272.0,
+      "wall": 38.003,
+      "ttft": 4.713,
+      "generated": 500,
+      "decode": 14.989
+    },
+    {
+      "request": 21,
+      "elapsedMin": -29825271.38,
+      "wall": 37.381,
+      "ttft": 4.516,
+      "generated": 500,
+      "decode": 15.183
+    },
+    {
+      "request": 22,
+      "elapsedMin": -29825270.76,
+      "wall": 37.231,
+      "ttft": 4.552,
+      "generated": 500,
+      "decode": 15.27
+    },
+    {
+      "request": 23,
+      "elapsedMin": -29825270.14,
+      "wall": 37.017,
+      "ttft": 4.451,
+      "generated": 500,
+      "decode": 15.323
+    },
+    {
+      "request": 24,
+      "elapsedMin": -29825269.53,
+      "wall": 36.679,
+      "ttft": 4.464,
+      "generated": 500,
+      "decode": 15.489
+    }
+  ]
+}

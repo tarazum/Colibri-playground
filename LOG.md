@@ -494,8 +494,43 @@ Run 2, normalize=sum (results/brio/*_sum.json):
   1-token generation on the same state — cheaper than generating a single
   token, let alone an answer
 - overall forced-answer accuracy 19/30 = 63%; with entropy as the
-  confidence gate (e.g. route H>0.5 to a human), the obvious classes are
-  clean.
+confidence gate (e.g. route H>0.5 to a human), the obvious classes are
+clean.
+
+## 2026-09-23 — Phase 9 thermal marathon (START NOTE)
+
+Plan: one CONTINUOUS generation session, 16 minutes (p2-style requests,
+500-token caps, back-to-back, temperature=0, tuned profile + auto-tier) via
+tools/thermal_test.py; nvidia-smi logger (-l 5) in parallel →
+results/thermal/logs/. Analysis: tok/s bucketed by minute (first 3 min vs
+last 3 min), GPU temp/power/clock curves, throttle detection (SM clock
+drops under sustained load), VRAM stability. Known limitation: CPU/fan
+telemetry not readily scriptable on this Windows box — GPU-side metrics are
+the reliable ones (Phase 3 watch: peaks were 54 °C / 44 W with pauses;
+this run has none).
+
+## 2026-09-23 — Phase 9 thermal: RESULTS
+
+16 minutes of continuous generation (24 requests, 500-token caps, p2
+prompt, tuned profile + auto-tier). Artifacts: results/thermal/.
+
+- **No thermal throttling**: GPU temp 43 → 57 °C max (median 55), power
+  median 39 W / max 55 W of the 95 W cap, SM clock still spikes to 2647
+  MHz at peak temperature; util median 23% (the GPU is not even the
+  saturated side — consistent with the "CPU expert tail" limiter).
+- **Sustained speed IMPROVED over the run**: median decode by minute
+  climbed monotonically 9.6 → 15.5 tok/s (+61% from first to last minute).
+  With temperature flat, this is not thermals — it is the learned
+  hot-expert VRAM tier filling under sustained same-domain load: the
+  first DIRECT evidence of the learned-placement value (Gate D signal,
+  process-level, non-persistent).
+- Reading for the verdict: measured Phase 3/4 numbers (8-11 tok/s) are
+  conservative floors for sustained interactive sessions on one topic;
+  the stack does not decay under load — it warms UP. Laptop stays cool
+  and quiet-class power (≤55 W).
+- Harness bug found and fixed: elapsedMin mixed time.time() with
+  perf_counter (negative-minute bucket keys); bucket values and ordering
+  were valid, timestamps were not; fixed for future runs.
 
 Phase verdict: Brio mechanics work, fast and deterministic; entropy is the
 honest confidence signal; the default normalization is broken (FN-010 —
