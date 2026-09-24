@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {"id": "q1", "kind": "csharp-reasoning", "max_tokens": 350,
+     "prompt": "What does this C# snippet print, and why?\n\nvar nums = new List<int> { 1, 2, 3, 4 };\nvar q = nums.Where(n => n % 2 == 0).Select(n => n * 10);\nnums.Add(6);\nConsole.WriteLine(string.Join(\",\", q));\n\nAnswer in at most four sentences."},
+    {"id": "q2", "kind": "sql", "max_tokens": 350,
+     "prompt": "Table orders(id, customer_id, created_at, total_eur). Write ONE PostgreSQL query that returns, for each customer, their latest order's id and total_eur (customers with no orders excluded). Then explain the index you would add and why, in at most two sentences. Output: the SQL in one fenced block, then the explanation."},
+    {"id": "q3", "kind": "python-debug", "max_tokens": 400,
+     "prompt": "This Python function should return the deduplicated elements preserving first-occurrence order, but it sometimes returns wrong results. Find the bug, explain it in one sentence, and give the corrected function.\n\ndef dedup(items):\n    seen = set()\n    out = []\n    for i, x in enumerate(items):\n        if x not in items[:i]:\n            out.append(x)\n    return out"},
+    {"id": "q4", "kind": "ukrainian-instructions", "max_tokens": 300,
+     "prompt": "Відповідай українською. Напиши РІВНО три пункти (маркований список, не більше), кожен — одне речення, про те, що таке ідемпотентність у API. Заборонено використовувати слова «функція» і «програма»."},
+    {"id": "q5", "kind": "instruction-following", "max_tokens": 200,
+     "prompt": "Follow ALL constraints exactly: (1) write exactly two sentences about databases; (2) the first sentence must contain the word 'index'; (3) neither sentence may contain the word 'table'; (4) end with the digit 7."},
+    {"id": "q6", "kind": "structured-json", "max_tokens": 250,
+     "prompt": "Return ONLY a valid JSON object (no prose, no code fence) with exactly these fields: \"engine\" (string), \"supports_cuda\" (boolean), \"max_context\" (integer), \"alternatives\" (array of strings). Invent plausible values."}
+  ]
+}

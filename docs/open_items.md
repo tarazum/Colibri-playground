@@ -103,9 +103,13 @@ toolchain change.
       per-request GPU/CPU util and tier state to explain it
 - [ ] p5 long-context TTFT remains ~1 min median on CUDA (high variance
       32-64 s) — the KV-reuse phase (Phase 6) is the lever that matters
-- [ ] FN-006: 10 deterministic U+FFFD chars per ~1370 chars of Ukrainian
-      output (English clean) — reproduce in non-stream mode to split
-      tokenizer vs streaming blame; Phase 10 screen item
+- [x] Phase 10 quality screen DONE (results/quality/): 6/6 automated
+      checks pass on BOTH engines; one colibri reasoning-sloppiness signal
+      (q1 self-correction chatter vs llama's clean answer — anecdote
+      grade); FN-006 narrowed to the CONTAINER TOKENIZER (non-stream
+      reproduces exactly 10 U+FFFD) — upstream candidate #4
+- [ ] FINAL: write docs/final_results.md (KEEP / LAB ONLY / DROP
+      recommendation + evidence table) — all phases complete
 - [x] expert-kernel env for qwen36 — CORRECTED (R-002, source-verified):
       `IDOT_GS` is GLM-engine-only (`c/colibri.c:1101`); `qwen36.c` reads
       `QWEN_EXPERT_KERNEL` (`c/qwen36.c:998`) and its fast planar-int4 kernel

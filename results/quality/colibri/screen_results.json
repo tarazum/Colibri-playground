@@ -1,0 +1,52 @@
+{
+  "engine": "colibri",
+  "timestamp": "2026-09-24T15:55:41+00:00",
+  "results": [
+    {
+      "id": "q1",
+      "kind": "csharp-reasoning",
+      "autoIssues": [],
+      "chars": 1016,
+      "ufffd": 0
+    },
+    {
+      "id": "q2",
+      "kind": "sql",
+      "autoIssues": [],
+      "chars": 496,
+      "ufffd": 0
+    },
+    {
+      "id": "q3",
+      "kind": "python-debug",
+      "autoIssues": [],
+      "chars": 1675,
+      "ufffd": 0
+    },
+    {
+      "id": "q4",
+      "kind": "ukrainian-instructions",
+      "autoIssues": [],
+      "chars": 373,
+      "ufffd": 0
+    },
+    {
+      "id": "q5",
+      "kind": "instruction-following",
+      "autoIssues": [],
+      "chars": 93,
+      "ufffd": 0
+    },
+    {
+      "id": "q6",
+      "kind": "structured-json",
+      "autoIssues": [],
+      "chars": 162,
+      "ufffd": 0
+    },
+    {
+      "id": "fn006-nonstream",
+      "ufffd": 10
+    }
+  ]
+}

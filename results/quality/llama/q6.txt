@@ -1,0 +1,10 @@
+{
+  "engine": "NebulaCore v4.2",
+  "supports_cuda": true,
+  "max_context": 128000,
+  "alternatives": [
+    "QuantumStream",
+    "DeepMind Lite",
+    "TensorFlow-X"
+  ]
+}

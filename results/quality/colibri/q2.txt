@@ -1,0 +1,10 @@
+```sql
+SELECT DISTINCT ON (customer_id) 
+    id, 
+    customer_id, 
+    total_eur 
+FROM orders 
+ORDER BY customer_id, created_at DESC;
+```
+
+To optimize this query, add a composite index on `(customer_id, created_at DESC)` because it allows the database to efficiently locate the most recent order for each customer without scanning the entire table or performing a sort operation. This index supports the `DISTINCT ON` clause by providing the necessary ordering directly from the index structure.

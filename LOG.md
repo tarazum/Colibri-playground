@@ -623,6 +623,32 @@ multi-turn caching works out of the box. Colibri's remaining differentiators
 are Brio-style closed decisions, engine flexibility, and the
 very-large-model streaming story (not tested here).
 
+## 2026-09-24 — Phase 10 quality screen: RESULTS
+
+Battery: prompts/quality_battery.json (C# reasoning, SQL, Python debug,
+Ukrainian constrained, English constrained, structured JSON), temperature=0,
+tools/quality_screen.py, both engines (results/quality/{colibri,llama}/).
+
+- Automated checks: 6/6 PASS on BOTH engines (Ukrainian bullet/constraint
+  shape, exact 2-sentence + required/forbidden words + trailing digit,
+  valid JSON with all fields). Zero U+FFFD in battery outputs on both.
+- Semantic review: the one visible difference is q1 (LINQ deferred
+  execution): llama answers cleanly ("20,40,60" with a tight explanation);
+  colibri first says "20,40", then self-corrects mid-answer and leaks
+  meta-chatter ("Wait, the prompt asks for at most four sentences, let me
+  re-evaluate"). Single sample — anecdote, not a verdict — but noted as a
+  quant-degradation signal for the decision file. q3 (tricky dedup bug)
+  gets comparable hedged answers from both; q4/q5/q6 equivalent.
+- FN-006 RESOLVED diagnostically: p4 rerun NON-STREAMED reproduces exactly
+  10 U+FFFD → the corruption is in the CONTAINER'S TOKENIZER path, not
+  streaming; deterministic; long-form Ukrainian only (battery q4 clean).
+  Upstream-issue candidate #4, blame narrowed.
+
+Phase verdict: int4-gs64 quality is adequate for practical use (structure,
+instructions, JSON, Ukrainian all pass); one reasoning-sloppiness signal
+vs the GGUF sibling; tokenizer corruption on long-form Ukrainian remains
+the sharpest quality defect.
+
 Phase verdict: Brio mechanics work, fast and deterministic; entropy is the
 honest confidence signal; the default normalization is broken (FN-010 —
 use sum); the middle option needs prompt/option engineering to ever win;

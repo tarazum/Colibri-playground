@@ -1,0 +1,1 @@
+An index speeds up data retrieval by creating a sorted reference structure. This optimization ensures rapid access to specific records without scanning the entire dataset 7

@@ -1,0 +1,48 @@
+{
+  "engine": "llama",
+  "timestamp": "2026-09-24T15:56:25+00:00",
+  "results": [
+    {
+      "id": "q1",
+      "kind": "csharp-reasoning",
+      "autoIssues": [],
+      "chars": 410,
+      "ufffd": 0
+    },
+    {
+      "id": "q2",
+      "kind": "sql",
+      "autoIssues": [],
+      "chars": 467,
+      "ufffd": 0
+    },
+    {
+      "id": "q3",
+      "kind": "python-debug",
+      "autoIssues": [],
+      "chars": 1738,
+      "ufffd": 0
+    },
+    {
+      "id": "q4",
+      "kind": "ukrainian-instructions",
+      "autoIssues": [],
+      "chars": 369,
+      "ufffd": 0
+    },
+    {
+      "id": "q5",
+      "kind": "instruction-following",
+      "autoIssues": [],
+      "chars": 172,
+      "ufffd": 0
+    },
+    {
+      "id": "q6",
+      "kind": "structured-json",
+      "autoIssues": [],
+      "chars": 169,
+      "ufffd": 0
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+An index helps speed up data retrieval operations. The system processes records efficiently.7
