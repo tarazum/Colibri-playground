@@ -79,10 +79,14 @@ toolchain change.
       to docs/patches/. Upstream issue candidates narrowed to two tiny,
       precisely evidenced defects (think-marker re-render; trailing token
       not streamed)
-- [ ] FN-007: warm-persisted (HEAT_FILE) blocked upstream — launcher
-      hard-kills the engine child on Windows; pick a workaround (direct
-      engine run with SNAP+HEAT_FILE, or upstream patch CTRL_BREAK to child)
-      before Phase 5
+- [x] FN-007 RESOLVED (2026-09-23): root cause = atexit-only teardown +
+      hard-kill stop paths on ALL platforms (+ no graceful Windows stop at
+      all). Our 4-hunk Python patch (docs/patches/heat-save-stdin-drain.patch)
+      validated: HEAT_FILE saved/loaded; warm-persisted beats warm-process
+      (12.1-15.0 tok/s, p5 TTFT 26.6 s). Upstream: issue #1733, PR #1734
+      (dev). Gate D now has full-process AND persisted-heat evidence.
+      Watch: upstream review may reshape the patch — resync the lab clone
+      when they respond
 - [x] Gate D metric source found: tune profile JSON carries hit_pct per
       sample (results/placement/tune_profile.json) — use tune-mode samples
       for hit-rate evidence until serve exposes it

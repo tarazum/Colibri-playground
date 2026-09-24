@@ -1,0 +1,1 @@
+The incident was caused by raising the ledger client connection pool from 20 to 64 per pod. At its worst point, the p99 latency on POST /charge reached 840 ms.

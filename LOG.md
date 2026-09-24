@@ -532,6 +532,36 @@ prompt, tuned profile + auto-tier). Artifacts: results/thermal/.
   perf_counter (negative-minute bucket keys); bucket values and ordering
   were valid, timestamps were not; fixed for future runs.
 
+## 2026-09-23 — FN-007 SOLVED end-to-end and reported upstream (issue #1733, PR #1734)
+
+Owner's plan: consult Opus first, then file the issue AND write the patch
+so our own test passes, offering the patch upstream. Executed in full:
+
+1. Opus sanity check: **NO-GO as drafted** — my draft wrongly framed the
+   bug as Windows-only (qwen36 has no signal handlers at all: POSIX is
+   broken the same way; only atexit exists) and my CTRL_BREAK fix could
+   not work (no receiver). Correct trigger found by the review: close the
+   engine's stdin (serve loop fgets EOF → main returns → atexit → save).
+2. Patch (4 hunks, all in the Python layer, zero C changes):
+   Engine.close stdin-drain (COLI_ENGINE_DRAIN_S=30), serve() SIGBREAK
+   handler on Windows, engine spawned in its own process group, coli stop
+   launcher-first. Plus c/tests/test_engine_close_drain.py (2 unit tests,
+   pass in 0.6 s). First validation attempt failed → revealed the second
+   half of the bug (launcher had no graceful Windows stop either) → hunks
+   3-4 → second validation green.
+3. Validation (results/cuda-heat-validation-fixed2/): `[qtier] HEAT_FILE
+   saved` on every stop, `[qtier] HEAT_FILE loaded` on restart;
+   **warm-persisted BEATS warm-process**: decode 10.1-11.0 → 12.1-15.0
+   tok/s, p5 TTFT 43.9 → 26.6 s. Learned heat survives restarts and pays
+   from the first token — the strongest Gate D evidence of the project.
+4. Upstream: issue https://github.com/JustVugg/colibri/issues/1733
+   (corrected body, cross-platform framing), PR against dev
+   https://github.com/JustVugg/colibri/pull/1734 (clean branch from
+   v1.12.0, only the fix + test; the local diagnostic qwen36.c patch
+   stays out). Lab clone now runs the fix branch.
+5. LL-013 recorded: fix-via-signal requires the receiver to handle it —
+   read the receiver's handler table before proposing the mechanism.
+
 Phase verdict: Brio mechanics work, fast and deterministic; entropy is the
 honest confidence signal; the default normalization is broken (FN-010 —
 use sum); the middle option needs prompt/option engineering to ever win;

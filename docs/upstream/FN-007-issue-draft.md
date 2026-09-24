@@ -1,55 +1,33 @@
-# Upstream issue draft — FN-007 (not yet filed)
-
-Repo: JustVugg/colibri · target: GitHub Issue (bug template) · prepared 2026-09-23
+# Upstream issue — FILED 2026-09-23 (body preserved for the record)
 
 ---
 
-**Title:** Windows: `coli serve` never saves HEAT_FILE — the launcher
-hard-kills the engine child on shutdown
+**Title:** qwen36 engine never saves HEAT_FILE under `coli serve` (all platforms; teardown is atexit-only, every stop path is a hard kill)
 
-**Environment:** v1.12.0 (commit dcd73832f293750086643e1f0ccd2cd6d067259c),
-Windows 11 26200, Qwen3.6-35B-A3B int4-gs64 container, CUDA tier
-(qwen36.exe CUDA_DLL=1), RTX 5070 Laptop.
+**Environment:** v1.12.0 (dcd73832f293750086643e1f0ccd2cd6d067259c), Windows 11 26200; Qwen3.6-35B-A3B int4-gs64, CUDA tier (`make qwen36.exe CUDA_DLL=1`), RTX 5070 Laptop 8 GB. Code inspection says POSIX is affected the same way.
 
-**What happens:** the engine's heat-save teardown never runs when the
-server is stopped through `coli serve`, so `HEAT_FILE` (warm-start
-persistence, `qwen36_tier.c` save path around lines 1142-1150, banner
-`[qtier] HEAT_FILE saved`) is never written. The feature is effectively
-dead on Windows.
+**What happens:** the engine's heat save (`qt_shutdown` writing HEAT_FILE, `c/qwen36_tier.c:1142-1150`, banner `[qtier] HEAT_FILE saved`) is registered only via `atexit` (`c/qwen36.c:3478`). No signal handler exists in qwen36 (the `g_shutdown`/`term_sig` machinery is GLM-engine-only, `c/colibri.c:7617-7649`, and POSIX-only), so any hard stop skips the save — and every launcher stop path is a hard stop:
 
-**Why:** the engine child is stopped via terminate()/`os.kill(pid,
-SIGTERM)` — on Windows both are TerminateProcess (the code's own comment
-at `c/coli` line ~2263 notes this: "os.kill(SIGTERM) is TerminateProcess
-on Windows anyway"). The C engine has no chance to run its teardown.
-`env_for_engine` correctly passes HEAT_FILE through (`os.environ.copy()`),
-so the environment variable reaches the engine — only the shutdown signal
-does not.
+- `Engine.close` (`c/openai_server.py:3373`) uses `terminate()`/`kill()` — the serve path's normal shutdown, also reached from the launcher SIGTERM handler;
+- `coli stop` additionally TerminateProcesses the engine pid directly (`c/coli:2248-2264`).
 
-**Reproduced twice, from outside the engine:**
-1. `Popen.terminate()` on `coli serve` → no `[qtier] HEAT_FILE saved`, no
-   heat file on disk.
-2. `CTRL_BREAK_EVENT` with `CREATE_NEW_PROCESS_GROUP` → the Python
-   launcher shuts down gracefully, the engine child is still killed hard;
-   no save banner, no file.
+On Windows there is also no way to reach a graceful exit from outside: `os.kill(pid, SIGTERM)` is TerminateProcess (bypasses the SIGTERM handler), and an unhandled CTRL_BREAK/SIGBREAK kills the serve loop before its `finally` can clean up.
 
-Logs available on request (serve logs with `[qtier] dev 0: budget...`,
-`[qtier] CUDA VRAM expert tier active`, clean shutdown, no save).
+Net effect: warm-start persistence (HEAT_FILE) never happens under `coli serve`, on any platform.
 
-**Expected:** stopping `coli serve` on Windows lets the engine child run
-its teardown so HEAT_FILE is saved (and `[qtier] HEAT_FILE saved` appears
-in the log), matching the POSIX behavior.
+**Reproduced on Windows** (from outside the engine): `Popen.terminate()` → no save banner, no heat file. `CTRL_BREAK_EVENT` + `CREATE_NEW_PROCESS_GROUP` → launcher dies without cleanup, engine hard-killed (job object), no save. Logs available.
 
-**Suggested fix direction:** on Windows, before terminate(), signal the
-ENGINE child directly with `CTRL_BREAK_EVENT` (spawned with
-`CREATE_NEW_PROCESS_GROUP`), wait briefly for the save banner/log, then
-fall back to the current hard kill.
+**Expected:** stopping `coli serve` lets the engine reach its atexit teardown so HEAT_FILE is saved, on all platforms.
 
----
+**Fix (validation numbers below):** the engine's serve loop reads requests from stdin (`serve_read_req` → `fgets`, `c/qwen36.c:2906`); EOF returns the loop, `main` returns, `atexit` runs, HEAT_FILE is saved. So:
 
-Sibling candidates from the same evaluation, filed separately if welcome:
-- brio `normalize="mean"` default is token-count biased (multi-token
-  options systematically win; all 30 of our test cases answered DENY under
-  mean, correct under sum)
-- KV prefix reuse cannot round-trip through the public API (chat re-render
-  drops the fed `<think>` marker; the streamed text drops the final
-  generated newline token)
+1. `Engine.close`: close the engine's stdin and wait a generous drain window (`COLI_ENGINE_DRAIN_S`, default 30 s — EOF only lands between turns) before the existing terminate/kill ladder;
+2. `serve()`: on Windows also handle SIGBREAK — CTRL_BREAK is the one console signal a controller can target at the serve process group, and without a handler it kills the loop before the finally;
+3. `Engine.__init__`: spawn the engine in its own process group on Windows so the group-targeted CTRL_BREAK cannot kill it before the drain lands;
+4. `coli stop`: stop launchers first and give them the drain window before touching engine pids.
+
+**Validation (Windows, RTX 5070 Laptop, same 5-prompt workload):** before the fix, no heat file after any shutdown; after it — `[qtier] HEAT_FILE saved` on every stop, `[qtier] HEAT_FILE loaded` on restart, and the warm-persisted pass beats the same-process warm pass (decode 10.1-11.0 → 12.1-15.0 tok/s; long-context TTFT 43.9 → 26.6 s). Unit tests for the shutdown handshake included (`c/tests/test_engine_close_drain.py`).
+
+Known remaining gap (out of scope here): `coli stop` from another console still cannot deliver a graceful stop on Windows — os.kill/GenerateConsoleCtrlEvent cannot target an unrelated console; that needs a control channel (HTTP endpoint or file flag).
+
+PR against `dev` follows.
