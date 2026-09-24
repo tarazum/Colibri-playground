@@ -1,0 +1,17 @@
+### Lookup Complexity
+
+Hash indexes excel in point lookups. They utilize a hash function to map a key directly to a bucket location, offering an average time complexity of O(1) for exact match queries. This makes them incredibly fast for retrieving a single record by its primary key or unique identifier. In contrast, B+tree indexes rely on a balanced tree structure. Searching for a specific key requires traversing from the root to a leaf node, resulting in a time complexity of O(log N). While slightly slower for single-point queries, this logarithmic performance remains highly efficient even as data scales to billions of rows.
+
+### Range Queries and Ordering
+
+This is the most significant differentiator. Hash indexes are fundamentally unordered; they cannot determine which bucket contains values greater than or less than a given key. Consequently, they are useless for range queries (e.g., `WHERE age > 25`) or sorting operations. B+tree indexes, however, store keys in sorted order within leaf nodes, which are linked together. This structure allows for efficient range scans and ordered retrieval, making B+trees the default choice for queries involving `BETWEEN`, `<`, `>`, or `ORDER BY` clauses.
+
+### Memory Versus Disk Tradeoffs
+
+Hash indexes are generally more compact and cache-friendly for exact matches because they often reside in memory (in-memory hash tables) to achieve O(1) performance. However, they suffer from high collision resolution overhead if the hash table becomes too large for memory. B+trees are designed specifically for disk-based storage. Their node structure aligns well with disk block sizes, minimizing I/O operations. While B+trees consume more memory to maintain tree pointers and structure, their ability to read large contiguous blocks of data makes them superior for disk-bound workloads.
+
+### OLTP Versus Analytics Workloads
+
+In Online Transaction Processing (OLTP) systems, where millions of small, random transactions occur, the choice depends on the query pattern. If the workload is dominated by primary key lookups (e.g., fetching a user by ID), a hash index can provide superior performance. However, most OLTP systems still rely heavily on B+trees because they support transactions, concurrency control, and the occasional range query required for business logic.
+
+Conversely, in Online Analytical Processing (OLAP) or data warehousing, B+trees are rarely used for large-scale scanning. Analytics workloads typically involve scanning large portions of a table

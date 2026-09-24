@@ -170,6 +170,11 @@ def one_request(base: str, model_id: str, prompt: dict, timeout_s: int) -> dict:
         "max_tokens": prompt["max_tokens"],
         "stream": True,
         "stream_options": {"include_usage": True},
+        # Qwen3.6 is a hybrid reasoner: llama.cpp streams its output as
+        # reasoning_content unless thinking is disabled in the template.
+        # colibri runs its own thinking-off path server-side and ignores
+        # this kwarg; the parser also falls back to reasoning_content.
+        "chat_template_kwargs": {"enable_thinking": False},
     }
     url = f"{base}/chat/completions"
     started = time.perf_counter()
@@ -221,7 +226,7 @@ def one_request(base: str, model_id: str, prompt: dict, timeout_s: int) -> dict:
             if obj.get("usage"):
                 usage = obj["usage"]
             delta = (obj.get("choices") or [{}])[0].get("delta", {})
-            content = delta.get("content")
+            content = delta.get("content") or delta.get("reasoning_content")
             if content:
                 if ttft is None:
                     ttft = time.perf_counter() - started

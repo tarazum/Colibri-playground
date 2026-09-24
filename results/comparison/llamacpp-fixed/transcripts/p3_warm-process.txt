@@ -1,0 +1,37 @@
+```python
+def merge_windows(intervals: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    """
+    Merge overlapping half-open intervals [start, end).
+    
+    Touching half-open intervals are NOT overlapping and must remain separate.
+    For example, [1,2) and [2,3) stay as two separate intervals.
+    
+    Args:
+        intervals: A list of half-open intervals as (start, end) tuples.
+        
+    Returns:
+        A list of merged non-overlapping half-open intervals, sorted by start time.
+    """
+    if not intervals:
+        return []
+    
+    # Sort intervals by start time, then by end time
+    sorted_intervals = sorted(intervals, key=lambda x: (x[0], x[1]))
+    
+    merged = [sorted_intervals[0]]
+    
+    for start, end in sorted_intervals[1:]:
+        last_start, last_end = merged[-1]
+        
+        # Check if the current interval overlaps with the last merged interval
+        # Overlap occurs when start < last_end (since intervals are half-open [start, end))
+        # Touching intervals (start == last_end) do NOT overlap
+        if start < last_end:
+            # Merge: extend the end if needed
+            merged[-1] = (last_start, max(last_end, end))
+        else:
+            # No overlap, add as new interval
+            merged.append((start, end))
+    
+    return merged
+```

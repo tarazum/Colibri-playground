@@ -56,6 +56,14 @@ toolchain change.
   tune winner OMP_NUM_THREADS=4 (+6%); tuned warm pass p2-p4 ≈ 11.1-11.3
   tok/s (Gate B "clearly useful" band, single-pass caveat); profile in
   AppData + repo copy; [TUNE] banner confirms pickup
+- [x] Phase 11 llama.cpp comparison DONE (results/comparison/llamacpp-fixed/):
+      llama b11160 (prebuilt CUDA 13.4, --cpu-moe, 3.8 GB VRAM) — warm
+      decode 32.6-33.2 tok/s (~2.2-2.7x colibri's best), long-context TTFT
+      0.14 s (~200x better than colibri's 26.6 s with our own KV fix),
+      stability ~1%, transcripts correct, GPU 44-53 °C / ≤49 W. Gate E:
+      the simpler stack wins decisively on this machine for this model
+      class; colibri keeps Brio + engine flexibility + huge-model story.
+      Caveats: UD-Q4_K_M vs int4-gs64 quant, placement differs by design
 - [x] Phase 9 thermal DONE (results/thermal/): 16 min continuous — no
       throttling (max 57 °C, 55 W of 95, SM 2647 MHz at peak temp); decode
       CLIMBED 9.6 → 15.5 tok/s over the run (+61%) — the learned hot-expert

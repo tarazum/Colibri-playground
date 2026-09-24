@@ -562,6 +562,67 @@ so our own test passes, offering the patch upstream. Executed in full:
 5. LL-013 recorded: fix-via-signal requires the receiver to handle it —
    read the receiver's handler table before proposing the mechanism.
 
+## 2026-09-23 — Phase 11 llama.cpp comparison (START NOTE)
+
+Plan: (1) fetch the latest prebuilt CUDA Windows build of llama.cpp
+(ggml-org releases: llama-b*-bin-win-cuda-x64.zip + cudart zip →
+C:\Tools\llamacpp; no build step — that itself is comparison data);
+(2) start llama-server on the pinned GGUF
+(C:\Models\qwen36_Q4_K_M\Qwen3.6-35B-A3B-UD-Q4_K_M.gguf, 21 GB,
+UD-Q4_K_M — quant-scheme caveat recorded) with a placement that mirrors
+the comparison's question: GPU trunk + CPU experts (--cpu-moe style if
+the build supports it, else partial -ngl), ctx 8192, threads 4 (mirrors
+our omp-4 finding), port 8010; (3) reuse tools/bench_serve.py against
+--base-url (its OpenAI-compatible API) — same p1-p5, temperature=0, fixed
+caps, cold + 3 warm passes → results/comparison/llamacpp/; (4) nvidia-smi
+logger + RAM working set; (5) compare vs colibri tuned numbers
+(Phase 4: 9.7-11.3 tok/s warm, TTFT 3-48 s; persisted-heat 12.1-15.0).
+Fairness caveats: quant differs (int4-gs64 vs UD-Q4_K_M); placement
+strategies differ by design — the comparison is stacks, not kernels.
+
+## 2026-09-24 — Phase 11 llama.cpp comparison: RESULTS
+
+Setup: prebuilt b11160 CUDA-13.4 Windows build (download + unzip, no
+compile; 144 MB bin + 404 MB cudart), llama-server with the pinned GGUF
+(UD-Q4_K_M, 21 GB), `-c 8192 -t 4 -ngl 99 --cpu-moe` (GPU trunk + CPU
+experts — mirrors colibri's placement), model load 7.7 s, ~3.8 GB VRAM.
+Same harness (bench_serve via --base-url), same p1-p5, temperature=0.
+Harness notes: llama streams reasoning models as `reasoning_content` —
+fixed by `chat_template_kwargs:{enable_thinking:false}` + parser
+fallback (parity with colibri's thinking-off path). First (parser-broken)
+run's walls already matched; the fixed run (results/comparison/
+llamacpp-fixed/) is authoritative.
+
+Warm medians (3 passes, variance ~1%):
+
+| prompt | llama tok/s | llama TTFT | colibri best tok/s | colibri best TTFT |
+|---|---|---|---|---|
+| p1 | 32.6 | 0.16 s | 11.2 (tuned) | 2.4 s |
+| p2 | 33.1 | 1.1 s | 14.4 (persisted) | 4.4 s |
+| p3 | 33.2 | 0.12 s | 12.1 (persisted) | 7.5 s |
+| p4 | 33.0 | 1.07 s | 15.0 (persisted) | 4.9 s |
+| p5 | 32.9 | 0.14 s | 13.4 (persisted) | 26.6 s |
+
+Colibri "best" = tuned profile or persisted-heat runs — its strongest
+numbers of the project; llama still wins decode ~2.2-2.7x and long-context
+TTFT by ~200x (0.14 s vs 26.6 s — llama's prefix cache keeps the 535-token
+prompt across requests; colibri's KV-reuse (fixed by us) reaches 2.75 s).
+GPU during llama run: 44-53 °C, ≤49 W, 3.8 GB VRAM, util med 40% — cooler
+AND lighter than colibri's tier. Quality: transcripts correct (p1/p5
+facts exact; p3 follows the touching-interval rule). Stability: 32.9-33.2
+tok/s across all warm passes.
+
+Caveats recorded: quant differs (UD-Q4_K_M vs int4-gs64); placement
+strategies differ by design; llama's cold pass benefited from a warm page
+cache and server slots pre-seeded by the earlier run (its warm numbers are
+the fair comparison point).
+
+Gate E reading: on THIS machine, for THIS model class, the simpler stack
+is decisively faster end-to-end, lighter on VRAM, zero-build, and its
+multi-turn caching works out of the box. Colibri's remaining differentiators
+are Brio-style closed decisions, engine flexibility, and the
+very-large-model streaming story (not tested here).
+
 Phase verdict: Brio mechanics work, fast and deterministic; entropy is the
 honest confidence signal; the default normalization is broken (FN-010 —
 use sum); the middle option needs prompt/option engineering to ever win;

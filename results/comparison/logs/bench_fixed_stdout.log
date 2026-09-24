@@ -1,0 +1,159 @@
+[server] reusing http://127.0.0.1:8010/v1
+[server] ready, model id = C:\Models\qwen36_Q4_K_M\Qwen3.6-35B-A3B-UD-Q4_K_M.gguf
+=== COLD pass (fresh process, 5 prompts) ===
+  [p1] wall=1.6s ttft=0.51s tok=33 tok/s=28.05
+  [p2] wall=18.2s ttft=1.71s tok=500 tok/s=30.19
+  [p3] wall=13.3s ttft=2.14s tok=327 tok/s=29.17
+  [p4] wall=16.0s ttft=1.13s tok=450 tok/s=30.25
+  [p5] wall=1.5s ttft=0.21s tok=44 tok/s=32.77
+=== WARM pass 1/3 ===
+  [p1] wall=1.1s ttft=0.16s tok=33 tok/s=32.97
+  [p2] wall=16.2s ttft=1.13s tok=500 tok/s=33.14
+  [p3] wall=9.9s ttft=0.12s tok=326 tok/s=33.24
+  [p4] wall=14.6s ttft=1.07s tok=450 tok/s=33.21
+  [p5] wall=1.4s ttft=0.14s tok=44 tok/s=32.99
+=== WARM pass 2/3 ===
+  [p1] wall=1.1s ttft=0.16s tok=33 tok/s=33.1
+  [p2] wall=16.3s ttft=1.11s tok=500 tok/s=32.92
+  [p3] wall=10.0s ttft=0.12s tok=327 tok/s=33.13
+  [p4] wall=14.6s ttft=1.07s tok=450 tok/s=33.19
+  [p5] wall=1.4s ttft=0.14s tok=44 tok/s=32.97
+=== WARM pass 3/3 ===
+  [p1] wall=1.1s ttft=0.16s tok=33 tok/s=32.57
+  [p2] wall=16.2s ttft=1.14s tok=500 tok/s=33.1
+  [p3] wall=10.0s ttft=0.13s tok=328 tok/s=33.2
+  [p4] wall=14.7s ttft=1.06s tok=450 tok/s=33.0
+  [p5] wall=1.4s ttft=0.13s tok=44 tok/s=32.92
+{
+  "p1": {
+    "cold": {
+      "timestamp": "2026-09-24T15:39:58+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "llamacpp",
+      "state": "cold",
+      "promptId": "p1",
+      "promptTokens": 35,
+      "generatedTokens": 33,
+      "ttftSeconds": 0.508,
+      "decodeTokensPerSecond": 28.048,
+      "wallSeconds": 1.649,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 1.135,
+    "decodeTokensPerSecondMedian": 32.972,
+    "ttftSecondsMedian": 0.157,
+    "warmPersisted": null
+  },
+  "p2": {
+    "cold": {
+      "timestamp": "2026-09-24T15:40:17+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "llamacpp",
+      "state": "cold",
+      "promptId": "p2",
+      "promptTokens": 81,
+      "generatedTokens": 500,
+      "ttftSeconds": 1.708,
+      "decodeTokensPerSecond": 30.193,
+      "wallSeconds": 18.235,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 16.218,
+    "decodeTokensPerSecondMedian": 33.096,
+    "ttftSecondsMedian": 1.126,
+    "warmPersisted": null
+  },
+  "p3": {
+    "cold": {
+      "timestamp": "2026-09-24T15:40:30+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "llamacpp",
+      "state": "cold",
+      "promptId": "p3",
+      "promptTokens": 135,
+      "generatedTokens": 327,
+      "ttftSeconds": 2.135,
+      "decodeTokensPerSecond": 29.169,
+      "wallSeconds": 13.311,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 9.958,
+    "decodeTokensPerSecondMedian": 33.199,
+    "ttftSecondsMedian": 0.121,
+    "warmPersisted": null
+  },
+  "p4": {
+    "cold": {
+      "timestamp": "2026-09-24T15:40:46+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "llamacpp",
+      "state": "cold",
+      "promptId": "p4",
+      "promptTokens": 99,
+      "generatedTokens": 450,
+      "ttftSeconds": 1.128,
+      "decodeTokensPerSecond": 30.252,
+      "wallSeconds": 15.97,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 14.596,
+    "decodeTokensPerSecondMedian": 33.193,
+    "ttftSecondsMedian": 1.068,
+    "warmPersisted": null
+  },
+  "p5": {
+    "cold": {
+      "timestamp": "2026-09-24T15:40:47+00:00",
+      "colibriVersion": "v1.12.0",
+      "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+      "model": "C:/Models/qwen36_i4_gs64",
+      "modelRevision": null,
+      "mode": "llamacpp",
+      "state": "cold",
+      "promptId": "p5",
+      "promptTokens": 534,
+      "generatedTokens": 44,
+      "ttftSeconds": 0.213,
+      "decodeTokensPerSecond": 32.774,
+      "wallSeconds": 1.525,
+      "ramPeakGb": null,
+      "vramPeakGb": null,
+      "expertHitRate": null,
+      "notes": "cold = cold PROCESS, OS page cache may be warm"
+    },
+    "warmSamples": 3,
+    "wallSecondsMedian": 1.441,
+    "decodeTokensPerSecondMedian": 32.974,
+    "ttftSecondsMedian": 0.137,
+    "warmPersisted": null
+  }
+}
+total 181s; results in results\comparison\llamacpp-fixed

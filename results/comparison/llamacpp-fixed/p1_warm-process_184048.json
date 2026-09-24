@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-09-24T15:40:48+00:00",
+  "colibriVersion": "v1.12.0",
+  "colibriCommit": "dcd73832f293750086643e1f0ccd2cd6d067259c",
+  "model": "C:/Models/qwen36_i4_gs64",
+  "modelRevision": null,
+  "mode": "llamacpp",
+  "state": "warm-process",
+  "promptId": "p1",
+  "promptTokens": 35,
+  "generatedTokens": 33,
+  "ttftSeconds": 0.165,
+  "decodeTokensPerSecond": 32.972,
+  "wallSeconds": 1.135,
+  "ramPeakGb": null,
+  "vramPeakGb": null,
+  "expertHitRate": null,
+  "notes": ""
+}
