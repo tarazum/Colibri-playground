@@ -637,12 +637,27 @@ tools/quality_screen.py, both engines (results/quality/{colibri,llama}/).
   colibri first says "20,40", then self-corrects mid-answer and leaks
   meta-chatter ("Wait, the prompt asks for at most four sentences, let me
   re-evaluate"). Single sample — anecdote, not a verdict — but noted as a
-  quant-degradation signal for the decision file. q3 (tricky dedup bug)
-  gets comparable hedged answers from both; q4/q5/q6 equivalent.
+quant-degradation signal for the decision file. q3 (tricky dedup bug)
+gets comparable hedged answers from both; q4/q5/q6 equivalent.
 - FN-006 RESOLVED diagnostically: p4 rerun NON-STREAMED reproduces exactly
   10 U+FFFD → the corruption is in the CONTAINER'S TOKENIZER path, not
   streaming; deterministic; long-form Ukrainian only (battery q4 clean).
   Upstream-issue candidate #4, blame narrowed.
+
+## 2026-09-24 — PR #1734 CI round 1: one failure, diagnosed and fixed
+
+First CI run on the PR: all engine/CUDA/cluster jobs green; Python tests
+failed on `DispatcherTest.test_close_wakes_pending_generation_and_is_idempotent`
+(the Linux/macOS check jobs failed on the same suite). Root cause: our
+drain ladder only called terminate() on TimeoutExpired — but the suite's
+FakeProcess.wait() RETURNS None instead of raising, so terminate() was
+skipped entirely and the dispatcher stayed alive. Fix: decide the ladder
+by `poll()` after the drain wait (correct for real engines AND test
+doubles). Locally: our 2 drain tests + the full upstream
+test_openai_server module (176 tests) green. Pushed f5497c8; the CI
+matrix restarted and may wait for maintainer approval to run (fork PR).
+Hourly background watch scheduled (PR #1734 + issue #1733, reports only
+on movement); the owner will also ping manually when a run appears.
 
 Phase verdict: int4-gs64 quality is adequate for practical use (structure,
 instructions, JSON, Ukrainian all pass); one reasoning-sloppiness signal
