@@ -87,14 +87,11 @@ toolchain change.
       to docs/patches/. Upstream issue candidates narrowed to two tiny,
       precisely evidenced defects (think-marker re-render; trailing token
       not streamed)
-- [x] FN-007 RESOLVED (2026-09-23): root cause = atexit-only teardown +
-      hard-kill stop paths on ALL platforms (+ no graceful Windows stop at
-      all). Our 4-hunk Python patch (docs/patches/heat-save-stdin-drain.patch)
-      validated: HEAT_FILE saved/loaded; warm-persisted beats warm-process
-      (12.1-15.0 tok/s, p5 TTFT 26.6 s). Upstream: issue #1733, PR #1734
-      (dev). Gate D now has full-process AND persisted-heat evidence.
-      Watch: upstream review may reshape the patch — resync the lab clone
-      when they respond
+- [x] FN-007 RESOLVED AND MERGED UPSTREAM (2026-09-24): PR #1734 merged
+      into dev (50c9e16), issue #1733 closed by our fix; code landed
+      verbatim (stdin-drain, SIGBREAK, drain constant, our test in their
+      suite). Lab clone resynced to origin/dev — runs the merged fix
+      natively. Watch item closed
 - [x] Gate D metric source found: tune profile JSON carries hit_pct per
       sample (results/placement/tune_profile.json) — use tune-mode samples
       for hit-rate evidence until serve exposes it

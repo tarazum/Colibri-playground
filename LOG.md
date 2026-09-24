@@ -659,6 +659,28 @@ matrix restarted and may wait for maintainer approval to run (fork PR).
 Hourly background watch scheduled (PR #1734 + issue #1733, reports only
 on movement); the owner will also ping manually when a run appears.
 
+## 2026-09-24 — PR #1734 MERGED upstream; issue #1733 closed by our fix
+
+The hourly watch fired with the news: the maintainer merged #1734 into
+`dev` (merge commit 50c9e1608, 2026-09-24T19:54Z) and closed #1733 with a
+comment confirming our mechanism ("stopping coli serve closes the engine's
+stdin and waits for it to exit on its own, so its atexit teardown
+(HEAT_FILE) runs; SIGBREAK is handled on Windows..."). The merged code
+carries our implementation verbatim (_ENGINE_DRAIN_S / COLI_ENGINE_DRAIN_S,
+stdin drain, SIGBREAK handler, engine process-group isolation) and our
+unit test now lives in their suite. The CI rerun after our poll()-ladder
+fix went green (implicit in the merge).
+
+Actions taken: lab clone resynced to origin/dev (now running the merged
+fix natively; only our local qwen36.c divergence-diag patch and build
+bats remain uncommitted there); FN-007 updated to merged; the hourly
+upstream watch is obsolete — owner to disable it in the Automations page
+(the agent has no delete-automation tool).
+
+Milestone: this playground leaves a merged upstream contribution —
+warm-start persistence (HEAT_FILE) now works in Colibrì for every user,
+with the fix designed, validated, and defended end-to-end here.
+
 Phase verdict: int4-gs64 quality is adequate for practical use (structure,
 instructions, JSON, Ukrainian all pass); one reasoning-sloppiness signal
 vs the GGUF sibling; tokenizer corruption on long-form Ukrainian remains
