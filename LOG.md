@@ -681,6 +681,56 @@ Milestone: this playground leaves a merged upstream contribution —
 warm-start persistence (HEAT_FILE) now works in Colibrì for every user,
 with the fix designed, validated, and defended end-to-end here.
 
+## 2026-09-25 — upstream batch 2 (START NOTE): FN-010 + FN-009 fixes; FN-006 deferred
+
+Owner's orders: implement FN-010 (normalize default → sum + warning) and
+FN-009 (think-marker re-render + trailing-token stream fix, per the qwen38
+pattern); each draft goes through an Opus review BEFORE filing; FN-006 is
+shelved with detailed notes (owner decision).
+
+## 2026-09-25 — upstream batch 2 PREPARED (not filed; awaiting owner approval)
+
+FN-010 (brio normalize): branch fix/brio-normalize-default (8298d71) —
+default sum in both forms, stderr warning on unequal token counts under
+mean, docs/brio.md updated, 11/11 tests green. Draft v2 (Opus GO):
+volunteers REVIEW 0/10 under sum, 63% overall, repeat instability, and
+the overwritten-artifacts caveat (mean-run numbers survive in LOG).
+
+FN-009 (kv round-trip): the investigation went three layers deep —
+(1) raw-frame probe: engine streams faithfully; (2) the true mechanism
+found: token id 13 is '.', and the tokenizer merged '.<' (15294) across
+'<|im_end|>' — a pretokenizer symbol-run swallowing added tokens; we
+built and validated that engine fix (97% reuse) — then discovered
+upstream had ALREADY landed the equivalent (`next_special` in
+encode_text, #1653); (3) the remaining renderer gap: our Fix A (9 lines,
+now with a doubled-header guard, branch fix/qwen36-kv-roundtrip 6a33d8c)
+validated on current dev with a STANDARD client: reusing 940/972 (97%),
+follow-up TTFT 96 s → 3.7 s; quality battery 6/6 after the change.
+Opus review: NO-GO as v1 framing — the conformance test
+(test_qwen36_chat_template.py, byte-equality vs chat_template.jinja;
+skipped locally without the template) would fail, and first-hand
+jinja2 rendering of the PINNED template confirms it renders history
+turns bare on both branches: token-exact round-trip is impossible BY
+DESIGN under the official template. Draft v2 reframed as an explicit
+trade-off proposal (template literalism vs KV reuse; carve-out needed;
+alternative server-side splice offered; thinking-on limitation stated).
+
+Lab clone: branch `lab` = origin/dev + both fixes (7e2384e, 1f462f8);
+qwen36.exe rebuilt from dev C code; stash with obsolete mixes dropped.
+Nothing published anywhere — issues/PRs await the owner's approval,
+per standing order. Plan: (1) FN-006 deferred
+notes → docs/upstream/; (2) FN-010: find the normalize defaults in
+openai_server.py, flip to sum, add a bias warning when mean is requested
+with unequal option token counts, extend their test_brio_api.py, validate
+with our brio_test.py (default no-normalize request must report sum);
+(3) FN-009: Fix A render_chat_qwen think-marker (copy render_chat_qwen38
+pattern), Fix B — locate where the final generated '\n' (token id 13) is
+dropped from the stream (python detok/StopFilter vs engine emit path),
+fix it, and validate with a STANDARD client echo (no marker, no trailing
+newline added) expecting [PREFIX] reusing 96%; (4) one Opus review with
+separate GO/NO-GO per draft; (5) file issue+PR per accepted draft (dev
+branch, per CONTRIBUTING); (6) update FINDINGS/open_items/memory, push.
+
 Phase verdict: int4-gs64 quality is adequate for practical use (structure,
 instructions, JSON, Ukrainian all pass); one reasoning-sloppiness signal
 vs the GGUF sibling; tokenizer corruption on long-form Ukrainian remains

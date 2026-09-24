@@ -1,12 +1,12 @@
 {
   "engine": "colibri",
-  "timestamp": "2026-09-24T15:55:41+00:00",
+  "timestamp": "2026-09-24T22:13:00+00:00",
   "results": [
     {
       "id": "q1",
       "kind": "csharp-reasoning",
       "autoIssues": [],
-      "chars": 1016,
+      "chars": 413,
       "ufffd": 0
     },
     {
@@ -27,21 +27,21 @@
       "id": "q4",
       "kind": "ukrainian-instructions",
       "autoIssues": [],
-      "chars": 373,
+      "chars": 430,
       "ufffd": 0
     },
     {
       "id": "q5",
       "kind": "instruction-following",
       "autoIssues": [],
-      "chars": 93,
+      "chars": 148,
       "ufffd": 0
     },
     {
       "id": "q6",
       "kind": "structured-json",
       "autoIssues": [],
-      "chars": 162,
+      "chars": 172,
       "ufffd": 0
     },
     {

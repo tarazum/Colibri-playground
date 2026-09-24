@@ -158,12 +158,16 @@ def main() -> None:
             # WITHOUT the think marker — the prefix would diverge at the first
             # assistant turn and reuse would stay 0 forever. Prepending the
             # marker reconstructs the byte-identical fed prefix.
-            # Round-trip fix, layer 2 (divergence-diagnosed 2026-09-23): the
-            # model's LAST generated token is a trailing newline (token id 13),
-            # which the streamed text drops — the resent prefix then misses
-            # exactly the final held token. Append it back.
-            history.append({"role": "assistant",
-                            "content": "<think>\n\n</think>\n\n" + r["text"] + "\n"})
+            # 2026-09-25: with the upstream renderer fix (think-marker
+            # re-emitted server-side, open in c/openai_server.py) the client
+            # echo must be STANDARD. Keep the old workaround available via
+            # env KV_ECHO_WORKAROUND=1 for engines without the fix.
+            import os as _os
+            if _os.environ.get("KV_ECHO_WORKAROUND") == "1":
+                content = "<think>\n\n</think>\n\n" + r["text"] + "\n"
+            else:
+                content = r["text"]
+            history.append({"role": "assistant", "content": content})
             rec = {
                 "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "arm": arm,

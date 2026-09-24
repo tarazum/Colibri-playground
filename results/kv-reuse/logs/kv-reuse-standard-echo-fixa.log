@@ -1,0 +1,18 @@
+[server] pid=33840 no_reuse=False log=C:\projects\Colibri-playground\results\kv-reuse\logs\server_reuse_on.log
+  turn A: ttft=91.01s wall=97.8s tok=42
+  turn B: ttft=100.51s wall=107.9s tok=57
+  turn C: ttft=95.68s wall=99.4s tok=31
+{
+ "A": {
+  "ttft": 91.014,
+  "wall": 97.786
+ },
+ "B": {
+  "ttft": 100.513,
+  "wall": 107.861
+ },
+ "C": {
+  "ttft": 95.676,
+  "wall": 99.427
+ }
+}

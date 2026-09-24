@@ -1,1 +1,1 @@
-An index helps speed up data retrieval operations. The system processes records efficiently.7
+A well-designed index speeds up data retrieval significantly. This optimization ensures rapid access to records without scanning the entire dataset7
