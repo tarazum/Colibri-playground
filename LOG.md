@@ -730,7 +730,22 @@ notes. The daily-driver path on this machine is llama.cpp (tools and
 models in place); Colibrì stays a documented lab capability with review
 triggers (new releases with out-of-the-box KV reuse / heat / TTFT, or a
 hardware change). Standing watch: automation-1dabca01 until #1753
-reaches a terminal state. Plan: (1) FN-006 deferred
+reaches a terminal state.
+
+## 2026-09-25 — FN-010 MERGED: second upstream contribution landed
+
+The watch fired with the news: PR #1753 merged into dev at 21:20 UTC
+(merge commit 4e28e39); issue #1752 auto-closed ("Fixed by #1753... the
+default is now sum. It ships with the next release"). The maintainer
+independently verified our token-count analysis on their tokenizer
+(ALLOW/REVIEW=1, DENY=2, MAYBE=2, DISCUSS=3 — "exactly as you reported")
+and noted the mean-per-token rationale nuance in his comment.
+
+Actions: lab branch resynced — dev now carries the brio fix natively;
+only the FN-009 renderer cherry-pick remains on top (bf5fc89); FN-010
+marked closed-merged in FINDINGS. Project scoreboard: 2 upstream merges
+(#1734 heat-save, #1753 brio-sum), 1 shelved ready draft (FN-009),
+1 deferred with notes (FN-006). VERDICT stands: LAB ONLY. Plan: (1) FN-006 deferred
 notes → docs/upstream/; (2) FN-010: find the normalize defaults in
 openai_server.py, flip to sum, add a bias warning when mean is requested
 with unequal option token counts, extend their test_brio_api.py, validate
