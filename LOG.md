@@ -718,7 +718,19 @@ alternative server-side splice offered; thinking-on limitation stated).
 Lab clone: branch `lab` = origin/dev + both fixes (7e2384e, 1f462f8);
 qwen36.exe rebuilt from dev C code; stash with obsolete mixes dropped.
 Nothing published anywhere — issues/PRs await the owner's approval,
-per standing order. Plan: (1) FN-006 deferred
+per standing order.
+
+## 2026-09-25 — PROJECT VERDICT: LAB ONLY (Owner's decision)
+
+Owner chose В-1 (agent recommendation) — recorded in docs/final_results.md
+as the DECISION. The experiment is complete: 11 phases measured, verdict
+grounded in numbers, one upstream merge already landed (#1734), FN-010
+filed and in CI (#1752/#1753), FN-009/FN-006 shelved with ready drafts/
+notes. The daily-driver path on this machine is llama.cpp (tools and
+models in place); Colibrì stays a documented lab capability with review
+triggers (new releases with out-of-the-box KV reuse / heat / TTFT, or a
+hardware change). Standing watch: automation-1dabca01 until #1753
+reaches a terminal state. Plan: (1) FN-006 deferred
 notes → docs/upstream/; (2) FN-010: find the normalize defaults in
 openai_server.py, flip to sum, add a bias warning when mean is requested
 with unequal option token counts, extend their test_brio_api.py, validate
