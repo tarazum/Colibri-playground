@@ -745,7 +745,25 @@ Actions: lab branch resynced — dev now carries the brio fix natively;
 only the FN-009 renderer cherry-pick remains on top (bf5fc89); FN-010
 marked closed-merged in FINDINGS. Project scoreboard: 2 upstream merges
 (#1734 heat-save, #1753 brio-sum), 1 shelved ready draft (FN-009),
-1 deferred with notes (FN-006). VERDICT stands: LAB ONLY. Plan: (1) FN-006 deferred
+1 deferred with notes (FN-006). VERDICT stands: LAB ONLY.
+
+## 2026-09-26 — FN-009 filed issue-first (#1759, no PR); Phase 12 brief drafted
+
+Owner approved posting the shelved FN-009 as ISSUE + branch (my
+recommendation over an immediate PR: the fix deliberately diverges from
+chat_template.jinja, so a PR would land with a knowingly-red conformance
+test before the maintainer even agrees the trade is his to make; the
+branch compare-link gives him the full diff, and the PR is one command
+away on his word). Issue: JustVugg/colibri#1759 — evidence, option (b)
+implementation (guarded, 97% reuse / 3.7 s measured), alternatives
+(status quo / server-side splice), scope notes. Branch pushed:
+tarazum:fix/qwen36-kv-roundtrip.
+
+Also drafted: docs/phase12-glm53-flash-brief.md (backlog; owner will
+say when). Key feasibility fact verified in upstream docs: the glm53
+conversion is ONE-PASS shard-at-a-time (download+convert together,
+--min-free-gb 30), so peak disk ≈ 195 GB container + one shard — fits
+today's ~443 GB free without any hardware purchase. Plan: (1) FN-006 deferred
 notes → docs/upstream/; (2) FN-010: find the normalize defaults in
 openai_server.py, flip to sum, add a bias warning when mean is requested
 with unequal option token counts, extend their test_brio_api.py, validate
