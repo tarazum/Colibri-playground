@@ -856,3 +856,23 @@ Changes:
   Phase 12 numbers (321B on the laptop), updated repo layout (final_results
   as entry point), methodology, MIT.
 - docs/open_items.md: status banner only.
+
+## 2026-09-27 — Audit follow-up (Owner decisions) + #1767 verified merged
+
+- Owner picked for the audit leftovers: "(private)" markers; dead link
+  removed; tune_autotier username stays. LOG.md's own historical mentions
+  of private projects left as-is (append-only journal).
+- Markers: AGENTS.md (IDENN source, playbook contract), LESSONS_LEARNED.md
+  header (one marker covering all PB-NNN back-links), final_results.md
+  (LACA x2, dead link model_and_process_recommendations_sep2026.md
+  removed). Bonus fact fix: final_results said "PR #1734 pending" ->
+  corrected to merged 2026-09-24; "Стан і що далі" rewritten to reflect
+  the closed upstream cycle.
+- PR #1767 verified via gh: MERGED 2026-09-27T10:06:14Z (merge 0e85efb;
+  our acf7044 Co-authored-by is in dev history); issue #1759 auto-closed
+  3 s later. Latest release v1.12.1 (2026-09-24T22:10Z) predates the
+  merge -> #1767 ships with the first release AFTER v1.12.1 (matches
+  Owner's "включено в наст реліз"). README ("merged") stays correct.
+- Lab clone C:\projects\colibri: checked out -B dev origin/dev — HEAD is
+  0e85efb itself (the #1767 merge; #1768 docs merge right after); branch
+  pr-1767 kept locally; untracked build helpers untouched.
