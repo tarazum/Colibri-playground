@@ -82,7 +82,37 @@ Yes, materially faster — and the biggest lever is NOT RAID:
   big-model path buys MODEL CLASS (a brain no consumer GPU can hold),
   not tokens-per-hryvnia. Both can coexist on the same box.
 
-## 4. If we ever run Phase 12
+## 5. MEASURED (Phase 12, 2026-09-27 — replaces the §2/§3 Flash extrapolations)
+
+GLM-5.3-Flash (321B/40B active, 194.7 GB container) ON THIS LAPTOK, CPU
+path (no VRAM tier for this family), 29 GB warm-expert budget, project
+artifacts: results/phase12/:
+
+- storage: **O_DIRECT 4.54 GB/s** / buffered 6.44 GB/s (14 MB blocks,
+  the DRAM-less OS-shared KIOXIA performed far above fear)
+- generation (short prompt): cold TTFT **43.3 s**, decode **0.46 tok/s**;
+  warm (same prompt) TTFT 35 s, decode **0.61 tok/s**
+- **Brio verdicts (sum default, our #1753): 5/6 correct** — short states
+  **65–87 s** each with p(top) up to 0.998; a ~600-word dossier verdict
+  in **12 min** (correct, honestly uncertain)
+- footprint: 34.5 GB RSS, ~2 GB system RAM left, system responsive
+- learned heat: **none in glm53** (no counter in source; expert LRU is
+  process-local) — warm-up is per-process only
+
+Revised ladder: the laptop's real big-model niche is CONFIRMED as
+"**ask the giant occasionally**" — a minute per short verdict, ~12 min
+per document verdict, not chat. The §3 gaming-PC estimate (RAM →
+striped disks → GPU) still stands for anything faster; for THIS
+model class, 64 GB RAM already holds a 17% hot set and the disk
+delivers 4.5 GB/s — the CPU expert compute became the visible limiter
+(0.6 tok/s at ~30 MB/token cold traffic ≈ 18 MB/s effective vs 4.5
+GB/s available), which is why more RAM (hit rate) helps more than
+more disk.
+
+Conversion: one-pass shard-at-a-time, 212 min unauthenticated
+(throttled); model deleted after measurements (disk returned to 378 GB).
+
+## 4. If we ever run Phase 12 (DONE — see §5)
 
 1. Start WITHOUT new hardware: Flash 321B fits today's free space
    (~195 GB of ~443 GB) — measure cold/warm/Brio on the laptop, build

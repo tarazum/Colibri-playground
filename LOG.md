@@ -763,7 +763,49 @@ Also drafted: docs/phase12-glm53-flash-brief.md (backlog; owner will
 say when). Key feasibility fact verified in upstream docs: the glm53
 conversion is ONE-PASS shard-at-a-time (download+convert together,
 --min-free-gb 30), so peak disk ≈ 195 GB container + one shard — fits
-today's ~443 GB free without any hardware purchase. Plan: (1) FN-006 deferred
+today's ~443 GB free without any hardware purchase.
+
+## 2026-09-26 — Phase 12 START (glm53-flash feasibility; owner gave the go)
+
+Start note per AGENTS. State: 378 GB free (verified by owner); brief at
+docs/phase12-glm53-flash-brief.md (peak ~235 GB, guard 30 GB, S7 cleanup
+after numbers). Plan: S1 build glm53 engine (CPU smoke, then CUDA DLL) →
+S2 background one-pass conversion to C:\Models\glm53_flash_i4
+(artifact-verified: dir growth + converter log + --min-free-gb 30) →
+S3 doctor + one short generation (minute-scale TTFT is EXPECTED) with
+telemetry → S4 Brio verdict (5-10 cases, sum default) → S5 heat semantics
+of glm53 + does our stdin-drain fix save anything → S6 numbers to
+results/phase12/ + hardware-notes extrapolation replacement → S7 delete
+the container. No other large downloads until S7. Next command after
+this note: converter recon, then `build_cpu.bat glm53.exe`.
+
+## 2026-09-27 — Phase 12 COMPLETE (all slices, artifact-verified)
+
+Numbers (full JSON: results/phase12/phase12_results.json):
+
+- Conversion: 62 shards, 194.7 GB, 212 min unauthenticated.
+- Storage probe: O_DIRECT 4.54 GB/s / buffered 6.44 GB/s on 14 MB
+  blocks — the DRAM-less OS-shared KIOXIA vastly above fear.
+- Doctor: 39.7 GB RAM budget, 29.1 GB warm experts, 17% projected
+  residency, NO VRAM tier for glm53 (CPU path by design).
+- Generation (short prompt, temperature=0): COLD TTFT 43.3 s, decode
+  0.46 tok/s, answer correct; warm repeats TTFT ~35 s, decode 0.61
+  tok/s (+30%). Footprint: 34.5 GB RSS, system responsive at 2 GB free.
+- **Brio verdicts from the 321B brain (sum default = our #1753): 5/6
+  correct; short states 65-87 s with p(top) up to 0.998; the ~600-word
+  dossier verdict in 12 min (correct, H=0.65 honest uncertainty).**
+- Heat: glm53 has NO learned-heat mechanism (no counter in source;
+  expert LRU process-local) — warm-up is per-process only; our
+  stdin-drain fix applies but there is nothing to save.
+- S7 cleanup: container deleted, disk back to 378 GB free, engine
+  exited cleanly.
+
+Reading for the verdict's LAB-ONLY niche: "ask the giant occasionally"
+is REAL on this laptop — a minute per short verdict, ~12 min per
+document verdict. The visible limiter at these speeds is CPU expert
+compute, not disk (18 MB/s effective vs 4.5 GB/s available) — so on a
+gaming PC, MORE RAM (hit rate) buys more than more disk.
+hardware-notes §5 updated (extrapolations replaced by measurements). Plan: (1) FN-006 deferred
 notes → docs/upstream/; (2) FN-010: find the normalize defaults in
 openai_server.py, flip to sum, add a bias warning when mean is requested
 with unequal option token counts, extend their test_brio_api.py, validate

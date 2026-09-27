@@ -1,0 +1,51 @@
+{
+  "phase": "12-glm53-flash-feasibility",
+  "timestamp": "2026-09-27T03:5x:00+03:00",
+  "environment": "lab clone @ dev+bf5fc89; glm53.exe CUDA_DLL build (GPU tier not supported for this family -> CPU path); 378 GB free before, 196 GB during",
+  "conversion": {
+    "onePassShardAtATime": true,
+    "shards": 62, "outGB": 194.7, "minutes": 212,
+    "note": "unauthenticated HF (throttled); ~37 MB/s effective"
+  },
+  "storage": {
+    "iobenchODirect4t": "4.54 GB/s (14 MB blocks)",
+    "iobenchBuffered4t": "6.44 GB/s",
+    "note": "DRAM-less KIOXIA 1 TB, OS-shared"
+  },
+  "doctor": {
+    "ramBudgetGb": 39.7, "denseGb": 5.5, "warmExpertsGb": 29.1,
+    "projectedResidencyPct": 17, "vramTier": "none (CPU path)",
+    "limit": "disk expert misses"
+  },
+  "generation": {
+    "cold": {"ttftSeconds": 43.3, "decodeTokS": 0.46, "wallSeconds": 56.4,
+             "answer": "correct (Canberra)", "maxTokens": 40},
+    "warmRepeats": [
+      {"ttftSeconds": 37.4, "decodeTokS": 0.60},
+      {"ttftSeconds": 35.4, "decodeTokS": 0.60},
+      {"ttftSeconds": 35.3, "decodeTokS": 0.61}
+    ],
+    "note": "same short prompt; warm-up +30% decode, -18% TTFT"
+  },
+  "brio": {
+    "normalize": "sum (our #1753 default, no explicit param)",
+    "cases": [
+      {"id": "A02", "expected": "ALLOW", "got": "ALLOW", "ok": true,  "pTop": 0.998, "entropy": 0.013, "latencySeconds": 65},
+      {"id": "A06", "expected": "ALLOW", "got": "ALLOW", "ok": true,  "pTop": 0.997, "entropy": 0.020, "latencySeconds": 87},
+      {"id": "D01", "expected": "DENY",  "got": "DENY",  "ok": true,  "pTop": 0.858, "entropy": 0.421, "latencySeconds": 83},
+      {"id": "D08", "expected": "DENY",  "got": "DENY",  "ok": true,  "pTop": 0.989, "entropy": 0.061, "latencySeconds": 80},
+      {"id": "R04", "expected": "REVIEW","got": "DENY",  "ok": false, "pTop": 0.547, "entropy": 0.689, "latencySeconds": 83,
+       "note": "honest near-tie DENY 0.547 / ALLOW 0.437; entropy highest in set"},
+      {"id": "DOC1", "expected": "DENY", "got": "DENY",  "ok": true,  "pTop": 0.627, "entropy": 0.648, "latencySeconds": 719,
+       "note": "~600-word dossier state"}
+    ],
+    "accuracy": "5/6",
+    "shortStateLatency": "65-87 s", "documentStateLatency": "~12 min"
+  },
+  "heat": {
+    "glm53LearnedHeat": "NONE (source: no heat counter in glm53.c; expert LRU is process-local)",
+    "stdinDrainFix1734": "graceful exit path applies (launcher-level); nothing to save for this engine"
+  },
+  "footprint": {"glm53RssGb": 34.5, "freeSystemRamGbDuringRun": 2.0,
+                "note": "dense+runtime+29GB expert cache; system stayed responsive"}
+}
