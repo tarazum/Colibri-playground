@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-09-24T22:29:13+00:00",
+  "timestamp": "2026-09-27T10:02:44+00:00",
   "arm": "reuse_on",
   "turn": "B",
   "historyTokensApprox": 967,
-  "ttftSeconds": 3.681,
-  "wallSeconds": 10.564,
+  "ttftSeconds": 4.285,
+  "wallSeconds": 14.948,
   "generatedTokens": 52,
-  "answer": "The rework broke idempotency by having parallel workers share a single cursor object, causing retries to re-process the same transaction window. This resulted in 4,300.00 EUR being double-credited across 12 merchant accounts.",
+  "answer": "The rework broke idempotency by having parallel workers share a single cursor object, causing retries to re-read the same transaction window. This resulted in 4,300.00 EUR being double-credited across 12 merchant accounts.",
   "serverLog": "C:\\projects\\Colibri-playground\\results\\kv-reuse\\logs\\server_reuse_on.log"
 }

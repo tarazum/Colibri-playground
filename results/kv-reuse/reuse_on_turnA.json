@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-09-24T22:29:02+00:00",
+  "timestamp": "2026-09-27T10:02:29+00:00",
   "arm": "reuse_on",
   "turn": "A",
   "historyTokensApprox": 890,
-  "ttftSeconds": 96.481,
-  "wallSeconds": 101.827,
+  "ttftSeconds": 157.372,
+  "wallSeconds": 165.261,
   "generatedTokens": 42,
   "answer": "The April incident was caused by raising the ledger connection pool from 20 to 64 per pod. At its worst, the p99 latency on POST /charge reached 840 ms.",
   "serverLog": "C:\\projects\\Colibri-playground\\results\\kv-reuse\\logs\\server_reuse_on.log"

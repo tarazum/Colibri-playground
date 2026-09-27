@@ -4,16 +4,16 @@
 [meta] DeltaNet: vheads=32 kheads=16 kdim=128 vdim=128 convk=4 conv_dim=8192
 [dense-i8] 291 matrices quantized during load, 7.2 GB f32 freed
 [qwen36] group-scaled experts: gs=64
-resident weights loaded in 4.7s | RSS after load: 4.83 GB
+resident weights loaded in 5.3s | RSS after load: 4.83 GB
 [qwen36] expert format on disk: int4 packed (tier fmt=4)
 [CUDA] device 0: NVIDIA GeForce RTX 5070 Laptop GPU, 8.5 GB VRAM, sm_120
-[qtier] dev 0: 6.8 GB free, allowance 5.2 GB
-[place] auto: dev 0 holds 1828.5 MB of trunk (lmhead yes, 30 dnproj layers), 3.42 GB left for experts
-[qtier] dev 0: budget 3.42 GB for experts (~1941 experts) after trunk
+[qtier] dev 0: 6.8 GB free, allowance 5.3 GB
+[place] auto: dev 0 holds 1828.5 MB of trunk (lmhead yes, 30 dnproj layers), 3.56 GB left for experts
+[qtier] dev 0: budget 3.56 GB for experts (~2018 experts) after trunk
 [qtier] CUDA VRAM expert tier active: 1 device(s), 1.80 MB/expert
 [CUDA] mode: routed experts (qwen36 VRAM tier)
 [gpu] MoE experts -> CUDA VRAM tier
-[place] probe: one [8192 x 2048] int8 GEMV takes 0.212 ms on CUDA dev 0, 0.225 ms on the CPU -> trunk to VRAM
+[place] probe: one [8192 x 2048] int8 GEMV takes 0.163 ms on CUDA dev 0, 0.244 ms on the CPU -> trunk to VRAM
 [lmh] lm_head [248320 x 2048] int8 resident on CUDA dev 0 (0.47 GB)
 [dnp] 30 DeltaNet-Projektionen auf GPU (0.70 GB VRAM)
 [dense] 190 trunk matrices on GPU (dnout/attnproj/shexp, 0.61 GB VRAM)
@@ -23,14 +23,16 @@ resident weights loaded in 4.7s | RSS after load: 4.83 GB
 [qwen36] int4 packed weights detected — unpacking to int8 in slot
 [qwen36] int4 packed weights detected — unpacking to int8 in slot
 [qwen36] int4 packed weights detected — unpacking to int8 in slot
-[qtier] warmstart (parallel): all 10240 experts in RAM (int8 copy dropped for residents, kept for non-residents), 1941 in VRAM -- 16.0 s
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qwen36] int4 packed weights detected — unpacking to int8 in slot
+[qtier] warmstart (parallel): all 10240 experts in RAM (int8 copy dropped for residents, kept for non-residents), 2018 in VRAM -- 15.7 s
 OpenAI-compatible API listening on http://127.0.0.1:8000/v1
 [api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
 [api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
 [api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
 [api] 127.0.0.1 - "GET /v1/models HTTP/1.1" 200 -
-[PREFIX] no reuse: held=0 cap=958 prompt=898
 [api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -
+[PREFIX] no reuse: held=0 cap=958 prompt=898
 [api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -
 [PREFIX] reusing 940 of 972 prompt tokens (97%)
 [api] 127.0.0.1 - "POST /v1/chat/completions HTTP/1.1" 200 -

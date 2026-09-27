@@ -112,6 +112,27 @@ more disk.
 Conversion: one-pass shard-at-a-time, 212 min unauthenticated
 (throttled); model deleted after measurements (disk returned to 378 GB).
 
+## 6. Extrapolation ladder from the §5 anchors (2026-09-27, for hardware shopping)
+
+Decode ≈ effective CPU-memory-path bandwidth ÷ ~30 GB per token (dense
+~48 GB read every token + active experts; measured anchor: laptop
+~20 GB/s effective → 0.61 tok/s; disk NOT the limiter at 4.5 GB/s
+available vs ~0.02 GB/s needed). Honest caveat: extrapolated, not
+measured; anchors in §5.
+
+| Configuration | Decode (warm) | TTFT short | Brio, ~600-word doc |
+|---|---|---|---|
+| This laptop (64 GB RAM, 8C hybrid) | 0.6 tok/s [measured] | 35-43 s [measured] | 12 min [measured] |
+| Gaming PC (128 GB RAM, 8C desktop DDR5) | ~1.2-2 tok/s | ~15-25 s | ~4-7 min |
+| Same + 192 GB RAM | ~1.5-2.2 tok/s | slightly better | ~3-6 min |
+| Workstation (TR/Xeon-W, 8-channel RAM, 300+ GB/s) | ~5-9 tok/s | seconds | ~1 min |
+
+Notes for the PC build: 16 GB VRAM does NOTHING for glm53-Flash (family
+has no VRAM tier — CPU path by design) but covers the daily stack
+(qwen36 GGUV fully in VRAM, 30+ tok/s) on the same box. Spend priority
+for the giant: (1) RAM channels+capacity (hit rate AND bandwidth),
+(2) CPU with large cache/memory throughput, (3) disks last.
+
 ## 4. If we ever run Phase 12 (DONE — see §5)
 
 1. Start WITHOUT new hardware: Flash 321B fits today's free space
