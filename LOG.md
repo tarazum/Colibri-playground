@@ -827,3 +827,32 @@ Phase verdict: Brio mechanics work, fast and deterministic; entropy is the
 honest confidence signal; the default normalization is broken (FN-010 —
 use sum); the middle option needs prompt/option engineering to ever win;
 with an entropy threshold this is a usable classifier for obvious cases.
+
+## 2026-09-27 — Public-readiness audit + README rewrite (repo went public)
+
+Trigger: MIT + public visibility (907545c) while README still described the
+project in future tense from 2026-09-21. Owner asked for a fresh-eyes pass.
+
+Audit (subagent sweep, 299 tracked files) — verdict per category:
+
+- Secrets/tokens: CLEAN (0 findings; only benign test-data mentions).
+- Results hygiene: no tracked file > 1 MB; logs are deliberate evidence
+  (gitignore whitelist). One username path in
+  results/placement/tune_autotier.txt:117 — left as-is (raw artifact).
+- Stale framing: README (future tense, no verdict) — FIXED below;
+  open_items.md line 162 "no benchmark data exists" etc. — covered by a
+  status banner (historical log, boxes untouched on purpose).
+- Unresolvable private references (Owner decision, NOT changed):
+  AGENTS.md:3,60 (IDENN, playbook), LESSONS_LEARNED.md:5-7 (PB-NNN
+  back-links), LOG.md:288, final_results.md:70-71 (LACA + dead link to
+  model_and_process_recommendations_sep2026.md). Recommendation: one-line
+  "(private)" markers instead of removal — these are working docs.
+
+Changes:
+
+- README.md: full rewrite — verdict LAB ONLY up front, key-numbers table
+  (Colibrì vs llama.cpp), upstream scoreboard (#1734, #1753 merged;
+  #1759 -> maintainer PR #1767 with our Co-authored-by; FN-006 deferred),
+  Phase 12 numbers (321B on the laptop), updated repo layout (final_results
+  as entry point), methodology, MIT.
+- docs/open_items.md: status banner only.

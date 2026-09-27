@@ -2,6 +2,12 @@
 
 What the 2026-09-21 review could not close in-session, and how to close each item.
 
+> **Status (2026-09-27): all phases 0–12 complete, verdict recorded in
+> [final_results.md](final_results.md).** This file is the historical working
+> log of open questions during the run. Unchecked boxes below are left
+> as-written on purpose; most were later resolved in `LOG.md` /
+> `docs/FINDINGS.md`.
+
 License note: everything this project needs is free — Colibrì (Apache-2.0),
 model containers (Apache-2.0), CUDA Toolkit, VS 2022 Build Tools, MSYS2,
 llama.cpp/Ollama, unsloth GGUF. No paid licenses required. Owner pre-approved
